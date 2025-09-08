@@ -232,7 +232,7 @@ export async function POST(request: NextRequest) {
           <!-- Cover Page (matching your Word template) -->
           <div class="cover-page">
             <!-- Watermark Image -->
-            <img src="C:\Users\Work pc\Documents\GitHub\Modular-Homes-Website\New Images\Quotation Prep Files\Watermark logo.png" alt="Watermark" class="watermark">
+            <img src="/assets/images/watermark/Watermark logo.png" alt="Watermark" class="watermark">
             
             <div class="cover-logo"></div>
             <div class="cover-title">PINE</div>
