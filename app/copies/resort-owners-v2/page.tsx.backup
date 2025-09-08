@@ -1,0 +1,1330 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import Image from 'next/image'
+import { ArrowRight, Download, Calendar, MessageCircle, Star, Users, Home, Heart, Shield, Award, DollarSign, TrendingUp, Building, Calculator, MapPin, Leaf, Globe, Zap, Clock } from 'lucide-react'
+import { SegmentHero } from '@/components/sections/SegmentHero'
+import { ROICalculator } from '@/components/ROICalculator'
+import { RevenueStats } from '@/components/RevenueStats'
+import { PropertyTypes } from '@/components/PropertyTypes'
+import { LeadCaptureForm } from '@/components/LeadCaptureForm'
+import { DownloadCTA } from '@/components/DownloadCTA'
+
+const revenueFeatures = [
+  {
+    icon: 'TrendingUp',
+    title: 'Increase Capacity',
+    description: 'Add rental units to maximize your property potential and accommodate more guests',
+    benefit: 'Up to 40% capacity increase'
+  },
+  {
+    icon: 'DollarSign',
+    title: 'Boost Nightly Rates',
+    description: 'Quality modular units command premium rates compared to basic accommodations',
+    benefit: 'Average 25% rate increase'
+  },
+  {
+    icon: 'Clock',
+    title: 'Faster Payback',
+    description: 'Quick deployment means you start generating revenue sooner than traditional builds',
+    benefit: 'ROI in 18-36 months'
+  },
+  {
+    icon: 'Wrench',
+    title: 'Easy Maintenance',
+    description: 'Durable construction and quality materials mean lower ongoing maintenance costs',
+    benefit: 'Reduced maintenance by 40%'
+  }
+]
+
+const propertyTypes = [
+  {
+    type: 'Resort & Hotel',
+    description: 'Add luxury cabins and guest suites to increase accommodation capacity',
+    image: '/images/segments/resort-property.jpg',
+    benefits: ['Premium guest experience', 'Flexible room inventory', 'Seasonal expansion'],
+    caseStudy: {
+      property: 'Mountain View Resort, BC',
+      result: '6 Pine 1 units generated $180,000 additional annual revenue'
+    }
+  },
+  {
+    type: 'Campground & RV Park',
+    description: 'Offer comfortable cabin alternatives to tent and RV sites',
+    image: '/images/segments/campground-property.jpg',
+    benefits: ['Weather-independent revenue', 'Higher profit margins', 'Extended season'],
+    caseStudy: {
+      property: 'Lakeside Campground, AB',
+      result: '4 Pine 3 units increased average nightly rate by 35%'
+    }
+  },
+  {
+    type: 'Airbnb & Vacation Rental',
+    description: 'Create multiple rental units on larger properties for diversified income',
+    image: '/images/segments/vacation-rental-property.jpg',
+    benefits: ['Multiple revenue streams', 'Risk diversification', 'Scalable investment'],
+    caseStudy: {
+      property: 'Prairie View Rentals, SK',
+      result: '3 Pine 2 units on 10 acres generating $95,000 annually'
+    }
+  }
+]
+
+export default function ResortOwnersPage() {
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false)
+  const [isClient, setIsClient] = useState(false)
+  const [showDownloadForm, setShowDownloadForm] = useState(false)
+  const [downloadFormData, setDownloadFormData] = useState({
+    name: '',
+    email: '',
+    phone: ''
+  })
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0
+  })
+  const [activeTab, setActiveTab] = useState('pine')
+  const [showThankYou, setShowThankYou] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+    
+    // Set countdown to end of September
+    const calculateTimeLeft = () => {
+      const now = new Date().getTime()
+      const endOfSeptember = new Date('September 30, 2024 23:59:59').getTime()
+      const difference = endOfSeptember - now
+
+      if (difference > 0) {
+        setTimeLeft({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((difference % (1000 * 60)) / 1000)
+        })
+      } else {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 })
+      }
+    }
+
+    calculateTimeLeft()
+    const timer = setInterval(calculateTimeLeft, 1000)
+
+    return () => clearInterval(timer)
+  }, [])
+
+  const handleDownloadFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      const response = await fetch('https://services.leadconnectorhq.com/hooks/02vJIYEzMsesDcYai65O/webhook-trigger/HbWk0Go6KNcxvahZph0m', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: downloadFormData.name,
+          email: downloadFormData.email,
+          phone: downloadFormData.phone,
+          formType: 'download-guide',
+          source: 'resort-owners-landing-page',
+          timestamp: new Date().toISOString()
+        }),
+      })
+
+      if (response.ok) {
+        // Close the popup and reset form
+        setShowDownloadForm(false)
+        setDownloadFormData({ name: '', email: '', phone: '' })
+        // Show custom thank you message
+        setShowThankYou(true)
+        // Hide thank you message after 5 seconds
+        setTimeout(() => setShowThankYou(false), 5000)
+      } else {
+        const errorData = await response.text()
+        console.error('Webhook error:', errorData)
+        alert('There was an error. Please try again.')
+      }
+    } catch (error) {
+      console.error('Error submitting download form:', error)
+      alert('There was an error. Please try again.')
+    }
+  }
+
+  return (
+    <>
+      <SegmentHero 
+        title="Turn Your Property Into a Cash‑Generating Destination"
+        subtitle="Stylish, durable modular units designed to delight guests and boost nightly rates."
+        backgroundImage="/images/segments/resort-hero.jpg"
+        primaryCTA="Get Instant Quote"
+        secondaryCTA="Download Revenue Guide"
+        primaryCTALink="/copies/quote-builder-v2"
+        onSecondaryCTAClick={() => setShowDownloadForm(true)}
+      />
+      
+      <section className="section bg-discovery-white">
+        <div className="container-custom">
+          <div className="max-w-4xl mx-auto text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-discovery-charcoal mb-6">
+              Your Land Has Revenue Potential
+            </h2>
+            <p className="text-xl text-neutral-600 leading-relaxed">
+              Resort and campground owners know that guests demand quality and comfort — and Discovery Homes delivers. 
+              Our modular units are designed to blend into your natural setting, enhance guest experience, and deliver strong ROI.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {revenueFeatures.map((feature, index) => (
+              <div key={index} className="text-center">
+                <div className="w-16 h-16 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-discovery-charcoal" fill="currentColor" viewBox="0 0 20 20">
+                    {feature.icon === 'TrendingUp' && (
+                      <path fillRule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    )}
+                    {feature.icon === 'DollarSign' && (
+                      <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
+                    )}
+                    {feature.icon === 'Clock' && (
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+                    )}
+                    {feature.icon === 'Wrench' && (
+                      <path fillRule="evenodd" d="M19 5.5a4.5 4.5 0 01-4.791 4.49c-.873-.055-1.808.128-2.368.8l-6.024 7.23a2.724 2.724 0 11-3.837-3.837L9.21 8.16c.672-.56.855-1.495.8-2.368a4.5 4.5 0 015.873-4.575c.324.105.39.51.15.752L13.34 4.66a.455.455 0 00-.11.494 3.01 3.01 0 001.617 1.617c.17.07.363.02.493-.111l2.692-2.692c.241-.241.647-.174.752.15.14.435.216.9.216 1.382zM4 17a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                    )}
+                  </svg>
+                </div>
+                <h3 className="text-xl font-serif font-semibold text-discovery-charcoal mb-2">
+                  {feature.title}
+                </h3>
+                <p className="text-neutral-600 mb-2">
+                  {feature.description}
+                </p>
+                <p className="text-discovery-gold font-semibold">
+                  {feature.benefit}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
+      {/* Fall Sale Section */}
+      <section className="py-20 bg-gradient-to-br from-discovery-charcoal to-discovery-charcoal-light">
+        <div className="max-w-6xl mx-auto px-4 text-center">
+          <div className="bg-discovery-white rounded-3xl p-12 shadow-2xl">
+            {/* Sale Header */}
+            <div className="mb-8">
+              <div className="text-lg font-semibold text-discovery-charcoal-light mb-2">FALL SALE</div>
+              <div className="text-6xl md:text-7xl font-bold text-discovery-charcoal mb-2">SAVE 5%</div>
+              <div className="text-4xl md:text-5xl font-bold text-discovery-charcoal mb-2">UP TO</div>
+              <div className="text-8xl md:text-9xl font-bold text-discovery-gold mb-4">$10,000</div>
+            </div>
+
+            {/* Sale Terms */}
+            <div className="mb-8">
+              <p className="text-lg text-discovery-charcoal-light mb-2">
+                First 5 orders for the first 30 days - Act FAST!
+              </p>
+              <p className="text-lg text-discovery-charcoal-light italic">
+                "Affordable, Modular Ready when you are."
+              </p>
+            </div>
+
+            {/* CTA Button */}
+            <div className="mb-12">
+              <a 
+                href="/copies/quote-builder-v2"
+                className="inline-block bg-discovery-charcoal text-discovery-white px-12 py-4 rounded-lg font-bold text-xl border-2 border-discovery-charcoal hover:bg-discovery-white hover:text-discovery-charcoal transition-all duration-300"
+              >
+                CLAIM YOUR DISCOUNT
+              </a>
+            </div>
+
+            {/* Countdown Timer */}
+            <div className="flex justify-center gap-6">
+              <div className="bg-discovery-charcoal-light rounded-xl p-6 min-w-[120px]">
+                <div className="text-4xl font-bold text-discovery-white mb-2">
+                  {timeLeft.days.toString().padStart(2, '0')}
+                </div>
+                <div className="text-sm text-discovery-white">Days</div>
+              </div>
+              <div className="bg-discovery-charcoal-light rounded-xl p-6 min-w-[120px]">
+                <div className="text-4xl font-bold text-discovery-white mb-2">
+                  {timeLeft.hours.toString().padStart(2, '0')}
+                </div>
+                <div className="text-sm text-discovery-white">Hours</div>
+              </div>
+              <div className="bg-discovery-charcoal-light rounded-xl p-6 min-w-[120px]">
+                <div className="text-4xl font-bold text-discovery-white mb-2">
+                  {timeLeft.minutes.toString().padStart(2, '0')}
+                </div>
+                <div className="text-sm text-discovery-white">Minutes</div>
+              </div>
+              <div className="bg-discovery-charcoal-light rounded-xl p-6 min-w-[120px]">
+                <div className="text-4xl font-bold text-discovery-white mb-2">
+                  {timeLeft.seconds.toString().padStart(2, '0')}
+                </div>
+                <div className="text-sm text-discovery-white">Seconds</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      {/* Additional CTA Section */}
+      <section className="py-16 bg-discovery-white">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <div className="bg-gradient-to-br from-discovery-gold/10 to-discovery-sage/10 rounded-2xl p-12">
+            <h3 className="text-3xl md:text-4xl font-serif font-bold text-discovery-charcoal mb-6">
+              Ready to Start Your Project?
+            </h3>
+            <p className="text-xl text-discovery-charcoal-light mb-8 max-w-2xl mx-auto">
+              Get an instant quote for your resort rental project. 
+              Our team is ready to help you maximize your property's revenue potential.
+            </p>
+            <a 
+              href="/copies/quote-builder-v2"
+              className="inline-block bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-12 py-4 rounded-lg font-semibold text-xl transition-all duration-300 flex items-center gap-2 group mx-auto"
+            >
+              Get Instant Quote
+              <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+
+
+      <DownloadCTA
+              {activeTab === 'pine' && (
+                <>
+                  <div>
+                    <h3 className="text-3xl font-serif font-bold text-discovery-charcoal mb-4">
+                      Pine Model - The Classic
+                    </h3>
+                    <p className="text-lg text-discovery-charcoal-light mb-6">
+                      Perfect for resort rental properties requiring reliable, efficient accommodation solutions. 
+                      The Pine model offers excellent value and quick deployment for your guests.
+                    </p>
+                    <div className="grid grid-cols-2 gap-4 mb-6">
+                      <div className="bg-discovery-sage/10 rounded-lg p-4">
+                        <div className="text-2xl font-bold text-discovery-charcoal">504</div>
+                        <div className="text-sm text-discovery-charcoal-light">Sq Ft Main Floor</div>
+                      </div>
+                      <div className="bg-discovery-gold/10 rounded-lg p-4">
+                        <div className="text-2xl font-bold text-discovery-charcoal">2</div>
+                        <div className="text-sm text-discovery-charcoal-light">Bedrooms</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-semibold text-discovery-charcoal mb-4">Key Features</h4>
+                    <ul className="space-y-2 text-discovery-charcoal-light">
+                      <li>• Quartz countertops</li>
+                      <li>• Maple cabinetry (White, Black, or Wood Grain)</li>
+                      <li>• Drywall walls with tongue-and-groove plank ceiling</li>
+                      <li>• Vinyl glue-down flooring</li>
+                      <li>• Pot lights throughout</li>
+                      <li>• Tile shower surround + kitchen/bath backsplash</li>
+                      <li>• Black kitchen sink & faucet (stainless option available)</li>
+                      <li>• Triple-glaze windows; all paint colors included</li>
+                      <li>• Hidden-fastener metal roof and metal board-and-batten siding</li>
+                    </ul>
+                  </div>
+                </>
+              )}
+
+              {activeTab === 'spruce' && (
+                <>
+                  <div>
+                    <h3 className="text-3xl font-serif font-bold text-discovery-charcoal mb-4">
+                      Spruce Model - The Versatile
+                    </h3>
+                    <p className="text-lg text-discovery-charcoal-light mb-6">
+                      Ideal for resort rental properties that need flexibility and space. 
+                      The Spruce model adapts to various guest needs and rental demands.
+                    </p>
+                    <div className="grid grid-cols-2 gap-4 mb-6">
+                      <div className="bg-discovery-sage/10 rounded-lg p-4">
+                        <div className="text-2xl font-bold text-discovery-charcoal">504</div>
+                        <div className="text-sm text-discovery-charcoal-light">Sq Ft Main Floor</div>
+                      </div>
+                      <div className="bg-discovery-gold/10 rounded-lg p-4">
+                        <div className="text-2xl font-bold text-discovery-charcoal">2</div>
+                        <div className="text-sm text-discovery-charcoal-light">Bedrooms</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-semibold text-discovery-charcoal mb-4">Key Features</h4>
+                    <ul className="space-y-2 text-discovery-charcoal-light">
+                      <li>• Quartz countertops</li>
+                      <li>• Maple cabinetry (White, Black, or Wood Grain)</li>
+                      <li>• Drywall walls with tongue-and-groove plank ceiling</li>
+                      <li>• Vinyl glue-down flooring</li>
+                      <li>• Pot lights throughout</li>
+                      <li>• Tile shower surround + kitchen/bath backsplash</li>
+                      <li>• Black kitchen sink & faucet (stainless option available)</li>
+                      <li>• Triple-glaze windows; all paint colors included</li>
+                      <li>• Hidden-fastener metal roof and metal board-and-batten siding</li>
+                    </ul>
+                  </div>
+                </>
+              )}
+
+              {activeTab === 'willow' && (
+                <>
+                  <div>
+                    <h3 className="text-3xl font-serif font-bold text-discovery-charcoal mb-4">
+                      Willow Model - The Spacious
+                    </h3>
+                    <p className="text-lg text-discovery-charcoal-light mb-6">
+                      Perfect for resort rental properties requiring larger accommodations. 
+                      The Willow model provides maximum space and comfort for premium guest experiences.
+                    </p>
+                    <div className="grid grid-cols-2 gap-4 mb-6">
+                      <div className="bg-discovery-sage/10 rounded-lg p-4">
+                        <div className="text-2xl font-bold text-discovery-charcoal">672</div>
+                        <div className="text-sm text-discovery-charcoal-light">Sq Ft Main Floor</div>
+                      </div>
+                      <div className="bg-discovery-gold/10 rounded-lg p-4">
+                        <div className="text-2xl font-bold text-discovery-charcoal">3</div>
+                        <div className="text-sm text-discovery-charcoal-light">Bedrooms</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-semibold text-discovery-charcoal mb-4">Key Features</h4>
+                    <ul className="space-y-2 text-discovery-charcoal-light">
+                      <li>• Quartz countertops</li>
+                      <li>• Maple cabinetry (White, Black, or Wood Grain)</li>
+                      <li>• Drywall walls with tongue-and-groove plank ceiling</li>
+                      <li>• Vinyl glue-down flooring</li>
+                      <li>• Pot lights throughout</li>
+                      <li>• Tile shower surround + kitchen/bath backsplash</li>
+                      <li>• Black kitchen sink & faucet (stainless option available)</li>
+                      <li>• Triple-glaze windows; all paint colors included</li>
+                      <li>• Hidden-fastener metal roof and metal board-and-batten siding</li>
+                    </ul>
+                  </div>
+                </>
+              )}
+
+              {activeTab === 'custom' && (
+                <>
+                  <div>
+                    <h3 className="text-3xl font-serif font-bold text-discovery-charcoal mb-4">
+                      Custom Build - The Unique
+                    </h3>
+                    <p className="text-lg text-discovery-charcoal-light mb-6">
+                      Tailored solutions for unique resort rental properties. 
+                      Custom builds allow you to create exactly what your guests need.
+                    </p>
+                    <div className="grid grid-cols-2 gap-4 mb-6">
+                      <div className="bg-discovery-sage/10 rounded-lg p-4">
+                        <div className="text-2xl font-bold text-discovery-charcoal">Custom</div>
+                        <div className="text-sm text-discovery-charcoal-light">Square Footage</div>
+                      </div>
+                      <div className="bg-discovery-gold/10 rounded-lg p-4">
+                        <div className="text-2xl font-bold text-discovery-charcoal">Flexible</div>
+                        <div className="text-sm text-discovery-charcoal-light">Layout Options</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-semibold text-discovery-charcoal mb-4">Custom Features</h4>
+                    <ul className="space-y-2 text-discovery-charcoal-light">
+                      <li>• Fully customizable floor plans</li>
+                      <li>• Premium material selections</li>
+                      <li>• Specialized finishes and fixtures</li>
+                      <li>• Unique architectural elements</li>
+                      <li>• Site-specific design considerations</li>
+                      <li>• Advanced energy efficiency options</li>
+                      <li>• Luxury amenities and upgrades</li>
+                      <li>• Professional design consultation</li>
+                    </ul>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section bg-neutral-50">
+        <div className="container-custom">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-discovery-charcoal mb-6">
+              Perfect for Your Property Type
+            </h2>
+            <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
+              Whether you operate a resort, campground, or vacation rental business, our modular units 
+              can help you maximize your property's revenue potential.
+            </p>
+          </div>
+          
+          <PropertyTypes properties={propertyTypes} />
+        </div>
+      </section>
+
+      <section className="section bg-discovery-white">
+        <div className="container-custom">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-discovery-charcoal mb-6">
+              Calculate Your Revenue Potential
+            </h2>
+            <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
+              Use our ROI calculator to estimate how modular units could impact your property's revenue.
+            </p>
+          </div>
+          
+          <ROICalculator />
+        </div>
+      </section>
+
+      <section className="section bg-neutral-50">
+        <div className="container-custom">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-serif font-bold text-discovery-charcoal mb-6">
+                Ready to Maximize Your Property's Potential?
+              </h2>
+              <p className="text-lg text-neutral-600 mb-8">
+                Let's discuss how Discovery Homes can help you add revenue-generating units to your property. 
+                Our team will provide a detailed ROI analysis tailored to your specific situation and goals.
+              </p>
+              
+              <div className="space-y-4">
+                <div className="flex items-center">
+                  <svg className="w-6 h-6 text-discovery-gold mr-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-neutral-700">Custom ROI analysis for your property</span>
+                </div>
+                <div className="flex items-center">
+                  <svg className="w-6 h-6 text-discovery-gold mr-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-neutral-700">Site assessment and placement planning</span>
+                </div>
+                <div className="flex items-center">
+                  <svg className="w-6 h-6 text-discovery-gold mr-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-neutral-700">Design consultation for guest appeal</span>
+                </div>
+                <div className="flex items-center">
+                  <svg className="w-6 h-6 text-discovery-gold mr-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-neutral-700">Financing and timeline planning</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="card">
+              <div className="card-body">
+                <h3 className="text-2xl font-serif font-bold text-discovery-charcoal mb-6">
+                  Get a Rental ROI Estimate
+                </h3>
+                <LeadCaptureForm 
+                  segment="resort-owner"
+                  submitText="Get ROI Estimate"
+                  fields={[
+                    { name: 'name', label: 'Full Name', type: 'text', required: true },
+                    { name: 'email', label: 'Email Address', type: 'email', required: true },
+                    { name: 'phone', label: 'Phone Number', type: 'tel', required: true },
+                    { name: 'businessName', label: 'Business Name', type: 'text', required: false },
+                    { name: 'propertyType', label: 'Property Type', type: 'select', options: ['Resort/Hotel', 'Campground/RV Park', 'Vacation Rental', 'Event Venue', 'Other'], required: true },
+                    { name: 'location', label: 'Property Location', type: 'text', required: true },
+                    { name: 'currentUnits', label: 'Current Accommodation Units', type: 'select', options: ['1-10', '11-25', '26-50', '51-100', '100+'], required: false },
+                    { name: 'desiredUnits', label: 'Additional Units Desired', type: 'select', options: ['1-3 units', '4-6 units', '7-10 units', '10+ units'], required: true },
+                    { name: 'season', label: 'Operating Season', type: 'select', options: ['Year-round', 'Seasonal (May-Oct)', 'Seasonal (Dec-Mar)', 'Peak season only'], required: true },
+                    { name: 'currentRate', label: 'Current Average Nightly Rate', type: 'select', options: ['Under $100', '$100-150', '$150-200', '$200-300', '$300+'], required: false },
+                    { name: 'timeline', label: 'Desired Timeline', type: 'select', options: ['ASAP (0-6 months)', 'Next season (6-12 months)', 'Next year (1-2 years)', 'Just exploring'], required: true },
+                    { name: 'message', label: 'Additional Details', type: 'textarea', required: false }
+                  ]}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <DownloadCTA 
+        title="Resort Owner's Guide to Adding Revenue‑Generating Units"
+        description="Complete guide to increasing capacity and nightly rates with quality modular guest accommodations."
+        benefits={[
+          'How to increase capacity & nightly rates',
+          'Design ideas for maximum guest appeal',
+          'Maintenance tips and best practices',
+          'ROI calculations and financing options',
+          'Success stories from other resort owners'
+        ]}
+        downloadUrl="/resources/resort-roi-guide"
+        leadMagnet="resort-revenue"
+      />
+
+      {/* Contact Form & Booking Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-discovery-charcoal mb-6">
+              Ready to Maximize Your Property's Potential?
+            </h2>
+            <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
+              Get in touch with our team to discuss how modular units can boost your property's revenue and schedule a consultation.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            
+            {/* GHL Contact Form */}
+            <div className="bg-white rounded-2xl p-8 shadow-lg">
+              <h3 className="text-3xl font-bold text-[#2D2D2D] mb-6">Send Us a Message</h3>
+              <iframe
+                src="https://api.leadconnectorhq.com/widget/form/YhVFMsmHW8sz26gUbqdJ"
+                style={{width: '100%', height: '100%', border: 'none', borderRadius: '3px'}}
+                id="inline-YhVFMsmHW8sz26gUbqdJ" 
+                data-layout="{'id':'INLINE'}"
+                data-trigger-type="alwaysShow"
+                data-trigger-value=""
+                data-activation-type="alwaysActivated"
+                data-activation-value=""
+                data-deactivation-type="neverDeactivate"
+                data-deactivation-value=""
+                data-form-name="Contact Form"
+                data-height="758"
+                data-layout-iframe-id="inline-YhVFMsmHW8sz26gUbqdJ"
+                data-form-id="YhVFMsmHW8sz26gUbqdJ"
+                title="Contact Form"
+                className="w-full min-h-[758px]"
+              />
+            </div>
+
+            {/* GHL Booking Calendar */}
+            <div className="bg-white rounded-2xl p-8 shadow-lg">
+              <h3 className="text-3xl font-bold text-[#2D2D2D] mb-6">Book a Consultation</h3>
+              <iframe 
+                src="https://api.leadconnectorhq.com/widget/booking/PTZ3zcQLwvLZ7CizfIdf" 
+                style={{ width: '100%', height: '800px', border: 'none', overflow: 'auto' }} 
+                scrolling="yes" 
+                id="PTZ3zcQLwvLZ7CizfIdf_1753871801578"
+                className="w-full"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      {/* Our Homes Section */}
+      <section className="py-20 bg-discovery-white">
+        <div className="max-w-7xl mx-auto px-4">
+          {/* Section Header */}
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-6">
+              OUR HOMES
+            </h2>
+            
+            {/* Tab Navigation */}
+            <div className="flex flex-wrap justify-center gap-4 mb-8">
+              {[
+                { id: 'pine', label: 'Pine' },
+                { id: 'spruce', label: 'Spruce' },
+                { id: 'willow', label: 'Willow' },
+                { id: 'custom', label: 'Custom Build' }
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                    activeTab === tab.id
+                      ? 'bg-discovery-gold text-discovery-charcoal'
+                      : 'text-discovery-charcoal-light hover:text-discovery-charcoal hover:bg-discovery-gold/20'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Tab Content */}
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
+            {/* Left Column - Images */}
+            <div className="space-y-6">
+              {/* Main Model Image */}
+              <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl">
+                <Image
+                  src={
+                    activeTab === 'pine' ? '/images/new-content/PIne 1 - Pine/xf pine 1 front right scandanavian.webp' :
+                    activeTab === 'spruce' ? '/images/new-content/Pine 2- Spruce/XF pine 2 cedar front left.png' :
+                    activeTab === 'willow' ? '/images/new-content/Pine 3- Willow/XF pine 3 scandanavian front right .webp' :
+                    '/images/new-content/Custom Builds/CB-LakesideRetreat-Front__Lakeside-Retreat__CustomBuild__v01.webp'
+                  }
+                  alt={`${activeTab} model`}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+
+              {/* Image Gallery */}
+              <div className="grid grid-cols-2 gap-4">
+                {activeTab === 'pine' && [
+                  '/images/new-content/PIne 1 - Pine/IF Pine 1 - nordic white - living room.webp',
+                  '/images/new-content/PIne 1 - Pine/IF pine1-kitchen-NW.webp',
+                  '/images/new-content/PIne 1 - Pine/IF pine1-bedroom-NW.webp',
+                  '/images/new-content/PIne 1 - Pine/IF Pine1-bathroom-NW.webp'
+                ].map((src, index) => (
+                  <div key={index} className="relative h-32 rounded-xl overflow-hidden shadow-lg">
+                    <Image
+                      src={src}
+                      alt={`Pine interior ${index + 1}`}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
+
+                {activeTab === 'spruce' && [
+                  '/images/new-content/Pine 2- Spruce/IF pine1-kitchen-E&S.webp',
+                  '/images/new-content/Pine 2- Spruce/IF pine1-living-E&S.webp',
+                  '/images/new-content/Pine 2- Spruce/IF pine1-bedroom-E&S.webp',
+                  '/images/new-content/Pine 2- Spruce/IF pine1-bedroom-IC.webp'
+                ].map((src, index) => (
+                  <div key={index} className="relative h-32 rounded-xl overflow-hidden shadow-lg">
+                    <Image
+                      src={src}
+                      alt={`Spruce interior ${index + 1}`}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
+
+                {activeTab === 'willow' && [
+                  '/images/new-content/Pine 3- Willow/IF pine 3 Nordic Whitw.png',
+                  '/images/new-content/Pine 3- Willow/IF Pine3-kitchen-NW.webp',
+                  '/images/new-content/Pine 3- Willow/IF Pine3-kitchen-E&S.webp',
+                  '/images/new-content/Pine 3- Willow/IF Pine3-room-E&S.webp'
+                ].map((src, index) => (
+                  <div key={index} className="relative h-32 rounded-xl overflow-hidden shadow-lg">
+                    <Image
+                      src={src}
+                      alt={`Willow interior ${index + 1}`}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
+
+                {activeTab === 'custom' && [
+                  '/images/new-content/Custom Builds/cb coastal.webp',
+                  '/images/new-content/Custom Builds/cb lakeside.webp',
+                  '/images/new-content/Custom Builds/CB-LakesideRetreat-Front__Lakeside-Retreat__CustomBuild__v01.webp',
+                  '/images/new-content/Custom Builds/CB-ResortCluster-Hero__Resort Cluster – Hero__Resort Cluster__v01.webp'
+                ].map((src, index) => (
+                  <div key={index} className="relative h-32 rounded-xl overflow-hidden shadow-lg">
+                    <Image
+                      src={src}
+                      alt={`Custom build ${index + 1}`}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+      <DownloadCTA
+              {activeTab === 'pine' && (
+                <>
+                  <div>
+                    <h3 className="text-3xl font-serif font-bold text-discovery-charcoal mb-2">Pine</h3>
+                    <p className="text-xl text-discovery-gold font-semibold mb-4">The Efficient One</p>
+                    <p className="text-lg text-discovery-charcoal-light mb-6">
+                      Ideal for singles, couples, or resort units — blending simplicity with style in a compact footprint.
+                    </p>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="bg-discovery-gold/10 p-4 rounded-xl">
+                      <div className="text-2xl font-bold text-discovery-charcoal">504 sq/ft</div>
+                      <div className="text-sm text-discovery-charcoal-light">Total Area</div>
+                    </div>
+                    <div className="bg-discovery-gold/10 p-4 rounded-xl">
+                      <div className="text-2xl font-bold text-discovery-charcoal">1 Bedroom</div>
+                      <div className="text-sm text-discovery-charcoal-light">Layout</div>
+                    </div>
+                    <div className="bg-discovery-gold/10 p-4 rounded-xl">
+                      <div className="text-2xl font-bold text-discovery-charcoal">$174,000</div>
+                      <div className="text-sm text-discovery-charcoal-light">Starting Price</div>
+                    </div>
+                    <div className="bg-discovery-gold/10 p-4 rounded-xl">
+                      <div className="text-2xl font-bold text-discovery-charcoal">6-8 weeks</div>
+                      <div className="text-sm text-discovery-charcoal-light">Delivery</div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="text-xl font-semibold text-discovery-charcoal mb-4">Key Features</h4>
+                    <ul className="space-y-2 text-discovery-charcoal-light">
+                      <li>• Quartz countertops</li>
+                      <li>• Maple cabinetry (White, Black, or Wood Grain)</li>
+                      <li>• Drywall walls with tongue-and-groove plank ceiling</li>
+                      <li>• Vinyl glue-down flooring</li>
+                      <li>• Pot lights throughout</li>
+                      <li>• Tile shower surround + kitchen/bath backsplash</li>
+                      <li>• Black kitchen sink & faucet (stainless option available)</li>
+                      <li>• Triple-glaze windows; all paint colors included</li>
+                      <li>• Hidden-fastener metal roof and metal board-and-batten siding</li>
+                    </ul>
+                  </div>
+                </>
+              )}
+
+              {activeTab === 'spruce' && (
+                <>
+                  <div>
+                    <h3 className="text-3xl font-serif font-bold text-discovery-charcoal mb-2">Spruce</h3>
+                    <p className="text-xl text-discovery-gold font-semibold mb-4">The Versatile One</p>
+                    <p className="text-lg text-discovery-charcoal-light mb-6">
+                      Perfect for families or rental markets, with extra space and a flexible layout.
+                    </p>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="bg-discovery-gold/10 p-4 rounded-xl">
+                      <div className="text-2xl font-bold text-discovery-charcoal">504 sq/ft</div>
+                      <div className="text-sm text-discovery-charcoal-light">Main Floor</div>
+                    </div>
+                    <div className="bg-discovery-gold/10 p-4 rounded-xl">
+                      <div className="text-2xl font-bold text-discovery-charcoal">2 Bed + Loft</div>
+                      <div className="text-sm text-discovery-charcoal-light">Layout</div>
+                    </div>
+                    <div className="bg-discovery-gold/10 p-4 rounded-xl">
+                      <div className="text-2xl font-bold text-discovery-charcoal">$179,000</div>
+                      <div className="text-sm text-discovery-charcoal-light">Starting Price</div>
+                    </div>
+                    <div className="bg-discovery-gold/10 p-4 rounded-xl">
+                      <div className="text-2xl font-bold text-discovery-charcoal">6-8 weeks</div>
+                      <div className="text-sm text-discovery-charcoal-light">Delivery</div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="text-xl font-semibold text-discovery-charcoal mb-4">Key Features</h4>
+                    <ul className="space-y-2 text-discovery-charcoal-light">
+                      <li>• Quartz countertops</li>
+                      <li>• Maple cabinetry (White, Black, or Wood Grain)</li>
+                      <li>• Drywall walls with tongue-and-groove plank ceiling</li>
+                      <li>• Vinyl glue-down flooring</li>
+                      <li>• Pot lights throughout</li>
+                      <li>• Tile shower surround + kitchen/bath backsplash</li>
+                      <li>• Black kitchen sink & faucet (stainless option available)</li>
+                      <li>• Triple-glaze windows; all paint colors included</li>
+                      <li>• Hidden-fastener metal roof and metal board-and-batten siding</li>
+                    </ul>
+                  </div>
+                </>
+              )}
+
+              {activeTab === 'willow' && (
+                <>
+                  <div>
+                    <h3 className="text-3xl font-serif font-bold text-discovery-charcoal mb-2">Willow</h3>
+                    <p className="text-xl text-discovery-gold font-semibold mb-4">The Minimalist</p>
+                    <p className="text-lg text-discovery-charcoal-light mb-6">
+                      A modern, tiny‑home solution — perfect as an office, rental, or weekend retreat.
+                    </p>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="bg-discovery-gold/10 p-4 rounded-xl">
+                      <div className="text-2xl font-bold text-discovery-charcoal">240 sq/ft</div>
+                      <div className="text-sm text-discovery-charcoal-light">With Loft</div>
+                    </div>
+                    <div className="bg-discovery-gold/10 p-4 rounded-xl">
+                      <div className="text-2xl font-bold text-discovery-charcoal">Loft Bed</div>
+                      <div className="text-sm text-discovery-charcoal-light">Layout</div>
+                    </div>
+                    <div className="bg-discovery-gold/10 p-4 rounded-xl">
+                      <div className="text-2xl font-bold text-discovery-charcoal">$99,000</div>
+                      <div className="text-sm text-discovery-charcoal-light">Starting Price</div>
+                    </div>
+                    <div className="bg-discovery-gold/10 p-4 rounded-xl">
+                      <div className="text-2xl font-bold text-discovery-charcoal">4-6 weeks</div>
+                      <div className="text-sm text-discovery-charcoal-light">Delivery</div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="text-xl font-semibold text-discovery-charcoal mb-4">Key Features</h4>
+                    <ul className="space-y-2 text-discovery-charcoal-light">
+                      <li>• Quartz countertops</li>
+                      <li>• Maple cabinetry (White, Black, or Wood Grain)</li>
+                      <li>• Drywall walls with tongue-and-groove plank ceiling</li>
+                      <li>• Vinyl glue-down flooring</li>
+                      <li>• Pot lights throughout</li>
+                      <li>• Tile shower surround + kitchen/bath backsplash</li>
+                      <li>• Black kitchen sink & faucet (stainless option available)</li>
+                      <li>• Triple-glaze windows; all paint colors included</li>
+                      <li>• Hidden-fastener metal roof and metal board-and-batten siding</li>
+                    </ul>
+                  </div>
+                </>
+              )}
+
+              {activeTab === 'custom' && (
+                <>
+                  <div>
+                    <h3 className="text-3xl font-serif font-bold text-discovery-charcoal mb-2">Custom Build</h3>
+                    <p className="text-xl text-discovery-gold font-semibold mb-4">Tailored to Your Vision</p>
+                    <p className="text-lg text-discovery-charcoal-light mb-6">
+                      Fully tailored modular homes crafted to fit each customer's unique needs and preferences.
+                    </p>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="bg-discovery-gold/10 p-4 rounded-xl">
+                      <div className="text-2xl font-bold text-discovery-charcoal">Any Size</div>
+                      <div className="text-sm text-discovery-charcoal-light">Flexible</div>
+                    </div>
+                    <div className="bg-discovery-gold/10 p-4 rounded-xl">
+                      <div className="text-2xl font-bold text-discovery-charcoal">Custom</div>
+                      <div className="text-sm text-discovery-charcoal-light">Layout</div>
+                    </div>
+                    <div className="bg-discovery-gold/10 p-4 rounded-xl">
+                      <div className="text-2xl font-bold text-discovery-charcoal">Quote</div>
+                      <div className="text-sm text-discovery-charcoal-light">Required</div>
+                    </div>
+                    <div className="bg-discovery-gold/10 p-4 rounded-xl">
+                      <div className="text-2xl font-bold text-discovery-charcoal">8-12 weeks</div>
+                      <div className="text-sm text-discovery-charcoal-light">Delivery</div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="text-xl font-semibold text-discovery-charcoal mb-4">Custom Options</h4>
+                    <ul className="space-y-2 text-discovery-charcoal-light">
+                      <li>• Larger footprints for growing families</li>
+                      <li>• Net-zero ready kits with solar</li>
+                      <li>• Off-grid solutions for independence</li>
+                      <li>• Indigenous-specific designs</li>
+                      <li>• Multi-generational living layouts</li>
+                      <li>• Sustainable building materials</li>
+                    </ul>
+                  </div>
+                </>
+              )}
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Success Stories Section */}
+      <section className="py-20 bg-discovery-charcoal">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-white mb-6">
+              Success Stories
+            </h2>
+            <p className="text-xl text-discovery-sage max-w-3xl mx-auto">
+              See how resort owners across Canada have transformed their properties with Discovery Homes modular solutions.
+            </p>
+          </div>
+
+          <div className="relative overflow-hidden">
+            <div className="flex animate-conveyor">
+              {/* First set of stories */}
+              {[
+                {
+                  name: "Mountain View Resort",
+                  location: "British Columbia",
+                  result: "40% capacity increase",
+                  image: "/images/new-content/Landing Page - Real Estate Rental/CB-LakesideRetreat-Front__Lakeside-Retreat__CustomBuild__v01.webp"
+                },
+                {
+                  name: "Lakeside Campground",
+                  location: "Alberta",
+                  result: "35% rate increase",
+                  image: "/images/new-content/Landing Page - Real Estate Rental/CB-LakesideRetreat-Hero__Lakeside-Retreat–Hero__CustomBuild__v01.webp"
+                },
+                {
+                  name: "Prairie View Rentals",
+                  location: "Saskatchewan",
+                  result: "$95,000 annually",
+                  image: "/images/new-content/Landing Page - Real Estate Rental/CB-ResortCluster-Hero__Resort Cluster – Hero__Resort Cluster__v01.webp"
+                },
+                {
+                  name: "Forest Retreat",
+                  location: "Ontario",
+                  result: "Year-round revenue",
+                  image: "/images/new-content/Landing Page - Real Estate Rental/LP-TYL-4__Interior–rental-ready__Pine-2__v01.webp"
+                },
+                {
+                  name: "Coastal Resort",
+                  location: "Nova Scotia",
+                  result: "Premium pricing",
+                  image: "/images/new-content/Landing Page - Real Estate Rental/CB-LakesideRetreat-Front__Lakeside-Retreat__CustomBuild__v01.webp"
+                },
+                {
+                  name: "Mountain Lodge",
+                  location: "Quebec",
+                  result: "Multi-season success",
+                  image: "/images/new-content/Landing Page - Real Estate Rental/CB-LakesideRetreat-Hero__Lakeside-Retreat–Hero__CustomBuild__v01.webp"
+                },
+                {
+                  name: "Riverside Resort",
+                  location: "Manitoba",
+                  result: "Guest satisfaction",
+                  image: "/images/new-content/Landing Page - Real Estate Rental/CB-ResortCluster-Hero__Resort Cluster – Hero__Resort Cluster__v01.webp"
+                },
+                {
+                  name: "Valley Retreat",
+                  location: "Yukon",
+                  result: "Off-grid luxury",
+                  image: "/images/new-content/Landing Page - Real Estate Rental/LP-TYL-4__Interior–rental-ready__Pine-2__v01.webp"
+                }
+              ].map((story, index) => (
+                <div key={`first-${index}`} className="flex-shrink-0 w-80 mx-4 bg-discovery-charcoal-light rounded-2xl overflow-hidden shadow-2xl">
+                  <div className="relative h-48">
+                    <Image
+                      src={story.image}
+                      alt={story.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-xl font-serif font-bold text-discovery-white mb-2">{story.name}</h3>
+                    <p className="text-discovery-sage mb-3">{story.location}</p>
+                    <div className="bg-discovery-gold text-discovery-charcoal px-3 py-1 rounded-full text-sm font-semibold inline-block">
+                      {story.result}
+                    </div>
+                  </div>
+                </div>
+              ))}
+              
+              {/* Duplicate set for seamless loop */}
+              {[
+                {
+                  name: "Mountain View Resort",
+                  location: "British Columbia",
+                  result: "40% capacity increase",
+                  image: "/images/new-content/Landing Page - Real Estate Rental/CB-LakesideRetreat-Front__Lakeside-Retreat__CustomBuild__v01.webp"
+                },
+                {
+                  name: "Lakeside Campground",
+                  location: "Alberta",
+                  result: "35% rate increase",
+                  image: "/images/new-content/Landing Page - Real Estate Rental/CB-LakesideRetreat-Hero__Lakeside-Retreat–Hero__CustomBuild__v01.webp"
+                },
+                {
+                  name: "Prairie View Rentals",
+                  location: "Saskatchewan",
+                  result: "$95,000 annually",
+                  image: "/images/new-content/Landing Page - Real Estate Rental/CB-ResortCluster-Hero__Resort Cluster – Hero__Resort Cluster__v01.webp"
+                },
+                {
+                  name: "Forest Retreat",
+                  location: "Ontario",
+                  result: "Year-round revenue",
+                  image: "/images/new-content/Landing Page - Real Estate Rental/LP-TYL-4__Interior–rental-ready__Pine-2__v01.webp"
+                },
+                {
+                  name: "Coastal Resort",
+                  location: "Nova Scotia",
+                  result: "Premium pricing",
+                  image: "/images/new-content/Landing Page - Real Estate Rental/CB-LakesideRetreat-Front__Lakeside-Retreat__CustomBuild__v01.webp"
+                },
+                {
+                  name: "Mountain Lodge",
+                  location: "Quebec",
+                  result: "Multi-season success",
+                  image: "/images/new-content/Landing Page - Real Estate Rental/CB-LakesideRetreat-Hero__Lakeside-Retreat–Hero__CustomBuild__v01.webp"
+                },
+                {
+                  name: "Riverside Resort",
+                  location: "Manitoba",
+                  result: "Guest satisfaction",
+                  image: "/images/new-content/Landing Page - Real Estate Rental/CB-ResortCluster-Hero__Resort Cluster – Hero__Resort Cluster__v01.webp"
+                },
+                {
+                  name: "Valley Retreat",
+                  location: "Yukon",
+                  result: "Off-grid luxury",
+                  image: "/images/new-content/Landing Page - Real Estate Rental/LP-TYL-4__Interior–rental-ready__Pine-2__v01.webp"
+                }
+              ].map((story, index) => (
+                <div key={`second-${index}`} className="flex-shrink-0 w-80 mx-4 bg-discovery-charcoal-light rounded-2xl overflow-hidden shadow-2xl">
+                  <div className="relative h-48">
+                    <Image
+                      src={story.image}
+                      alt={story.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-xl font-serif font-bold text-discovery-white mb-2">{story.name}</h3>
+                    <p className="text-discovery-sage mb-3">{story.location}</p>
+                    <div className="bg-discovery-gold text-discovery-charcoal px-3 py-1 rounded-full text-sm font-semibold inline-block">
+                      {story.result}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Success Stories CTA */}
+          <div className="text-center mt-16">
+            <h3 className="text-2xl md:text-3xl font-serif font-bold text-discovery-white mb-6">
+              Ready to Create Your Success Story?
+            </h3>
+            <p className="text-xl text-discovery-sage mb-8 max-w-2xl mx-auto">
+              Join these resort owners in maximizing your property's revenue potential with sustainable, profitable rental solutions.
+            </p>
+            <a 
+              href="/copies/quote-builder-v2"
+              className="inline-block bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-10 py-4 rounded-lg font-semibold text-xl transition-all duration-300 flex items-center gap-2 group mx-auto"
+            >
+              Start Your Project Today
+              <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section className="py-20 bg-discovery-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-6">
+              How It Works
+            </h2>
+            <p className="text-xl text-discovery-charcoal-light max-w-3xl mx-auto">
+              Our streamlined process makes resort rental development simple and profitable. 
+              From initial planning to revenue generation in just a few months.
+            </p>
+          </div>
+
+          <div className="relative">
+            <div className="hidden lg:block absolute top-16 left-0 right-0 h-0.5 bg-gradient-to-r from-discovery-gold via-discovery-sage to-discovery-gold"></div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Home className="w-8 h-8 text-discovery-charcoal" />
+                </div>
+                <h3 className="text-xl font-serif font-bold text-discovery-charcoal mb-4">
+                  Build Your Dream Resort
+                </h3>
+                <p className="text-discovery-charcoal-light">
+                  Design your ideal resort rental project with our modular solutions tailored to your property's unique characteristics.
+                </p>
+              </div>
+
+              <div className="text-center">
+                <div className="w-16 h-16 bg-discovery-sage rounded-full flex items-center justify-center mx-auto mb-6">
+                  <MessageCircle className="w-8 h-8 text-discovery-charcoal" />
+                </div>
+                <h3 className="text-xl font-serif font-bold text-discovery-charcoal mb-4">
+                  Discovery Call
+                </h3>
+                <p className="text-discovery-charcoal-light">
+                  Connect with our resort development experts to discuss your project goals, timeline, and revenue potential.
+                </p>
+              </div>
+
+              <div className="text-center">
+                <div className="w-16 h-16 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Building className="w-8 h-8 text-discovery-charcoal" />
+                </div>
+                <h3 className="text-xl font-serif font-bold text-discovery-charcoal mb-4">
+                  Procure & Manufacture
+                </h3>
+                <p className="text-discovery-charcoal-light">
+                  We handle all procurement and manufacturing processes, ensuring quality materials and efficient production timelines.
+                </p>
+              </div>
+
+              <div className="text-center">
+                <div className="w-16 h-16 bg-discovery-sage rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Zap className="w-8 h-8 text-discovery-charcoal" />
+                </div>
+                <h3 className="text-xl font-serif font-bold text-discovery-charcoal mb-4">
+                  Deliver & Install
+                </h3>
+                <p className="text-discovery-charcoal-light">
+                  Professional delivery and installation services ensure your resort is ready for guests and revenue generation.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Download Guide Section */}
+      <section className="py-20 bg-gradient-to-br from-discovery-sage/20 to-discovery-gold/20">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="bg-discovery-white rounded-2xl p-12 shadow-xl border-2 border-discovery-charcoal">
+            <div className="text-center">
+              <h2 className="text-3xl md:text-4xl font-serif font-bold text-discovery-charcoal mb-6">
+                Download Our Guide For Modular Homes For Resort Rental Properties:
+              </h2>
+              <h3 className="text-xl font-semibold text-discovery-charcoal mb-8">
+                What it includes:
+              </h3>
+              
+              <div className="space-y-6 mb-10">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center">
+                    <svg className="w-6 h-6 text-discovery-charcoal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                  </div>
+                  <span className="text-discovery-charcoal font-medium text-lg">Comprehensive resort rental solutions overview</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center">
+                    <svg className="w-6 h-6 text-discovery-charcoal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                  </div>
+                  <span className="text-discovery-charcoal font-medium text-lg">Property assessment and rental planning</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center">
+                    <svg className="w-6 h-6 text-discovery-charcoal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                    </svg>
+                  </div>
+                  <span className="text-discovery-charcoal font-medium text-lg">Funding and financing resources guide</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center">
+                    <svg className="w-6 h-6 text-discovery-charcoal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                    </svg>
+                  </div>
+                  <span className="text-discovery-charcoal font-medium text-lg">Project planning and timeline assistance</span>
+                </div>
+              </div>
+              
+              <button 
+                onClick={() => setShowDownloadForm(true)}
+                className="bg-discovery-sage hover:bg-discovery-sage-dark text-discovery-charcoal px-10 py-4 rounded-lg font-semibold text-xl transition-all duration-300 border-2 border-discovery-charcoal hover:border-discovery-gold"
+              >
+                Download Guide
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Download Guide Popup Form */}
+      {showDownloadForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-8 max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold text-discovery-charcoal">Download Your Guide</h3>
+              <button 
+                onClick={() => setShowDownloadForm(false)}
+                className="text-gray-400 hover:text-gray-600 text-2xl"
+              >
+                ×
+              </button>
+            </div>
+            
+            <form onSubmit={handleDownloadFormSubmit} className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                <input
+                  type="text"
+                  value={downloadFormData.name}
+                  onChange={(e) => setDownloadFormData(prev => ({ ...prev, name: e.target.value }))}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-discovery-gold focus:border-transparent"
+                  placeholder="Enter your full name"
+                  required
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                <input
+                  type="email"
+                  value={downloadFormData.email}
+                  onChange={(e) => setDownloadFormData(prev => ({ ...prev, email: e.target.value }))}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-discovery-gold focus:border-transparent"
+                  placeholder="Enter your email address"
+                  required
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
+                <input
+                  type="tel"
+                  value={downloadFormData.phone}
+                  onChange={(e) => setDownloadFormData(prev => ({ ...prev, phone: e.target.value }))}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-discovery-gold focus:border-transparent"
+                  placeholder="Enter your phone number"
+                  required
+                />
+              </div>
+              
+              <div className="flex gap-4 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowDownloadForm(false)}
+                  className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 px-6 py-3 bg-discovery-gold text-discovery-charcoal rounded-lg hover:bg-discovery-gold-dark transition-colors font-semibold flex items-center justify-center gap-2"
+                >
+                  <Download className="w-4 h-4" />
+                  Download Guide
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Custom Thank You Message */}
+      {showThankYou && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-discovery-white rounded-2xl p-8 max-w-md w-full shadow-2xl">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-6">
+                <div className="w-8 h-8 text-discovery-charcoal text-2xl">✓</div>
+              </div>
+              <h3 className="text-2xl font-serif font-bold text-discovery-charcoal mb-4">
+                Thank You!
+              </h3>
+              <p className="text-discovery-charcoal-light mb-6">
+                Your guide will be sent to your email shortly.
+              </p>
+              <button 
+                onClick={() => setShowThankYou(false)}
+                className="bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-8 py-3 rounded-lg font-semibold transition-colors"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  )
+} 

@@ -1,0 +1,858 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom favicon styling for better visibility */
+@layer base {
+  /* Make favicon more prominent */
+  link[rel="icon"] {
+    display: block !important;
+  }
+  
+  /* Ensure larger favicon is used */
+  link[rel="icon"][sizes="512x512"] {
+    display: block !important;
+  }
+  
+  link[rel="icon"][sizes="192x192"] {
+    display: block !important;
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans bg-discovery-white text-discovery-charcoal antialiased;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif font-semibold text-discovery-charcoal;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-neutral-100;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-discovery-gold rounded-lg;
+    transition: background-color 0.3s ease;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-discovery-gold-dark;
+  }
+
+  /* Page content wrapper - always visible by default */
+  .page-content {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  /* Ensure VapiWidget doesn't interfere with navigation */
+  vapi-widget {
+    position: fixed !important;
+    z-index: 40 !important;
+    pointer-events: auto !important;
+  }
+
+  /* Prevent any viewport changes from affecting navigation */
+  body {
+    overflow-x: hidden;
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  /* Ensure navigation stays in desktop mode unless explicitly mobile */
+  nav {
+    position: fixed !important;
+    z-index: 50 !important;
+  }
+
+  /* Ensure VapiWidget doesn't interfere with navigation layout */
+  vapi-widget {
+    position: fixed !important;
+    z-index: 40 !important;
+    pointer-events: auto !important;
+  }
+}
+
+@layer components {
+  /* Luxury Button Styles */
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-lg transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-offset-2 relative overflow-hidden;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  .btn-luxury {
+    @apply btn bg-gradient-to-r from-discovery-gold to-discovery-gold-dark text-discovery-charcoal;
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-luxury::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s ease;
+    z-index: -1;
+  }
+
+  .btn-luxury:hover::before {
+    left: 100%;
+  }
+
+  .btn-primary {
+    @apply btn-luxury;
+  }
+
+  .btn-secondary {
+    @apply btn bg-discovery-charcoal text-discovery-white hover:bg-discovery-charcoal-light focus:ring-discovery-charcoal;
+    box-shadow: 0 4px 20px rgba(45, 45, 45, 0.3);
+  }
+
+  .btn-outline {
+    @apply btn border-2 border-discovery-gold text-discovery-gold hover:bg-discovery-gold hover:text-discovery-charcoal focus:ring-discovery-gold;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-outline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.3));
+    transition: left 0.4s ease;
+    z-index: -1;
+  }
+
+  .btn-outline:hover::before {
+    left: 0;
+  }
+
+  /* New Green Accent Button Styles */
+  .btn-nature {
+    @apply btn bg-gradient-to-r from-discovery-sage to-discovery-forest text-discovery-white;
+    box-shadow: 0 4px 20px rgba(104, 167, 29, 0.3);
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-nature::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(181, 219, 42, 0.3), transparent);
+    transition: left 0.6s ease;
+    z-index: -1;
+  }
+
+  .btn-nature:hover::before {
+    left: 100%;
+  }
+
+  .btn-eco {
+    @apply btn bg-discovery-lime text-discovery-charcoal hover:bg-discovery-lime-dark focus:ring-discovery-sage;
+    box-shadow: 0 4px 20px rgba(181, 219, 42, 0.4);
+    font-weight: 600;
+  }
+
+  .btn-forest {
+    @apply btn border-2 border-discovery-forest text-discovery-forest hover:bg-discovery-forest hover:text-discovery-white focus:ring-discovery-forest;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-forest::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(62, 118, 69, 0.1), rgba(62, 118, 69, 0.3));
+    transition: left 0.4s ease;
+    z-index: -1;
+  }
+
+  .btn-forest:hover::before {
+    left: 0;
+  }
+
+  .btn-ghost {
+    @apply btn text-discovery-charcoal hover:bg-neutral-100 focus:ring-discovery-charcoal;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Luxury Form Styles */
+  .form-input {
+    @apply w-full px-4 py-3 text-base border border-neutral-300 rounded-lg focus:ring-2 focus:ring-discovery-gold focus:border-discovery-gold transition-all duration-300;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  .form-input:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.15);
+  }
+
+  .form-textarea {
+    @apply form-input resize-vertical min-h-[120px];
+  }
+
+  .form-select {
+    @apply form-input cursor-pointer;
+  }
+
+  /* Luxury Card Styles */
+  .card {
+    @apply bg-discovery-white rounded-xl border border-neutral-200 overflow-hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-luxury {
+    @apply card;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  .card-luxury:hover {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-body {
+    @apply p-6;
+  }
+
+  /* Hero Section Luxury */
+  .hero-gradient {
+    background: linear-gradient(135deg, rgba(45, 45, 45, 0.9) 0%, rgba(45, 45, 45, 0.7) 50%, rgba(212, 175, 55, 0.1) 100%);
+    backdrop-filter: blur(8px);
+  }
+
+  .hero-gradient-nature {
+    background: linear-gradient(135deg, rgba(45, 45, 45, 0.9) 0%, rgba(62, 118, 69, 0.8) 30%, rgba(104, 167, 29, 0.6) 70%, rgba(181, 219, 42, 0.1) 100%);
+    backdrop-filter: blur(8px);
+  }
+
+  .hero-gradient-eco {
+    background: linear-gradient(135deg, rgba(104, 167, 29, 0.9) 0%, rgba(62, 118, 69, 0.8) 50%, rgba(181, 219, 42, 0.2) 100%);
+    backdrop-filter: blur(8px);
+  }
+
+  /* Luxury Text Effects */
+  .text-reveal {
+    @apply inline-block overflow-hidden;
+    perspective: 1000px;
+  }
+
+  .text-reveal .char {
+    @apply inline-block;
+    transform-origin: bottom center;
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, #D4AF37, #B8941F, #F4E4A6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-nature {
+    background: linear-gradient(135deg, #68a71d, #3e7645, #b5db2a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-eco {
+    background: linear-gradient(135deg, #b5db2a, #68a71d, #9ac424);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-shimmer {
+    background: linear-gradient(90deg, #2D2D2D 25%, #D4AF37 50%, #2D2D2D 75%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 15s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  /* Luxury Glow Effects */
+  .glow-gold {
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+    transition: box-shadow 0.4s ease;
+  }
+
+  .glow-gold:hover {
+    box-shadow: 0 0 50px rgba(212, 175, 55, 0.6);
+  }
+
+  .glow-text {
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+  }
+
+  /* Advanced Glass Effects */
+  .glass {
+    backdrop-filter: blur(20px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+
+  .glass-dark {
+    backdrop-filter: blur(20px) saturate(180%);
+    background-color: rgba(45, 45, 45, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  .glass-nature {
+    backdrop-filter: blur(20px) saturate(180%);
+    background-color: rgba(104, 167, 29, 0.1);
+    border: 1px solid rgba(104, 167, 29, 0.2);
+    box-shadow: 0 8px 32px rgba(62, 118, 69, 0.15);
+  }
+
+  .glass-eco {
+    backdrop-filter: blur(20px) saturate(180%);
+    background-color: rgba(181, 219, 42, 0.05);
+    border: 1px solid rgba(181, 219, 42, 0.2);
+    box-shadow: 0 8px 32px rgba(181, 219, 42, 0.1);
+  }
+
+  /* Luxury Section Spacing */
+  .section {
+    @apply py-16 lg:py-24 relative;
+    overflow: hidden;
+  }
+
+  .section-luxury {
+    @apply section;
+    position: relative;
+  }
+
+  .section-luxury::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.02) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .section-sm {
+    @apply py-8 lg:py-12;
+  }
+
+  .section-lg {
+    @apply py-24 lg:py-32;
+  }
+
+  /* Enhanced Container */
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative;
+  }
+
+  /* Luxury Navigation */
+  .nav-link {
+    @apply text-discovery-charcoal hover:text-discovery-gold transition-all duration-300 font-medium relative;
+    position: relative;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #D4AF37, #B8941F);
+    transition: width 0.3s ease;
+  }
+
+  .nav-link-nature::after {
+    background: linear-gradient(90deg, #68a71d, #b5db2a, #3e7645);
+  }
+
+  .nav-link-eco::after {
+    background: linear-gradient(90deg, #b5db2a, #68a71d);
+  }
+
+  .nav-link:hover::after,
+  .nav-link.active::after {
+    width: 100%;
+  }
+
+  /* Luxury Dropdown */
+  .dropdown-luxury {
+    @apply glass rounded-2xl border border-white/20 overflow-hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(20px);
+    animation: dropdownSlide 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @keyframes dropdownSlide {
+    from {
+      opacity: 0;
+      transform: translateY(-10px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .dropdown-item {
+    @apply px-6 py-3 text-sm transition-all duration-300 relative overflow-hidden;
+  }
+
+  .dropdown-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+    transition: left 0.3s ease;
+  }
+
+  .dropdown-item:hover::before {
+    left: 100%;
+  }
+
+  /* Animation Classes - Default to visible */
+  .animate-section {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .animate-cards .card-item {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .scale-on-scroll {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .hero-element {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .nav-item {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .parallax-bg {
+    will-change: transform;
+  }
+
+  /* Floating Elements */
+  .float-animation {
+    animation: float 15s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-10px) rotate(1deg); }
+    66% { transform: translateY(5px) rotate(-1deg); }
+  }
+
+  /* Luxury Loading */
+  .loading-luxury {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .loading-luxury::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
+    animation: loading-shimmer 2s infinite;
+  }
+
+  @keyframes loading-shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+
+  /* Luxury Progress */
+  .progress-luxury {
+    @apply relative bg-neutral-200 rounded-full overflow-hidden;
+    height: 6px;
+  }
+
+  .progress-luxury::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #D4AF37, #B8941F, #F4E4A6);
+    border-radius: inherit;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Micro Interactions */
+  .micro-interaction {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .micro-interaction:hover {
+    transform: translateY(-2px);
+  }
+
+  .micro-interaction:active {
+    transform: translateY(0);
+  }
+
+  /* Quote Builder Luxury Progress */
+  .progress-step {
+    @apply relative flex items-center justify-center w-12 h-12 rounded-full border-2 transition-all duration-500;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .progress-step.active {
+    @apply bg-discovery-gold border-discovery-gold text-discovery-charcoal;
+    box-shadow: 0 8px 30px rgba(212, 175, 55, 0.4);
+    transform: scale(1.1);
+  }
+
+  .progress-step.completed {
+    @apply bg-discovery-gold border-discovery-gold text-discovery-charcoal;
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+  }
+
+  .progress-step.inactive {
+    @apply bg-discovery-white border-neutral-300 text-neutral-400;
+  }
+}
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .text-shadow-lg {
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+  }
+
+  .text-shadow-luxury {
+    text-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+  }
+
+  .bg-pattern {
+    background-image: radial-gradient(circle at 1px 1px, rgba(212, 175, 55, 0.15) 1px, transparent 0);
+    background-size: 20px 20px;
+  }
+
+  .bg-luxury-gradient {
+    background: linear-gradient(135deg, #D4AF37 0%, #B8941F 50%, #F4E4A6 100%);
+  }
+
+  .bg-luxury-radial {
+    background: radial-gradient(circle at center, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+  }
+
+  /* Cursor Luxury */
+  .cursor-luxury {
+    cursor: none;
+  }
+
+  /* Perspective for 3D effects */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .transform-3d {
+    transform-style: preserve-3d;
+  }
+
+  /* Clip paths for luxury shapes */
+  .clip-luxury {
+    clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
+  }
+
+  /* Advanced shadows */
+  .shadow-luxury {
+    box-shadow: 
+      0 4px 20px rgba(0, 0, 0, 0.1),
+      0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+
+  .shadow-luxury-lg {
+    box-shadow: 
+      0 20px 60px rgba(0, 0, 0, 0.15),
+      0 8px 30px rgba(0, 0, 0, 0.1),
+      0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+
+  .shadow-gold {
+    box-shadow: 
+      0 8px 30px rgba(212, 175, 55, 0.3),
+      0 4px 15px rgba(212, 175, 55, 0.2);
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+
+    .page-content {
+      opacity: 1;
+      transform: none;
+    }
+
+    .animate-section,
+    .card-item,
+    .scale-on-scroll,
+    .hero-element,
+    .nav-item {
+      opacity: 1;
+      transform: none;
+    }
+  }
+} 
+
+/* Text Animations */
+@keyframes textGlow {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.glow-text {
+  background: linear-gradient(
+    90deg,
+    rgba(212, 175, 55, 0.6) 0%,
+    rgba(212, 175, 55, 0.6) 40%,
+    rgba(0, 0, 0, 1) 45%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(0, 0, 0, 1) 55%,
+    rgba(212, 175, 55, 0.6) 60%,
+    rgba(212, 175, 55, 0.6) 100%
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textGlow 15s ease-in-out infinite;
+}
+
+.glow-text-yellow {
+  background: linear-gradient(
+    90deg,
+    rgba(212, 175, 55, 0.6) 0%,
+    rgba(212, 175, 55, 0.6) 40%,
+    rgba(0, 0, 0, 1) 45%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(0, 0, 0, 1) 55%,
+    rgba(212, 175, 55, 0.6) 60%,
+    rgba(212, 175, 55, 0.6) 100%
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textGlow 15s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+/* Glow Effects */
+.glow-green {
+  box-shadow: 0 0 30px rgba(104, 167, 29, 0.4);
+  transition: box-shadow 0.4s ease;
+}
+
+.glow-green:hover {
+  box-shadow: 0 0 50px rgba(104, 167, 29, 0.6);
+}
+
+.glow-lime {
+  box-shadow: 0 0 25px rgba(181, 219, 42, 0.5);
+  transition: box-shadow 0.4s ease;
+}
+
+.glow-lime:hover {
+  box-shadow: 0 0 40px rgba(181, 219, 42, 0.7);
+}
+
+.glow-forest {
+  box-shadow: 0 0 20px rgba(62, 118, 69, 0.4);
+  transition: box-shadow 0.4s ease;
+}
+
+.glow-forest:hover {
+  box-shadow: 0 0 35px rgba(62, 118, 69, 0.6);
+}
+
+/* Nature-themed Animations */
+@keyframes leafSway {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-8px) rotate(1deg); }
+  66% { transform: translateY(4px) rotate(-1deg); }
+}
+
+@keyframes growthPulse {
+  0%, 100% { 
+    transform: scale(1);
+    box-shadow: 0 0 20px rgba(104, 167, 29, 0.3);
+  }
+  50% { 
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(181, 219, 42, 0.5);
+  }
+}
+
+@keyframes natureShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes fadeIn {
+  0% { 
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% { 
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.leaf-sway {
+  animation: leafSway 15s ease-in-out infinite;
+}
+
+.growth-pulse {
+  animation: growthPulse 15s ease-in-out infinite;
+}
+
+.nature-shimmer {
+  background: linear-gradient(90deg, #3e7645 25%, #b5db2a 50%, #68a71d 75%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: natureShimmer 15s infinite;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Green accent utilities */
+.bg-nature-gradient {
+  background: linear-gradient(135deg, #68a71d 0%, #3e7645 50%, #b5db2a 100%);
+}
+
+.bg-eco-radial {
+  background: radial-gradient(circle at center, rgba(181, 219, 42, 0.1) 0%, transparent 70%);
+}
+
+.bg-forest-pattern {
+  background-image: radial-gradient(circle at 1px 1px, rgba(62, 118, 69, 0.15) 1px, transparent 0);
+  background-size: 20px 20px;
+}
+
+/* Video Background Optimizations */
+video {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000px;
+  perspective: 1000px;
+}
+
+/* Responsive Video Sizing */
+@media (max-width: 768px) {
+  video {
+    object-position: center center;
+  }
+}
+
+@media (orientation: portrait) {
+  video {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* Conveyor Belt Animation */
+@keyframes conveyor {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-conveyor {
+  animation: conveyor 30s linear infinite;
+}
+
+.animate-conveyor:hover {
+  animation-play-state: paused;
+}
+
+@media (orientation: landscape) {
+  video {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+} 

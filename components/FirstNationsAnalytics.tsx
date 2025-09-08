@@ -1,0 +1,208 @@
+'use client'
+
+import { useEffect } from 'react'
+import { usePathname } from 'next/navigation'
+
+interface AnalyticsEvent {
+  event: string
+  category: string
+  action: string
+  label?: string
+  value?: number
+  customDimensions?: Record<string, string>
+}
+
+export function FirstNationsAnalytics() {
+  const pathname = usePathname()
+
+  // Track page views
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Google Analytics 4
+      if (window.gtag) {
+        window.gtag('event', 'page_view', {
+          page_title: 'First Nations Landing Page',
+          page_location: window.location.href,
+          custom_map: {
+            'custom_parameter_1': 'first_nations_landing',
+            'custom_parameter_2': 'community_housing'
+          }
+        })
+      }
+
+      // Facebook Pixel
+      if (window.fbq) {
+        window.fbq('track', 'PageView', {
+          content_name: 'First Nations Landing Page',
+          content_category: 'Community Housing'
+        })
+      }
+
+      // LinkedIn Insight Tag
+      if (window.lintrk) {
+        window.lintrk('track', {
+          conversion_id: 'first_nations_landing_page_view'
+        })
+      }
+    }
+  }, [pathname])
+
+  // Track form submissions
+  const trackFormSubmission = (formData: any) => {
+    if (typeof window !== 'undefined') {
+      // Google Analytics 4
+      if (window.gtag) {
+        window.gtag('event', 'form_submit', {
+          event_category: 'First Nations Landing Page',
+          event_label: 'Lead Capture Form',
+          value: 1,
+          custom_map: {
+            'custom_parameter_1': 'first_nations_landing',
+            'custom_parameter_2': formData.community || 'unknown',
+            'custom_parameter_3': formData.projectType || 'unknown'
+          }
+        })
+      }
+
+      // Facebook Pixel
+      if (window.fbq) {
+        window.fbq('track', 'Lead', {
+          content_name: 'First Nations Housing Guide',
+          content_category: 'Community Housing',
+          value: 1.00,
+          currency: 'CAD'
+        })
+      }
+
+      // LinkedIn Insight Tag
+      if (window.lintrk) {
+        window.lintrk('track', {
+          conversion_id: 'first_nations_form_submission'
+        })
+      }
+    }
+  }
+
+  // Track button clicks
+  const trackButtonClick = (buttonName: string, section: string) => {
+    if (typeof window !== 'undefined') {
+      // Google Analytics 4
+      if (window.gtag) {
+        window.gtag('event', 'click', {
+          event_category: 'First Nations Landing Page',
+          event_label: `${section} - ${buttonName}`,
+          value: 1
+        })
+      }
+
+      // Facebook Pixel
+      if (window.fbq) {
+        window.fbq('track', 'ClickButton', {
+          content_name: buttonName,
+          content_category: section
+        })
+      }
+    }
+  }
+
+  // Track scroll depth
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      let maxScroll = 0
+      let scrollTracking = false
+
+      const trackScroll = () => {
+        const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100)
+        
+        if (scrollPercent > maxScroll) {
+          maxScroll = scrollPercent
+          
+          // Track scroll milestones
+          if (scrollPercent >= 25 && !scrollTracking) {
+            trackScrollDepth(25)
+            scrollTracking = true
+          } else if (scrollPercent >= 50) {
+            trackScrollDepth(50)
+          } else if (scrollPercent >= 75) {
+            trackScrollDepth(75)
+          } else if (scrollPercent >= 90) {
+            trackScrollDepth(90)
+          }
+        }
+      }
+
+      const trackScrollDepth = (depth: number) => {
+        if (window.gtag) {
+          window.gtag('event', 'scroll', {
+            event_category: 'First Nations Landing Page',
+            event_label: `Scroll Depth - ${depth}%`,
+            value: depth
+          })
+        }
+      }
+
+      window.addEventListener('scroll', trackScroll)
+      return () => window.removeEventListener('scroll', trackScroll)
+    }
+  }, [])
+
+  // Track time on page
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const startTime = Date.now()
+      
+      const trackTimeOnPage = () => {
+        const timeSpent = Math.round((Date.now() - startTime) / 1000)
+        
+        if (window.gtag) {
+          window.gtag('event', 'timing_complete', {
+            name: 'First Nations Landing Page',
+            value: timeSpent,
+            event_category: 'Engagement'
+          })
+        }
+      }
+
+      // Track at 30 seconds, 1 minute, 2 minutes, 5 minutes
+      const intervals = [30, 60, 120, 300]
+      
+      intervals.forEach(seconds => {
+        setTimeout(() => {
+          if (window.gtag) {
+            window.gtag('event', 'timing_complete', {
+              name: `First Nations Landing Page - ${seconds}s`,
+              value: seconds,
+              event_category: 'Engagement'
+            })
+          }
+        }, seconds * 1000)
+      })
+
+      // Track when user leaves page
+      window.addEventListener('beforeunload', trackTimeOnPage)
+      return () => window.removeEventListener('beforeunload', trackTimeOnPage)
+    }
+  }, [])
+
+  // Expose tracking functions globally for use in other components
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.firstNationsAnalytics = {
+        trackFormSubmission,
+        trackButtonClick
+      }
+    }
+  }, [])
+
+  return null // This component doesn't render anything
+}
+
+// TypeScript declarations for component-specific functionality
+declare global {
+  interface Window {
+    firstNationsAnalytics?: {
+      trackFormSubmission: (formData: any) => void
+      trackButtonClick: (buttonName: string, section: string) => void
+    }
+  }
+} 
