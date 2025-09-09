@@ -76,7 +76,7 @@ export default function ResortOwnersLandingPage() {
   const handleDownloadFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const response = await fetch('https://services.leadconnectorhq.com/hooks/02vJIYEzMsesDcYai65O/webhook-trigger/HbWk0Go6KNcxvahZph0m', {
+      const response = await fetch('https://services.leadconnectorhq.com/hooks/02vJIYEzMsesDcYai65O/webhook-trigger/hmtKgpFaRSDYz2QGDxZz', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ export default function ResortOwnersLandingPage() {
           email: downloadFormData.email,
           phone: downloadFormData.phone,
           formType: 'download-guide',
-          source: 'land-owners-landing-page',
+          source: 'resort-owners-landing-page',
           timestamp: new Date().toISOString()
         }),
       })
