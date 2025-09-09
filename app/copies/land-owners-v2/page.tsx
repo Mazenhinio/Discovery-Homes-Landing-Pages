@@ -186,28 +186,6 @@ export default function LandOwnersLandingPage() {
       </section>
 
 
-      {/* Additional CTA Section */}
-      <section className="py-16 bg-discovery-white">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <div className="bg-gradient-to-br from-discovery-gold/10 to-discovery-sage/10 rounded-2xl p-12">
-            <h3 className="text-3xl md:text-4xl font-serif font-bold text-discovery-charcoal mb-6">
-              Ready to Start Your Project?
-            </h3>
-            <p className="text-xl text-discovery-charcoal-light mb-8 max-w-2xl mx-auto">
-              Get an instant quote for your land development project. 
-              Our team is ready to help you unlock your property's potential.
-            </p>
-            <a 
-              href="/copies/quote-builder-v2"
-              className="inline-block bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-12 py-4 rounded-lg font-semibold text-xl transition-all duration-300 flex items-center gap-2 group mx-auto"
-            >
-              Get Instant Quote
-              <ArrowRight className="group-hover:translate-x-1 transition-transform" />
-            </a>
-          </div>
-        </div>
-      </section>
-
       {/* Land Development Benefits */}
       <section className="py-20 bg-discovery-white">
         <div className="max-w-7xl mx-auto px-4">
@@ -328,7 +306,7 @@ export default function LandOwnersLandingPage() {
       </section>
 
       {/* Our Homes Section */}
-      <section className="py-20 bg-discovery-white">
+      <section id="our-homes" className="py-20 bg-discovery-white">
         <div className="max-w-7xl mx-auto px-4">
           {/* Section Header */}
           <div className="text-center mb-16">
@@ -635,7 +613,7 @@ export default function LandOwnersLandingPage() {
       </section>
 
       {/* Success Stories */}
-      <section className="py-20 bg-discovery-charcoal">
+      <section id="success-stories" className="py-20 bg-discovery-charcoal">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-white mb-6">
@@ -808,7 +786,7 @@ export default function LandOwnersLandingPage() {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-20 bg-discovery-white">
+      <section id="how-it-works" className="py-20 bg-discovery-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-6">

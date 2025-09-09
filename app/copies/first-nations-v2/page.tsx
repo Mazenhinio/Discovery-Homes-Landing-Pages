@@ -324,7 +324,7 @@ export default function FirstNationsLandingPage() {
       </section>
 
       {/* Our Homes Section */}
-      <section className="py-20 bg-discovery-white">
+      <section id="our-homes" className="py-20 bg-discovery-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-6">
@@ -599,7 +599,7 @@ export default function FirstNationsLandingPage() {
       </section>
 
       {/* Success Stories */}
-      <section className="py-20 bg-discovery-charcoal">
+      <section id="success-stories" className="py-20 bg-discovery-charcoal">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-white mb-6">
@@ -770,7 +770,7 @@ export default function FirstNationsLandingPage() {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-20 bg-discovery-white">
+      <section id="how-it-works" className="py-20 bg-discovery-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-6">

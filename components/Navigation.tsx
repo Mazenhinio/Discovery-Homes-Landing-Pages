@@ -4,6 +4,23 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { Menu, X, ChevronDown } from 'lucide-react'
 
+// Smooth scroll function
+const smoothScrollTo = (elementId: string) => {
+  console.log('Attempting to scroll to:', elementId);
+  const element = document.getElementById(elementId);
+  console.log('Element found:', element);
+  if (element) {
+    const offsetTop = element.offsetTop - 80; // Account for fixed header
+    console.log('Scrolling to offset:', offsetTop);
+    window.scrollTo({
+      top: offsetTop,
+      behavior: 'smooth'
+    });
+  } else {
+    console.log('Element not found with ID:', elementId);
+  }
+};
+
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const [isBuildsDropdownOpen, setIsBuildsDropdownOpen] = useState(false)
@@ -143,29 +160,32 @@ export function Navigation() {
               )}
             </div>
 
-            <Link href="/quote-builder" className="nav-link nav-link-eco nav-item">
+            <Link href="/copies/quote-builder-v2" className="nav-link nav-link-eco nav-item">
               <span className="font-semibold text-discovery-sage hover:text-discovery-lime transition-colors">Get Quote</span>
             </Link>
-            <Link href="/success-stories" className="nav-link nav-item">
+            <button 
+              onClick={() => smoothScrollTo('our-homes')}
+              className="nav-link nav-item nav-link-smooth"
+            >
+              <span className="font-medium">Our Homes</span>
+            </button>
+            <button 
+              onClick={() => smoothScrollTo('success-stories')}
+              className="nav-link nav-item nav-link-smooth"
+            >
               <span className="font-medium">Success Stories</span>
-            </Link>
-            <Link href="/meet-the-owners" className="nav-link nav-item">
-              <span className="font-medium">Meet the Owners</span>
-            </Link>
-            <Link href="/partnerships" className="nav-link nav-item">
-              <span className="font-medium">Partnerships</span>
-            </Link>
-            <Link href="/webinars" className="nav-link nav-item">
-              <span className="font-medium">Webinars</span>
-            </Link>
-            <Link href="/blog" className="nav-link nav-item">
-              <span className="font-medium">Blog</span>
-            </Link>
+            </button>
+            <button 
+              onClick={() => smoothScrollTo('how-it-works')}
+              className="nav-link nav-item nav-link-smooth"
+            >
+              <span className="font-medium">How It Works</span>
+            </button>
             <Link href="/contact" className="nav-link nav-item">
               <span className="font-medium">Contact</span>
             </Link>
             <Link 
-              href="/quote-builder" 
+              href="/copies/quote-builder-v2" 
               className="btn-nature nav-item shadow-sage micro-interaction glow-green"
             >
               Start Your Quote
@@ -260,47 +280,39 @@ export function Navigation() {
               </div>
 
               <Link 
-                href="/quote-builder" 
+                href="/copies/quote-builder-v2" 
                 className="block px-4 py-3 text-discovery-white hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/10 font-medium"
                 onClick={() => setIsOpen(false)}
               >
                 Get Quote
               </Link>
-              <Link 
-                href="/success-stories" 
-                className="block px-4 py-3 text-discovery-white hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/10"
-                onClick={() => setIsOpen(false)}
+              <button 
+                onClick={() => {
+                  smoothScrollTo('our-homes');
+                  setIsOpen(false);
+                }}
+                className="block w-full text-left px-4 py-3 text-discovery-white hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/10 nav-link-smooth"
+              >
+                Our Homes
+              </button>
+              <button 
+                onClick={() => {
+                  smoothScrollTo('success-stories');
+                  setIsOpen(false);
+                }}
+                className="block w-full text-left px-4 py-3 text-discovery-white hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/10 nav-link-smooth"
               >
                 Success Stories
-              </Link>
-              <Link 
-                href="/webinars" 
-                className="block px-4 py-3 text-discovery-white hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/10"
-                onClick={() => setIsOpen(false)}
+              </button>
+              <button 
+                onClick={() => {
+                  smoothScrollTo('how-it-works');
+                  setIsOpen(false);
+                }}
+                className="block w-full text-left px-4 py-3 text-discovery-white hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/10 nav-link-smooth"
               >
-                Webinars
-              </Link>
-              <Link 
-                href="/meet-the-owners" 
-                className="block px-4 py-3 text-discovery-white hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/10"
-                onClick={() => setIsOpen(false)}
-              >
-                Meet the Owners
-              </Link>
-              <Link 
-                href="/partnerships" 
-                className="block px-4 py-3 text-discovery-white hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/10"
-                onClick={() => setIsOpen(false)}
-              >
-                Partnerships
-              </Link>
-              <Link 
-                href="/blog" 
-                className="block px-4 py-3 text-discovery-white hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/10"
-                onClick={() => setIsOpen(false)}
-              >
-                Blog
-              </Link>
+                How It Works
+              </button>
               <Link 
                 href="/contact" 
                 className="block px-4 py-3 text-discovery-white hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/10"
@@ -311,7 +323,7 @@ export function Navigation() {
               
               <div className="pt-4 border-t border-white/20">
                 <Link 
-                  href="/quote-builder" 
+                  href="/copies/quote-builder-v2" 
                   className="block mx-2 px-6 py-3 bg-gradient-to-r from-discovery-sage to-discovery-forest text-discovery-white rounded-lg font-semibold text-center shadow-sage micro-interaction glow-green"
                   onClick={() => setIsOpen(false)}
                 >
