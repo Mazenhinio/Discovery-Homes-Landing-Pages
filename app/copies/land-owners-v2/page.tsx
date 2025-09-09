@@ -275,30 +275,30 @@ export default function LandOwnersLandingPage() {
             </div>
 
             {/* Countdown Timer */}
-            <div className="flex justify-center gap-6">
-              <div className="bg-discovery-charcoal-light rounded-xl p-6 min-w-[120px]">
-                <div className="text-4xl font-bold text-discovery-white mb-2">
+            <div className="flex justify-center gap-2 sm:gap-4 md:gap-6">
+              <div className="bg-discovery-charcoal-light rounded-xl p-3 sm:p-4 md:p-6 min-w-[80px] sm:min-w-[100px] md:min-w-[120px] flex flex-col items-center justify-center">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-discovery-white mb-1 sm:mb-2 leading-tight">
                   {timeLeft.days.toString().padStart(2, '0')}
                 </div>
-                <div className="text-sm text-discovery-white">Days</div>
+                <div className="text-xs sm:text-sm text-discovery-white text-center">Days</div>
               </div>
-              <div className="bg-discovery-charcoal-light rounded-xl p-6 min-w-[120px]">
-                <div className="text-4xl font-bold text-discovery-white mb-2">
+              <div className="bg-discovery-charcoal-light rounded-xl p-3 sm:p-4 md:p-6 min-w-[80px] sm:min-w-[100px] md:min-w-[120px] flex flex-col items-center justify-center">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-discovery-white mb-1 sm:mb-2 leading-tight">
                   {timeLeft.hours.toString().padStart(2, '0')}
                 </div>
-                <div className="text-sm text-discovery-white">Hours</div>
+                <div className="text-xs sm:text-sm text-discovery-white text-center">Hours</div>
               </div>
-              <div className="bg-discovery-charcoal-light rounded-xl p-6 min-w-[120px]">
-                <div className="text-4xl font-bold text-discovery-white mb-2">
+              <div className="bg-discovery-charcoal-light rounded-xl p-3 sm:p-4 md:p-6 min-w-[80px] sm:min-w-[100px] md:min-w-[120px] flex flex-col items-center justify-center">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-discovery-white mb-1 sm:mb-2 leading-tight">
                   {timeLeft.minutes.toString().padStart(2, '0')}
                 </div>
-                <div className="text-sm text-discovery-white">Minutes</div>
+                <div className="text-xs sm:text-sm text-discovery-white text-center">Minutes</div>
               </div>
-              <div className="bg-discovery-charcoal-light rounded-xl p-6 min-w-[120px]">
-                <div className="text-4xl font-bold text-discovery-white mb-2">
+              <div className="bg-discovery-charcoal-light rounded-xl p-3 sm:p-4 md:p-6 min-w-[80px] sm:min-w-[100px] md:min-w-[120px] flex flex-col items-center justify-center">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-discovery-white mb-1 sm:mb-2 leading-tight">
                   {timeLeft.seconds.toString().padStart(2, '0')}
                 </div>
-                <div className="text-sm text-discovery-white">Seconds</div>
+                <div className="text-xs sm:text-sm text-discovery-white text-center">Seconds</div>
               </div>
             </div>
           </div>
@@ -880,8 +880,8 @@ export default function LandOwnersLandingPage() {
       {/* Start Your Land Development Journey */}
       <section className="py-20 bg-gradient-to-br from-discovery-sage/20 to-discovery-gold/20">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
+          <div className="grid lg:grid-cols-2 gap-12 items-stretch">
+            <div className="flex flex-col justify-between">
               <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-6">
                 Start Your Land Development Journey
               </h2>
@@ -920,32 +920,14 @@ export default function LandOwnersLandingPage() {
             </div>
 
             {/* Right Column - Product Image and Features */}
-            <div className="space-y-8">
-              <div className="bg-gradient-to-br from-discovery-sage/20 to-discovery-gold/20 rounded-2xl p-8 border border-discovery-gold/30">
-                <div className="relative h-80 rounded-xl overflow-hidden shadow-lg">
-                  <Image
-                    src="/assets/images/new-content/Pine 2- Spruce/XF pien 1 and 2 charcoal.webp"
-                    alt="Spruce Model - The Versatile One"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="text-center mt-6">
-                  <h3 className="text-xl font-serif font-bold text-discovery-charcoal mb-2">
-                    Spruce Model - The Versatile One
-                </h3>
-                <p className="text-discovery-charcoal-light">
-                    504 sq/ft main floor with 2 bedrooms plus loft space
-                </p>
-                </div>
-              </div>
+            <div className="h-full">
 
               {/* Key Benefits */}
-              <div className="bg-discovery-white rounded-2xl p-8 shadow-xl">
+              <div className="bg-discovery-white rounded-2xl p-8 shadow-xl flex flex-col h-full">
                 <h3 className="text-2xl font-serif font-bold text-discovery-charcoal mb-6 text-center">
                   Key Benefits
                 </h3>
-                <div className="space-y-4">
+                <div className="space-y-4 flex-1">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 bg-discovery-gold rounded-full flex items-center justify-center">
                       <TrendingUp className="w-4 h-4 text-discovery-charcoal" />
