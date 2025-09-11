@@ -12,10 +12,9 @@ interface FormData {
   phone: string
   
   // Step 2: Property Details
-  location: string
   landStatus: string
-  // Property proximity (required Yes/No)
-  isWithin150kmOfLloydminster: string
+  // Property postal code
+  postalCode: string
   
   // Step 3: Intended Use
   intendedUse: string
@@ -27,12 +26,12 @@ interface FormData {
   // Step 5: Package Selection
   packageType: string
   
-  // Step 5: Specifications
+  // Step 6: Specifications
   bedrooms: string
   bathrooms: string
   sqft: string
   
-  // Step 6: Add-ons
+  // Step 7: Add-ons
   addons: string[]
 
   // Finishes & Options
@@ -51,22 +50,31 @@ interface FormData {
   wallsFinish: string
 
   
-  // Step 7: Budget
-  budget: string
-  
   // Step 8: Timeline
   timeline: string
   
-  // Step 9: Indigenous Community
-  isIndigenous: string
-  
-  // Step 10: Number of Homes
+  // Step 9: Number of Homes
   numberOfHomes: string
   customNumberOfHomes: string
   
-  // Step 11: Financing
+  // Step 10: Financing
   financing: string
   needsFinancingHelp: string
+}
+
+// Helper function to determine if postal code is within 150km of Lloydminster
+function isWithin150kmOfLloydminster(postalCode: string): boolean {
+  if (!postalCode) return false
+  
+  // Clean postal code (remove spaces, convert to uppercase)
+  const cleanPostalCode = postalCode.replace(/\s/g, '').toUpperCase()
+  
+  // Lloydminster postal codes start with T9V (Alberta side) and S9V (Saskatchewan side)
+  // We'll consider both as within range since Lloydminster spans both provinces
+  const lloydminsterPrefixes = ['T9V', 'S9V']
+  
+  // Check if postal code starts with Lloydminster prefixes
+  return lloydminsterPrefixes.some(prefix => cleanPostalCode.startsWith(prefix))
 }
 
 export default function QuoteBuilderPage() {
@@ -79,8 +87,8 @@ export default function QuoteBuilderPage() {
   }, [])
   const [formData, setFormData] = useState<FormData>({
     name: '', email: '', phone: '',
-    location: '', landStatus: '',
-    isWithin150kmOfLloydminster: '',
+    landStatus: '',
+    postalCode: '',
     intendedUse: '',
     intendedUseOther: '',
     model: '',
@@ -102,9 +110,7 @@ export default function QuoteBuilderPage() {
     wallsFinish: 'drywall',
 
 
-    budget: '',
     timeline: '',
-    isIndigenous: '',
     numberOfHomes: '',
     customNumberOfHomes: '',
     financing: '',
@@ -117,7 +123,7 @@ export default function QuoteBuilderPage() {
   const [submitError, setSubmitError] = useState<string | null>(null)
 
 
-  const totalSteps = 13
+  const totalSteps = 11
 
   const steps = [
     { number: 1, title: 'Contact Info', icon: Users },
@@ -128,11 +134,9 @@ export default function QuoteBuilderPage() {
     { number: 6, title: 'Specifications', icon: Palette },
     { number: 7, title: 'Finishes & Options', icon: Palette },
     { number: 8, title: 'Add-ons', icon: Zap },
-    { number: 9, title: 'Budget Range', icon: DollarSign },
-    { number: 10, title: 'Timeline', icon: Calendar },
-    { number: 11, title: 'Indigenous Community', icon: Heart },
-    { number: 12, title: 'Number of Homes', icon: Home },
-    { number: 13, title: 'Financing', icon: CreditCard }
+    { number: 9, title: 'Timeline', icon: Calendar },
+    { number: 10, title: 'Number of Homes', icon: Home },
+    { number: 11, title: 'Financing', icon: CreditCard }
   ]
 
   const formatCurrency = (n: number) => n.toLocaleString()
@@ -358,7 +362,7 @@ export default function QuoteBuilderPage() {
           break
         case 'deck':
           // Deck pricing based on 150km range
-          if (formData.isWithin150kmOfLloydminster === 'yes') {
+          if (isWithin150kmOfLloydminster(formData.postalCode)) {
             addonCost += 8000
           } else {
             addonCost += 12000 // Higher cost for outside 150km range
@@ -366,7 +370,7 @@ export default function QuoteBuilderPage() {
           break
         case 'appliances':
           // Appliances pricing based on 150km range (similar to deck)
-          if (formData.isWithin150kmOfLloydminster === 'yes') {
+          if (isWithin150kmOfLloydminster(formData.postalCode)) {
             addonCost += 12000
           } else {
             addonCost += 15000 // Higher cost for outside 150km range
@@ -430,9 +434,8 @@ export default function QuoteBuilderPage() {
         return null
       }
       case 2: {
-        if (!formData.location) return 'Please select your province.'
         if (!formData.landStatus) return 'Please select your land status.'
-        if (!formData.isWithin150kmOfLloydminster) return 'Please indicate whether your property is within 150 km of Lloydminster.'
+        if (!formData.postalCode) return 'Please enter your postal code.'
         return null
       }
       case 3: {
@@ -459,26 +462,26 @@ export default function QuoteBuilderPage() {
         }
         return null
       }
-      case 9: {
-        if (!formData.budget) return 'Please choose your budget range.'
+      case 7: {
+        // No validation needed for finishes & options
         return null
       }
-      case 10: {
+      case 8: {
+        // No validation needed for add-ons
+        return null
+      }
+      case 9: {
         if (!formData.timeline) return 'Please select a project timeline.'
         return null
       }
-      case 11: {
-        if (!formData.isIndigenous) return 'Please indicate Indigenous community status.'
-        return null
-      }
-      case 12: {
+      case 10: {
         if (!formData.numberOfHomes) return 'Please select the number of homes.'
         if (formData.numberOfHomes === '4+' && (!formData.customNumberOfHomes || parseInt(formData.customNumberOfHomes) < 4)) {
           return 'Please enter a valid number of homes (4 or more).'
         }
         return null
       }
-      case 13: {
+      case 11: {
         if (!formData.financing) return 'Please select a financing option.'
         if (!formData.needsFinancingHelp) return 'Please indicate whether you need help with financing.'
         return null
@@ -864,26 +867,22 @@ export default function QuoteBuilderPage() {
             </div>
           )}
 
-          {/* Step 2: Property Details */
-          }
+          {/* Step 2: Property Details */}
           {currentStep === 2 && (
             <div>
               <h2 className="text-2xl font-bold text-[#2D2D2D] mb-6">Property Details</h2>
               <div className="space-y-6">
+                {/* Postal Code (Required) */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Property Location *</label>
-                  <select
-                    value={formData.location}
-                    onChange={(e) => updateFormData('location', e.target.value)}
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Postal Code *</label>
+                  <input
+                    type="text"
+                    value={formData.postalCode}
+                    onChange={(e) => updateFormData('postalCode', e.target.value)}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                    placeholder="Enter your postal code (e.g., T9V 0A1)"
                     required
-                  >
-                    <option value="">Select your province</option>
-                    <option value="alberta">Alberta</option>
-                    <option value="saskatchewan">Saskatchewan</option>
-                    <option value="british-columbia">British Columbia</option>
-                    <option value="other">Other</option>
-                  </select>
+                  />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-4">Land Status *</label>
@@ -901,28 +900,6 @@ export default function QuoteBuilderPage() {
                           value={option.value}
                           checked={formData.landStatus === option.value}
                           onChange={(e) => updateFormData('landStatus', e.target.value)}
-                          className="mr-3"
-                        />
-                        <span>{option.label}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-                {/* Within 150 km of Lloydminster (Required) */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-4">Is your property within 150 km of Lloydminster? *</label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {[
-                      { value: 'yes', label: 'Yes' },
-                      { value: 'no', label: 'No' }
-                    ].map((option) => (
-                      <label key={option.value} className="flex items-center p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50">
-                        <input
-                          type="radio"
-                          name="isWithin150kmOfLloydminster"
-                          value={option.value}
-                          checked={formData.isWithin150kmOfLloydminster === option.value}
-                          onChange={(e) => updateFormData('isWithin150kmOfLloydminster', e.target.value)}
                           className="mr-3"
                         />
                         <span>{option.label}</span>
@@ -976,8 +953,8 @@ export default function QuoteBuilderPage() {
             </div>
           )}
 
-                     {/* Step 4: Model Selection */}
-           {currentStep === 4 && (
+          {/* Step 4: Model Selection */}
+          {currentStep === 4 && (
              <div>
                <h2 className="text-2xl font-bold text-[#2D2D2D] mb-6">Choose Your Model *</h2>
                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1152,7 +1129,7 @@ export default function QuoteBuilderPage() {
                        />
                        <h3 className="text-lg font-bold text-[#2D2D2D] mb-1">{pkg.title}</h3>
                        {isComingSoon && (
-                         <span className="inline-block mb-2 px-2 py-0.5 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800 border border-yellow-200">Coming Soon</span>
+                         <span className="inline-block mb-2 px-2 py-0.5 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800 border border-yellow-200">Custom Quote</span>
                        )}
                        <p className="text-sm text-gray-600">{pkg.description}</p>
                      </label>
@@ -1565,8 +1542,8 @@ export default function QuoteBuilderPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                  {[
                    { value: 'solar', label: 'Solar Panels', description: 'Reduce energy costs with solar power' },
-                   { value: 'deck', label: 'Deck (Outdoor Living Space) (within the range of 150km)', description: 'Extend your living area outdoors' },
-                   { value: 'appliances', label: 'Upgraded Appliances (within the range of 150km)', description: 'High-end kitchen and laundry appliances' },
+                   { value: 'deck', label: 'Deck (Outdoor Living Space)', description: 'Extend your living area outdoors' },
+                   { value: 'appliances', label: 'Upgraded Appliances', description: 'High-end kitchen and laundry appliances' },
                    { value: 'smart-home', label: 'Smart Home Package', description: 'Automated lighting, security, and climate control' },
                    { value: 'off-grid', label: 'Off-Grid Package', description: 'Self-sufficient systems', comingSoon: true },
                    { value: 'fireplace', label: 'Fireplace (Gas / Electric / Wood)', description: 'Select type during consultation' },
@@ -1589,16 +1566,16 @@ export default function QuoteBuilderPage() {
                       <div className="flex-1">
                        <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center">
-                            <span className="font-semibold text-[#2D2D2D]">{addon.label}</span>
+                            <span className="font-semibold text-[#2D2D2D] text-sm">{addon.label}</span>
                             {addon.comingSoon && (
                               <span className="ml-2 inline-block px-2 py-0.5 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800 border border-yellow-200">Coming Soon</span>
                             )}
                           </div>
-                          <span className="font-bold text-[#D4AF37] text-lg">
+                          <span className="font-bold text-[#D4AF37] text-sm">
                             {(() => { const r = addOnRanges[addon.value]; return r ? `+$${formatCurrency(r.min)} - $${formatCurrency(r.max)}` : '' })()}
                           </span>
                        </div>
-                       <p className="text-sm text-gray-600 ml-11">{addon.description}</p>
+                       <p className="text-xs text-gray-600 ml-11">{addon.description}</p>
                      </div>
                    </label>
                  ))}
@@ -1633,39 +1610,10 @@ export default function QuoteBuilderPage() {
              </div>
            )}
 
-           {/* Step 9: Budget */}
+           {/* Step 9: Timeline */}
           {currentStep === 9 && (
-            <div>
-              <h2 className="text-2xl font-bold text-[#2D2D2D] mb-6">Budget Range</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {[
-                  '$99,000 - $125,000',
-                  '$125,000 - $200,000',
-                  '$200,000 - $300,000',
-                  '$300,000+'
-                ].map((budget) => (
-                  <label key={budget} className={`text-center p-4 border rounded-lg cursor-pointer ${
-                    formData.budget === budget ? 'border-[#D4AF37] bg-[#D4AF37]/10' : 'border-gray-300'
-                  }`}>
-                    <input
-                      type="radio"
-                      name="budget"
-                      value={budget}
-                      checked={formData.budget === budget}
-                      onChange={(e) => updateFormData('budget', e.target.value)}
-                      className="sr-only"
-                    />
-                    <span className="font-semibold">{budget}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-          )}
-
-                     {/* Step 10: Timeline */}
-           {currentStep === 10 && (
              <div>
-               <h2 className="text-2xl font-bold text-[#2D2D2D] mb-6">Project Timeline</h2>
+               <h2 className="text-2xl font-bold text-[#2D2D2D] mb-6">When do you want to receive your modular?</h2>
                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                  {[
                    'ASAP (within 3 months)',
@@ -1691,33 +1639,8 @@ export default function QuoteBuilderPage() {
              </div>
            )}
 
-            {/* Step 11: Indigenous Community */}
-          {currentStep === 11 && (
-            <div>
-              <h2 className="text-2xl font-bold text-[#2D2D2D] mb-6">Indigenous Community</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {[
-                  { value: 'yes', label: 'Yes, I am a member of a First Nations or Indigenous community' },
-                  { value: 'no', label: 'No, I am not a member of a First Nations or Indigenous community' }
-                ].map((option) => (
-                  <label key={option.value} className="flex items-center p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50">
-                    <input
-                      type="radio"
-                      name="isIndigenous"
-                      value={option.value}
-                      checked={formData.isIndigenous === option.value}
-                      onChange={(e) => updateFormData('isIndigenous', e.target.value)}
-                      className="mr-3"
-                    />
-                    <span>{option.label}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-          )}
-
-           {/* Step 12: Number of Homes */}
-          {currentStep === 12 && (
+          {/* Step 10: Number of Homes */}
+          {currentStep === 10 && (
             <div>
               <h2 className="text-2xl font-bold text-[#2D2D2D] mb-6">Number of Homes</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1770,8 +1693,8 @@ export default function QuoteBuilderPage() {
             </div>
           )}
 
-                     {/* Step 13: Financing */}
-           {currentStep === 13 && (
+          {/* Step 11: Financing */}
+          {currentStep === 11 && (
              <div>
                <h2 className="text-2xl font-bold text-[#2D2D2D] mb-6">Financing</h2>
                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
