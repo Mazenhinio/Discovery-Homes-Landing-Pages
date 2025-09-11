@@ -273,7 +273,7 @@ export default function ResortOwnersLandingPage() {
               <div className="text-lg font-semibold text-discovery-charcoal-light mb-2">FALL SALE</div>
               <div className="text-6xl md:text-7xl font-bold text-discovery-charcoal mb-2">SAVE 5%</div>
               <div className="text-4xl md:text-5xl font-bold text-discovery-charcoal mb-2">UP TO</div>
-              <div className="text-8xl md:text-9xl font-bold text-discovery-gold mb-4">$10,000</div>
+              <div className="text-8xl md:text-9xl font-bold text-discovery-gold mb-4">$25,000</div>
             </div>
 
             {/* Sale Terms */}

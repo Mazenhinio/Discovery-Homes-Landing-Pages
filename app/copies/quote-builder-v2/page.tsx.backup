@@ -29,33 +29,10 @@ interface FormData {
   // Step 5: Package Selection
   packageType: string
   
-  // Step 6: Add-ons
-  addons: string[]
-
-  // Finishes & Options
-  siding: string
-  countertops: string
-  cabinets: string
-  headboard: string
-  flooring: string
-  blinds: boolean
-  faucets: string
-  addCeilingFans: boolean
-  addBedroomFixtures: boolean
-  baseLighting: boolean
-  baseTile: boolean
-  featureSurfaces: boolean
-  wallsFinish: string
-
-  
-  // Step 7: Timeline
+  // Step 6: Timeline
   timeline: string
   
-  // Step 8: Number of Homes
-  numberOfHomes: string
-  customNumberOfHomes: string
-  
-  // Step 9: Financing
+  // Step 7: Financing
   financing: string
   needsFinancingHelp: string
 }
@@ -92,65 +69,15 @@ export default function QuoteBuilderPage() {
     model: '',
     packageType: '',
     bedrooms: '', bathrooms: '', sqft: '',
-    addons: [],
-    siding: 'base-metal',
-    countertops: 'base-quartz',
-    cabinets: 'maple-shaker',
-    headboard: 'melamine',
-    flooring: 'vinyl-glue-down',
-    blinds: false,
-    faucets: 'stainless',
-    addCeilingFans: false,
-    addBedroomFixtures: false,
-    baseLighting: true,
-    baseTile: true,
-    featureSurfaces: false,
-    wallsFinish: 'drywall',
-
-
     timeline: '',
-    numberOfHomes: '',
-    customNumberOfHomes: '',
     financing: '',
     needsFinancingHelp: ''
   })
   const [estimatedPrice, setEstimatedPrice] = useState(0)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
-
-  // Countdown timer state
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0
-  })
-
-  // Set countdown end date (30 days from now)
-  const countdownEndDate = new Date()
-  countdownEndDate.setDate(countdownEndDate.getDate() + 30)
-
-  // Countdown timer effect
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const now = new Date().getTime()
-      const distance = countdownEndDate.getTime() - now
-
-      if (distance > 0) {
-        setTimeLeft({
-          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((distance % (1000 * 60)) / 1000)
-        })
-      } else {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 })
-      }
-    }, 1000)
-
-    return () => clearInterval(timer)
-  }, [])
 
   // New state management for merged step
   const [selectedBedrooms, setSelectedBedrooms] = useState<string | null>(null)
@@ -159,7 +86,7 @@ export default function QuoteBuilderPage() {
   const [selectedModel, setSelectedModel] = useState<{name: string, type: string, price: string} | null>(null)
 
 
-  const totalSteps = 9
+  const totalSteps = 7
 
   const steps = [
     { number: 1, title: 'Contact Info', icon: Users },
@@ -167,10 +94,8 @@ export default function QuoteBuilderPage() {
     { number: 3, title: 'Intended Use', icon: Home },
     { number: 4, title: 'Model Selection and Specifications', icon: Building },
     { number: 5, title: 'Package', icon: Zap },
-    { number: 6, title: 'Add-ons', icon: Zap },
-    { number: 7, title: 'Timeline', icon: Calendar },
-    { number: 8, title: 'Number of Homes', icon: Home },
-    { number: 9, title: 'Financing', icon: CreditCard }
+    { number: 6, title: 'Timeline', icon: Calendar },
+    { number: 7, title: 'Financing', icon: CreditCard }
   ]
 
   const formatCurrency = (n: number) => n.toLocaleString()
@@ -331,10 +256,6 @@ export default function QuoteBuilderPage() {
     const pkg = getPackageRange()
     const addons = getAddOnsRange()
     const finishes = getFinishesRange()
-    
-    // Only add buffer for removed finishes step when user has selected model and area
-    const finishesBuffer = (selectedBedrooms && selectedArea) ? { min: 15000, max: 25000 } : { min: 0, max: 0 }
-    
     const homes = (() => {
       if (formData.numberOfHomes === '4+') {
         const customNumber = parseInt(formData.customNumberOfHomes || '4')
@@ -343,9 +264,8 @@ export default function QuoteBuilderPage() {
       const n = parseInt((formData.numberOfHomes || '1').replace(/\D/g, ''))
       return isNaN(n) || n < 1 ? 1 : Math.min(n, 3)
     })()
-    
-    const min = (model.min + pkg.min + addons.min + finishes.min + finishesBuffer.min) * homes
-    const max = (model.max + pkg.max + addons.max + finishes.max + finishesBuffer.max) * homes
+    const min = (model.min + pkg.min + addons.min + finishes.min) * homes
+    const max = (model.max + pkg.max + addons.max + finishes.max) * homes
     return clampRange(min, max)
   }
 
@@ -494,21 +414,10 @@ export default function QuoteBuilderPage() {
         return null
       }
       case 6: {
-        // No validation needed for add-ons
-        return null
-      }
-       case 7: {
         if (!formData.timeline) return 'Please select a project timeline.'
         return null
       }
-       case 8: {
-        if (!formData.numberOfHomes) return 'Please select the number of homes.'
-        if (formData.numberOfHomes === '4+' && (!formData.customNumberOfHomes || parseInt(formData.customNumberOfHomes) < 4)) {
-          return 'Please enter a valid number of homes (4 or more).'
-        }
-        return null
-      }
-       case 9: {
+      case 7: {
         if (!formData.financing) return 'Please select a financing option.'
         if (!formData.needsFinancingHelp) return 'Please indicate whether you need help with financing.'
         return null
@@ -563,6 +472,35 @@ export default function QuoteBuilderPage() {
   const handlePrev = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1)
+    }
+  }
+
+  const generatePine1PDF = async () => {
+    try {
+      setIsGeneratingPDF(true)
+      const response = await fetch('/api/quote-builder/generate-pine1-pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      })
+      
+      if (response.ok) {
+        const blob = await response.blob()
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = 'Pine1-Quotation.pdf'
+        a.click()
+        window.URL.revokeObjectURL(url)
+      } else {
+        console.error('Failed to generate PDF')
+      }
+    } catch (error) {
+      console.error('Error generating PDF:', error)
+    } finally {
+      setIsGeneratingPDF(false)
     }
   }
 
@@ -776,41 +714,7 @@ export default function QuoteBuilderPage() {
                 <div className="text-2xl font-bold text-[#68a71d] mb-2">
                   {(() => { const r = calculatePriceRange(); return `$${formatCurrency(r.min)} - $${formatCurrency(r.max)} CAD` })()}
                 </div>
-                <p className="text-gray-600 mb-4">Estimated total range for your {(() => {
-                  switch(formData.model) {
-                    case 'pine1': return 'Pine'
-                    case 'pine2': return 'Spruce'
-                    case 'pine3': return 'Willow'
-                    case 'custom': return 'Custom Build'
-                    default: return formData.model
-                  }
-                })()} build</p>
-                
-                {/* Price Variation Disclaimer */}
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-                  <div className="flex items-start">
-                    <div className="w-5 h-5 bg-yellow-400 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-                      <span className="text-white text-xs font-bold">!</span>
-                    </div>
-                    <div className="text-left">
-                      <h4 className="text-sm font-semibold text-yellow-800 mb-2">Important Pricing Information</h4>
-                      <ul className="text-xs text-yellow-700 space-y-1">
-                        <li className="flex items-start">
-                          <span className="text-yellow-600 mr-2 mt-0.5">•</span>
-                          <span>Prices may vary due to market changes and selected upgrades/finishes</span>
-                        </li>
-                        <li className="flex items-start">
-                          <span className="text-yellow-600 mr-2 mt-0.5">•</span>
-                          <span>This estimate includes a buffer for finishes and upgrades not specified in this quote</span>
-                        </li>
-                        <li className="flex items-start">
-                          <span className="text-yellow-600 mr-2 mt-0.5">•</span>
-                          <span>Final pricing will be confirmed during consultation based on your specific requirements</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
+                <p className="text-gray-600">Estimated total range for your {formData.model} build</p>
               </div>
 
 
@@ -848,62 +752,56 @@ export default function QuoteBuilderPage() {
                 </div>
               </div>
               
-              {/* Fall Sale Section */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+                <Link
+                  href="/contact"
+                  className="bg-[#68a71d] text-white px-8 py-3 rounded-lg hover:bg-[#5a8f1a] transition-colors font-semibold"
+                >
+                  Schedule Consultation
+                </Link>
+                <Link
+                  href="/our-builds"
+                  className="bg-gray-100 text-[#2D2D2D] px-8 py-3 rounded-lg hover:bg-gray-200 transition-colors font-semibold"
+                >
+                  Explore More Models
+                </Link>
+              </div>
+
+              {/* Limited Time Offer & Call to Action */}
               <div className="mt-8 bg-gradient-to-r from-[#D4AF37] to-[#B8941F] rounded-2xl p-8 text-center text-white">
                 <div className="flex items-center justify-center mb-4">
                   <div className="bg-white/20 backdrop-blur-sm rounded-full p-3 mr-3">
                     <Zap className="text-white w-8 h-8" />
                   </div>
                   <h2 className="text-3xl md:text-4xl font-bold">
-                    FALL SALE
+                    LIMITED TIME OFFER
                   </h2>
                 </div>
-                
-                <div className="text-2xl md:text-3xl font-bold mb-4">
-                  Save Up to $25,000
+                <div className="text-2xl md:text-3xl font-bold mb-6">
+                  Save $2,000 - Book Your Call Now!
                 </div>
-                
-                <div className="text-lg mb-6 opacity-90">
-                  5% Discount on All Models
-                    </div>
-
-                {/* Countdown Timer */}
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 mb-8 max-w-2xl mx-auto">
-                  <h3 className="text-xl font-bold mb-4 text-center">Limited Time Offer</h3>
-                  <h4 className="text-lg font-semibold mb-4 text-center">Ends In:</h4>
-                  <div className="grid grid-cols-4 gap-4">
-                    <div className="bg-white/20 rounded-lg p-4 flex flex-col items-center justify-center min-h-[80px]">
-                      <div className="text-3xl font-bold text-white mb-1">{timeLeft.days}</div>
-                      <div className="text-[10px] text-white opacity-90">Days</div>
-                    </div>
-                    <div className="bg-white/20 rounded-lg p-4 flex flex-col items-center justify-center min-h-[80px]">
-                      <div className="text-3xl font-bold text-white mb-1">{timeLeft.hours}</div>
-                      <div className="text-[10px] text-white opacity-90">Hours</div>
-                    </div>
-                    <div className="bg-white/20 rounded-lg p-4 flex flex-col items-center justify-center min-h-[80px]">
-                      <div className="text-3xl font-bold text-white mb-1">{timeLeft.minutes}</div>
-                      <div className="text-[10px] text-white opacity-90">Minutes</div>
-                    </div>
-                    <div className="bg-white/20 rounded-lg p-4 flex flex-col items-center justify-center min-h-[80px]">
-                      <div className="text-3xl font-bold text-white mb-1">{timeLeft.seconds}</div>
-                      <div className="text-[10px] text-white opacity-90">Seconds</div>
-                    </div>
-                  </div>
-                </div>
-
                 <p className="text-lg mb-8 opacity-90">
-                  Don't miss out on this exclusive fall discount. Book your consultation today to secure your savings!
+                  Schedule your consultation today and lock in exclusive pricing. Our experts are ready to help you start your modular home journey.
                 </p>
-
-                {/* Book Your Call Button */}
-                <a
-                  href="https://api.leadconnectorhq.com/widget/booking/PTZ3zcQLwvLZ7CizfIdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block bg-white text-[#D4AF37] px-8 py-4 rounded-lg hover:bg-gray-100 transition-colors font-bold text-lg"
-                >
-                  Book Your Call Now
-                </a>
+                
+                {/* GoHighLevel Calendar Integration */}
+                <div className="bg-white rounded-xl p-6 max-w-4xl mx-auto">
+                  <div className="flex items-center justify-center mb-4">
+                    <div className="bg-[#D4AF37] rounded-full p-2 mr-3">
+                      <Calendar className="text-white w-6 h-6" />
+                    </div>
+                    <h3 className="text-xl font-bold text-[#2D2D2D]">
+                      Book Your Free Consultation
+                    </h3>
+                  </div>
+                  <iframe 
+                    src="https://api.leadconnectorhq.com/widget/booking/PTZ3zcQLwvLZ7CizfIdf" 
+                    style={{ width: '100%', height: '600px', border: 'none', overflow: 'auto' }} 
+                    scrolling="yes" 
+                    id="PTZ3zcQLwvLZ7CizfIdf_quote_builder"
+                    className="w-full rounded-lg"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -914,85 +812,52 @@ export default function QuoteBuilderPage() {
           <>
             {/* Header */}
             <div className="text-center mb-12">
-           <h1 className="text-2xl md:text-3xl font-bold text-gradient-nature mb-4 nature-shimmer">
+          <h1 className="text-4xl md:text-5xl font-bold text-gradient-nature mb-4 nature-shimmer">
             Quote Builder
           </h1>
-           <p className="text-sm md:text-base text-discovery-sage max-w-2xl mx-auto">
+          <p className="text-xl text-discovery-sage max-w-2xl mx-auto">
             Get your personalized quote in just a few minutes. We'll guide you through each step 
             to create the perfect modular home solution.
           </p>
         </div>
 
-        {/* Sticky Progress Bar */}
-        <div className="sticky top-4 z-50 bg-white rounded-lg p-4 md:p-6 mb-8 shadow-lg border border-gray-200">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            {/* Progress Info */}
-            <div className="flex-1">
-              <div className="w-full bg-gray-200 rounded-full h-2 mb-3">
+        {/* Progress Bar */}
+        <div className="bg-white rounded-lg p-6 mb-8 shadow-sage glass-nature">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-sm font-medium text-discovery-forest">
+              Step {currentStep} of {totalSteps}
+            </span>
+            <span className="text-sm font-medium text-discovery-sage">
+              {Math.round((currentStep / totalSteps) * 100)}% Complete
+            </span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-2 mb-6">
             <div 
-                  className="bg-gradient-to-r from-discovery-sage to-discovery-lime h-2 rounded-full transition-all duration-300"
+              className="bg-gradient-to-r from-discovery-sage to-discovery-lime h-2 rounded-full transition-all duration-300 growth-pulse"
               style={{ width: `${(currentStep / totalSteps) * 100}%` }}
             />
           </div>
           
-              {/* Current Step Display */}
-              <div className="flex items-center justify-center">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-[#D4AF37] text-white rounded-full flex items-center justify-center">
-                    {(() => {
-                      const currentStepData = steps.find(step => step.number === currentStep)
-                      const Icon = currentStepData?.icon
-                      return Icon ? <Icon size={16} /> : <Check size={16} />
-                    })()}
+          {/* Step Icons */}
+          <div className="grid grid-cols-4 md:grid-cols-8 gap-2">
+            {steps.map((step) => {
+              const Icon = step.icon
+              const isCompleted = currentStep > step.number
+              const isCurrent = currentStep === step.number
+              
+              return (
+                <div key={step.number} className="text-center">
+                  <div className={`w-10 h-10 mx-auto rounded-full flex items-center justify-center mb-2 ${
+                    isCompleted ? 'bg-[#D4AF37] text-white' :
+                    isCurrent ? 'bg-[#D4AF37] text-white' :
+                    'bg-gray-200 text-gray-400'
+                  }`}>
+                    {isCompleted ? <Check size={16} /> : <Icon size={16} />}
                   </div>
-                  <div className="text-center">
-                    <p className="text-sm font-semibold text-gray-800">
-                      {steps.find(step => step.number === currentStep)?.title}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      Step {currentStep} of {totalSteps} • {Math.round((currentStep / totalSteps) * 100)}% Complete
-                    </p>
-                  </div>
+                  <p className="text-xs text-gray-600 hidden md:block">{step.title}</p>
                 </div>
-              </div>
-            </div>
-            
-            {/* Real-time Price Display */}
-            <div className="bg-gradient-to-r from-[#D4AF37]/10 to-[#68a71d]/10 border border-[#D4AF37] rounded-lg p-2 md:p-3 min-w-0 md:min-w-[180px]">
-              <div className="text-center">
-                <div className="text-xs font-medium text-gray-600 mb-1">Current Total</div>
-                <div className="text-sm md:text-base font-bold text-[#D4AF37]">
-                  {(() => { 
-                    // Check if it's a custom build
-                    if (formData.model === 'custom') {
-                      if (formData.addons.length > 0) {
-                        return `Custom Quote + ${formData.addons.length} upgrade${formData.addons.length > 1 ? 's' : ''}`
-                      }
-                      return 'Custom Quote'
-                    }
-                    
-                    // For standard models, show price range
-                    const r = calculatePriceRange()
-                    if (r.min === 0 && r.max === 0) {
-                      return '$0 CAD'
-                    }
-                    return `$${formatCurrency(r.min)} - $${formatCurrency(r.max)} CAD`
-                  })()}
-                  </div>
-                <div className="text-xs text-gray-500 mt-1">
-                  {formData.model === 'custom' 
-                    ? (formData.addons.length > 0 ? 'Contact for pricing' : 'Contact for pricing')
-                    : (formData.addons.length > 0 ? `${formData.addons.length} upgrade(s)` : 'Base price')
-                  }
-                </div>
-                <div className="text-xs text-gray-400 mt-1 italic">
-                  {selectedBedrooms && selectedArea 
-                    ? "Prices may vary due to market changes and selected upgrades/finishes"
-                    : "Complete model selection to see pricing"
-                  }
-                </div>
-              </div>
-            </div>
+              )
+            })}
           </div>
         </div>
 
@@ -1002,10 +867,10 @@ export default function QuoteBuilderPage() {
           {/* Step 1: Contact Info */}
           {currentStep === 1 && (
             <div>
-              <h2 className="text-lg md:text-xl font-bold text-[#2D2D2D] mb-4">Contact Information</h2>
+              <h2 className="text-2xl font-bold text-[#2D2D2D] mb-6">Contact Information</h2>
               <div className="space-y-6">
                 <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-2">Full Name *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
                   <input
                     type="text"
                     value={formData.name}
@@ -1016,7 +881,7 @@ export default function QuoteBuilderPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-2">Email Address *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
                   <input
                     type="email"
                     value={formData.email}
@@ -1027,7 +892,7 @@ export default function QuoteBuilderPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-2">Phone Number *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
                   <input
                     type="tel"
                     value={formData.phone}
@@ -1044,11 +909,11 @@ export default function QuoteBuilderPage() {
           {/* Step 2: Property Details */}
           {currentStep === 2 && (
             <div>
-              <h2 className="text-lg md:text-xl font-bold text-[#2D2D2D] mb-4">Property Details</h2>
+              <h2 className="text-2xl font-bold text-[#2D2D2D] mb-6">Property Details</h2>
               <div className="space-y-6">
                 {/* Postal Code (Required) */}
                 <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-2">Postal Code *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Postal Code *</label>
                   <input
                     type="text"
                     value={formData.postalCode}
@@ -1059,7 +924,7 @@ export default function QuoteBuilderPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-4">Land Status *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-4">Land Status *</label>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {[
                       { value: 'own-land', label: 'I own the land' },
@@ -1088,7 +953,7 @@ export default function QuoteBuilderPage() {
           {/* Step 3: Intended Use */}
           {currentStep === 3 && (
             <div>
-              <h2 className="text-lg md:text-xl font-bold text-[#2D2D2D] mb-4">Intended Use</h2>
+              <h2 className="text-2xl font-bold text-[#2D2D2D] mb-6">Intended Use</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {[
                   { value: 'family-home', label: 'Family Home' },
@@ -1113,7 +978,7 @@ export default function QuoteBuilderPage() {
               </div>
               {formData.intendedUse === 'other' && (
                 <div className="mt-6">
-                  <label className="block text-xs font-medium text-gray-700 mb-2">Please specify *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Please specify *</label>
                   <input
                     type="text"
                     value={formData.intendedUseOther}
@@ -1129,36 +994,36 @@ export default function QuoteBuilderPage() {
 
           {/* Step 4: Model Selection and Specifications (Merged) */}
           {currentStep === 4 && (
-             <div>
-              <h2 className="text-lg md:text-xl font-bold text-[#2D2D2D] mb-4">Model Selection and Specifications</h2>
+            <div>
+              <h2 className="text-2xl font-bold text-[#2D2D2D] mb-6">Model Selection and Specifications</h2>
               
               {/* Bedroom Selection */}
               <div className="mb-8">
-                <label className="block text-xs font-medium text-gray-700 mb-4">Number of Bedrooms *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-4">Number of Bedrooms *</label>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
                   {bedroomOptions.map((option) => (
                     <label key={option.value} className={`text-center p-4 border rounded-lg cursor-pointer transition-all duration-200 hover:shadow-lg ${
                       selectedBedrooms === option.value 
-                       ? 'border-[#D4AF37] bg-[#D4AF37]/10 shadow-lg' 
-                       : 'border-gray-300 hover:border-[#D4AF37]/50'
-                   }`}>
-                     <input
-                       type="radio"
+                        ? 'border-[#D4AF37] bg-[#D4AF37]/10 shadow-lg' 
+                        : 'border-gray-300 hover:border-[#D4AF37]/50'
+                    }`}>
+                      <input
+                        type="radio"
                         name="bedrooms"
                         value={option.value}
                         checked={selectedBedrooms === option.value}
                         onChange={(e) => handleNewBedroomsChange(e.target.value)}
-                       className="sr-only"
-                     />
-                      <span className="text-sm font-semibold">{option.display}</span>
+                        className="sr-only"
+                      />
+                      <span className="font-semibold">{option.display}</span>
                     </label>
                   ))}
-                         </div>
-                       </div>
+                </div>
+              </div>
 
               {/* Area Selection */}
               <div className="mb-8">
-                <label className="block text-xs font-medium text-gray-700 mb-4">Square Footage *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-4">Square Footage *</label>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
                   {availableAreas.map((area) => (
                     <label key={area.value} className={`text-center p-4 border rounded-lg cursor-pointer transition-all duration-200 hover:shadow-lg ${
@@ -1175,7 +1040,7 @@ export default function QuoteBuilderPage() {
                         disabled={!selectedBedrooms}
                         className="sr-only"
                       />
-                       <span className="text-sm font-semibold">{area.label}</span>
+                      <span className="font-semibold">{area.label}</span>
                     </label>
                   ))}
                 </div>
@@ -1226,9 +1091,9 @@ export default function QuoteBuilderPage() {
                         <li className="flex items-start"><span className="w-1.5 h-1.5 bg-[#D4AF37] rounded-full mt-2 mr-2"></span> Black kitchen sink & faucet (stainless option available)</li>
                         <li className="flex items-start"><span className="w-1.5 h-1.5 bg-[#D4AF37] rounded-full mt-2 mr-2"></span> Triple-glaze windows; all paint colors included</li>
                         <li className="flex items-start"><span className="w-1.5 h-1.5 bg-[#D4AF37] rounded-full mt-2 mr-2"></span> Exterior: Hidden-fastener metal roof and metal board-and-batten siding</li>
-                          </ul>
-                        </div>
-
+                      </ul>
+                    </div>
+                    
                     {/* Mobile Price */}
                     <div className="text-center">
                       <div className="text-2xl font-bold text-[#D4AF37]">
@@ -1266,9 +1131,9 @@ export default function QuoteBuilderPage() {
                       {selectedModel.type === 'custom' && (
                         <div className="text-xs text-gray-600 mt-1">
                           Custom pricing based on specifications
-                           </div>
-                         )}
-                       </div>
+                        </div>
+                      )}
+                    </div>
                     
                     {/* Desktop Main Content */}
                     <div className="pr-44 pb-16">
@@ -1290,19 +1155,19 @@ export default function QuoteBuilderPage() {
                           <li className="flex items-start"><span className="w-1 h-1 bg-[#D4AF37] rounded-full mt-2 mr-2"></span> Triple-glaze windows; all paint colors included</li>
                           <li className="flex items-start md:col-span-2"><span className="w-1 h-1 bg-[#D4AF37] rounded-full mt-2 mr-2"></span> Exterior: Hidden-fastener metal roof and metal board-and-batten siding</li>
                         </ul>
-                     </div>
+                      </div>
                     </div>
-               </div>
+                  </div>
                 </div>
               )}
-             </div>
-           )}
+            </div>
+          )}
 
           {/* Continue with remaining steps... */}
           {/* Step 5: Package Selection */}
           {currentStep === 5 && (
             <div>
-              <h2 className="text-lg md:text-xl font-bold text-[#2D2D2D] mb-4">Choose Your Package</h2>
+              <h2 className="text-2xl font-bold text-[#2D2D2D] mb-6">Choose Your Package</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {[{
                   value: 'base',
@@ -1346,11 +1211,254 @@ export default function QuoteBuilderPage() {
             </div>
           )}
 
-
-          {/* Step 6: Add-ons */}
+          {/* Step 6: Timeline */}
           {currentStep === 6 && (
             <div>
-               <h2 className="text-lg md:text-xl font-bold text-[#2D2D2D] mb-4">Add-ons & Upgrades</h2>
+              <h2 className="text-2xl font-bold text-[#2D2D2D] mb-6">Finishes & Options</h2>
+              <div className="space-y-6">
+                {/* Siding */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Siding</label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label className={`p-4 border rounded-lg cursor-pointer ${formData.siding==='base-metal'?'border-[#D4AF37] bg-[#D4AF37]/10':'border-gray-300'}`}>
+                      <input type="radio" name="siding" value="base-metal" className="sr-only" checked={formData.siding==='base-metal'} onChange={(e)=>updateFormData('siding', e.target.value)} />
+                      <div className="font-semibold">Base: Hidden-Fastener Metal</div>
+                      <div className="text-sm text-gray-600">Board-and-batten siding with color selections</div>
+                    </label>
+                    {isWoodGrainEligible() && (
+                      <label className={`p-4 border rounded-lg cursor-pointer ${formData.siding==='wood-grain'?'border-[#D4AF37] bg-[#D4AF37]/10':'border-gray-300'}`}>
+                        <input type="radio" name="siding" value="wood-grain" className="sr-only" checked={formData.siding==='wood-grain'} onChange={(e)=>updateFormData('siding', e.target.value)} />
+                        <div className="font-semibold">Upgrade: Wood Grain Siding</div>
+                        <div className="text-sm text-gray-600">
+                          {(() => {
+                            const sqftNumber = parseInt((formData.sqft || '').replace(/\D/g, ''))
+                            if (sqftNumber <= 240) {
+                              return '+$4,000 – $4,400'
+                            } else {
+                              return '+$6,000 – $6,600'
+                            }
+                          })()}
+                        </div>
+                      </label>
+                    )}
+                  </div>
+                </div>
+
+                {/* Countertops */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Countertops</label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label className={`p-4 border rounded-lg cursor-pointer ${formData.countertops==='base-quartz'?'border-[#D4AF37] bg-[#D4AF37]/10':'border-gray-300'}`}>
+                      <input type="radio" name="countertops" value="base-quartz" className="sr-only" checked={formData.countertops==='base-quartz'} onChange={(e)=>updateFormData('countertops', e.target.value)} />
+                      <div className="font-semibold">Base: Quartz Counters</div>
+                      <div className="text-sm text-gray-600">Premium quartz countertops included</div>
+                    </label>
+                    <label className={`p-4 border rounded-lg cursor-pointer ${formData.countertops==='upgrade-quartz'?'border-[#D4AF37] bg-[#D4AF37]/10':'border-gray-300'}`}>
+                      <input type="radio" name="countertops" value="upgrade-quartz" className="sr-only" checked={formData.countertops==='upgrade-quartz'} onChange={(e)=>updateFormData('countertops', e.target.value)} />
+                      <div className="font-semibold">Upgrade: Expanded Quartz Options</div>
+                      <div className="text-sm text-gray-600">Multiple color and style selections</div>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Cabinets */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Cabinets</label>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <label className={`p-4 border rounded-lg cursor-pointer ${formData.cabinets==='maple-shaker'?'border-[#D4AF37] bg-[#D4AF37]/10':'border-gray-300'}`}>
+                      <input type="radio" name="cabinets" value="maple-shaker" className="sr-only" checked={formData.cabinets==='maple-shaker'} onChange={(e)=>updateFormData('cabinets', e.target.value)} />
+                      <div className="font-semibold">Base: Maple Cabinets</div>
+                      <div className="text-sm text-gray-600">White, Black, or Wood Grain options</div>
+                    </label>
+                    <label className={`p-4 border rounded-lg cursor-pointer ${formData.cabinets==='painted-thermo'?'border-[#D4AF37] bg-[#D4AF37]/10':'border-gray-300'}`}>
+                      <input type="radio" name="cabinets" value="painted-thermo" className="sr-only" checked={formData.cabinets==='painted-thermo'} onChange={(e)=>updateFormData('cabinets', e.target.value)} />
+                      <div className="font-semibold">Upgrade: Painted/Thermo Options</div>
+                      <div className="text-sm text-gray-600">Additional styles and finishes</div>
+                    </label>
+                    <label className={`p-4 border rounded-lg cursor-pointer ${formData.cabinets==='melamine'?'border-[#D4AF37] bg-[#D4AF37]/10':'border-gray-300'}`}>
+                      <input type="radio" name="cabinets" value="melamine" className="sr-only" checked={formData.cabinets==='melamine'} onChange={(e)=>updateFormData('cabinets', e.target.value)} />
+                      <div className="font-semibold">Downgrade: Melamine</div>
+                      <div className="text-sm text-gray-600">Cost-saving alternative</div>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Walls */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Walls</label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label className={`p-4 border rounded-lg cursor-pointer ${formData.wallsFinish==='drywall'?'border-[#D4AF37] bg-[#D4AF37]/10':'border-gray-300'}`}>
+                      <input type="radio" name="wallsFinish" value="drywall" className="sr-only" checked={formData.wallsFinish==='drywall'} onChange={(e)=>updateFormData('wallsFinish', e.target.value)} />
+                      <div className="font-semibold">Base: Drywall</div>
+                      <div className="text-sm text-gray-600">Standard drywall with paint options</div>
+                    </label>
+                    <label className={`p-4 border rounded-lg cursor-pointer ${formData.wallsFinish==='woodboard-stained'?'border-[#D4AF37] bg-[#D4AF37]/10':'border-gray-300'}`}>
+                      <input type="radio" name="wallsFinish" value="woodboard-stained" className="sr-only" checked={formData.wallsFinish==='woodboard-stained'} onChange={(e)=>updateFormData('wallsFinish', e.target.value)} />
+                      <div className="font-semibold">Upgrade: Woodboard or Stained</div>
+                      <div className="text-sm text-gray-600">Premium wood finish options</div>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Ceilings */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Ceilings</label>
+                  <div className="grid grid-cols-1 gap-4">
+                    <label className="p-4 border border-gray-300 rounded-lg bg-gray-50">
+                      <div className="font-semibold">Base: Tongue & Groove Ceiling</div>
+                      <div className="text-sm text-gray-600">Included in base package</div>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Flooring */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Flooring</label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label className={`p-4 border rounded-lg cursor-pointer ${formData.flooring==='vinyl-glue-down'?'border-[#D4AF37] bg-[#D4AF37]/10':'border-gray-300'}`}>
+                      <input type="radio" name="flooring" value="vinyl-glue-down" className="sr-only" checked={formData.flooring==='vinyl-glue-down'} onChange={(e)=>updateFormData('flooring', e.target.value)} />
+                      <div className="font-semibold">Base: Vinyl Glue-Down</div>
+                      <div className="text-sm text-gray-600">Various color and price points</div>
+                    </label>
+                    <label className={`p-4 border rounded-lg cursor-pointer ${formData.flooring==='vinyl-upgrade'?'border-[#D4AF37] bg-[#D4AF37]/10':'border-gray-300'}`}>
+                      <input type="radio" name="flooring" value="vinyl-upgrade" className="sr-only" checked={formData.flooring==='vinyl-upgrade'} onChange={(e)=>updateFormData('flooring', e.target.value)} />
+                      <div className="font-semibold">Upgrade: Better Vinyl</div>
+                      <div className="text-sm text-gray-600">Enhanced vinyl options</div>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Lighting */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Lighting</label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label className={`p-4 border rounded-lg cursor-pointer ${formData.baseLighting?'border-[#D4AF37] bg-[#D4AF37]/10':'border-gray-300'}`}>
+                      <input type="checkbox" checked={formData.baseLighting} onChange={(e)=>updateFormData('baseLighting', e.target.checked)} className="sr-only" />
+                      <div className="font-semibold">Base: Pot Lights</div>
+                      <div className="text-sm text-gray-600">Throughout the home</div>
+                    </label>
+                    <label className={`p-4 border rounded-lg cursor-pointer ${formData.addCeilingFans?'border-[#D4AF37] bg-[#D4AF37]/10':'border-gray-300'}`}>
+                      <input type="checkbox" checked={formData.addCeilingFans} onChange={(e)=>updateFormData('addCeilingFans', e.target.checked)} className="sr-only" />
+                      <div className="font-semibold">Upgrade: Ceiling Fans</div>
+                      <div className="text-sm text-gray-600">+$540 – $660 per bathroom</div>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Faucets */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Plumbing Faucets</label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label className={`p-4 border rounded-lg cursor-pointer ${formData.faucets==='stainless'?'border-[#D4AF37] bg-[#D4AF37]/10':'border-gray-300'}`}>
+                      <input type="radio" name="faucets" value="stainless" className="sr-only" checked={formData.faucets==='stainless'} onChange={(e)=>updateFormData('faucets', e.target.value)} />
+                      <div className="font-semibold">Base: Stainless Steel Fixtures</div>
+                      <div className="text-sm text-gray-600">Kitchen faucets & sinks in stainless steel</div>
+                    </label>
+                    <label className={`p-4 border rounded-lg cursor-pointer ${formData.faucets==='bronze'?'border-[#D4AF37] bg-[#D4AF37]/10':'border-gray-300'}`}>
+                      <input type="radio" name="faucets" value="bronze" className="sr-only" checked={formData.faucets==='bronze'} onChange={(e)=>updateFormData('faucets', e.target.value)} />
+                      <div className="font-semibold">Upgrade: Bronze</div>
+                      <div className="text-sm text-gray-600">+$450 – $600</div>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Kitchen & Bath Tile */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Kitchen & Bath Tile</label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label className={`p-4 border rounded-lg cursor-pointer ${formData.baseTile?'border-[#D4AF37] bg-[#D4AF37]/10':'border-gray-300'}`}>
+                      <input type="checkbox" checked={formData.baseTile} onChange={(e)=>updateFormData('baseTile', e.target.checked)} className="sr-only" />
+                      <div className="font-semibold">Base: Tile Features</div>
+                      <div className="text-sm text-gray-600">Shower surround + kitchen/bath backsplash</div>
+                    </label>
+                    <label className={`p-4 border rounded-lg cursor-pointer ${formData.addBedroomFixtures?'border-[#D4AF37] bg-[#D4AF37]/10':'border-gray-300'}`}>
+                      <input type="checkbox" checked={formData.addBedroomFixtures} onChange={(e)=>updateFormData('addBedroomFixtures', e.target.checked)} className="sr-only" />
+                      <div className="font-semibold">Upgrade: Enhanced Tile</div>
+                      <div className="text-sm text-gray-600">+$450 – $550 per kitchen</div>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Windows */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Windows</label>
+                  <div className="grid grid-cols-1 gap-4">
+                    <label className="p-4 border border-gray-300 rounded-lg bg-gray-50">
+                      <div className="font-semibold">Base: Triple-Glaze Windows</div>
+                      <div className="text-sm text-gray-600">Black windows with paint/stain options</div>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Paint */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Paint</label>
+                  <div className="grid grid-cols-1 gap-4">
+                    <label className="p-4 border border-gray-300 rounded-lg bg-gray-50">
+                      <div className="font-semibold">Base: All Colors Included</div>
+                      <div className="text-sm text-gray-600">Complete paint selection at no extra cost</div>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Appliances */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Appliances</label>
+                  <div className="grid grid-cols-1 gap-4">
+                    <label className="p-4 border border-gray-300 rounded-lg bg-gray-50">
+                      <div className="font-semibold">Base: Not Included</div>
+                      <div className="text-sm text-gray-600">Appliances can be added as upgrades</div>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Additional Options */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Additional Options</label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label className={`p-4 border rounded-lg cursor-pointer ${formData.blinds?'border-[#D4AF37] bg-[#D4AF37]/10':'border-gray-300'}`}>
+                      <input type="checkbox" checked={formData.blinds} onChange={(e)=>updateFormData('blinds', e.target.checked)} className="sr-only" />
+                      <div className="font-semibold">Window Coverings</div>
+                      <div className="text-sm text-gray-600">Blinds and shades (multiple options)</div>
+                    </label>
+                    <label className={`p-4 border rounded-lg cursor-pointer ${formData.featureSurfaces?'border-[#D4AF37] bg-[#D4AF37]/10':'border-gray-300'}`}>
+                      <input type="checkbox" checked={formData.featureSurfaces} onChange={(e)=>updateFormData('featureSurfaces', e.target.checked)} className="sr-only" />
+                      <div className="font-semibold">Feature Surfaces</div>
+                      <div className="text-sm text-gray-600">Accent walls, barnwood, specialty boards</div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Step 6: Timeline */}
+          {currentStep === 6 && (
+             <div>
+               <h2 className="text-2xl font-bold text-[#2D2D2D] mb-6">When do you want to receive your modular?</h2>
+               
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                 {[
+                   'ASAP (within 3 months)',
+                   '3-6 months',
+                   '6-12 months',
+                   '12+ months'
+                 ].map((timeline) => (
+                   <label key={timeline} className={`text-center p-4 border rounded-lg cursor-pointer ${
+                     formData.timeline === timeline ? 'border-[#D4AF37] bg-[#D4AF37]/10' : 'border-gray-300'
+                   }`}>
+                     <input
+                       type="radio"
+                       name="timeline"
+                       value={timeline}
+                       checked={formData.timeline === timeline}
+                       onChange={(e) => updateFormData('timeline', e.target.value)}
+                       className="sr-only"
+                     />
+                     <span className="font-semibold">{timeline}</span>
+                   </label>
+                 ))}
+               </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                  {[
@@ -1362,7 +1470,7 @@ export default function QuoteBuilderPage() {
                    { value: 'fireplace', label: 'Fireplace (Gas / Electric / Wood)', description: 'Select type during consultation' },
                     
                  ].map((addon) => (
-                   <label key={addon.value} className={`flex items-center p-3 border-2 rounded-lg transition-all duration-200 ${
+                   <label key={addon.value} className={`flex items-center p-4 border-2 rounded-lg transition-all duration-200 ${
                      addon.comingSoon ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer hover:shadow-md'
                    } ${
                      formData.addons.includes(addon.value) 
@@ -1374,21 +1482,21 @@ export default function QuoteBuilderPage() {
                        checked={formData.addons.includes(addon.value)}
                        onChange={() => { if (!addon.comingSoon) toggleAddon(addon.value) }}
                        disabled={addon.comingSoon}
-                       className="mr-3 w-4 h-4 text-[#D4AF37] focus:ring-[#D4AF37]"
+                       className="mr-4 w-5 h-5 text-[#D4AF37] focus:ring-[#D4AF37]"
                      />
                       <div className="flex-1">
-                       <div className="flex items-center justify-between mb-1">
+                       <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center">
-                            <span className="font-semibold text-[#2D2D2D] text-xs">{addon.label}</span>
+                            <span className="font-semibold text-[#2D2D2D] text-sm">{addon.label}</span>
                             {addon.comingSoon && (
-                              <span className="ml-0.5 inline-block px-1.5 py-0.5 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800 border border-yellow-200 whitespace-nowrap">Coming Soon</span>
+                              <span className="ml-2 inline-block px-2 py-0.5 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800 border border-yellow-200">Coming Soon</span>
                             )}
                           </div>
-                          <span className="font-bold text-[#D4AF37] text-xs">
+                          <span className="font-bold text-[#D4AF37] text-sm">
                             {(() => { const r = addOnRanges[addon.value]; return r ? `+$${formatCurrency(r.min)} - $${formatCurrency(r.max)}` : '' })()}
                           </span>
                        </div>
-                       <p className="text-xs text-gray-600 ml-7">{addon.description}</p>
+                       <p className="text-xs text-gray-600 ml-11">{addon.description}</p>
                      </div>
                    </label>
                  ))}
@@ -1423,17 +1531,16 @@ export default function QuoteBuilderPage() {
              </div>
            )}
 
-           {/* Step 7: Timeline */}
-          {currentStep === 7 && (
+           {/* Step 8: Timeline */}
+          {currentStep === 8 && (
              <div>
-               <h2 className="text-lg md:text-xl font-bold text-[#2D2D2D] mb-4">When do you want to receive your modular?</h2>
-               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+               <h2 className="text-2xl font-bold text-[#2D2D2D] mb-6">When do you want to receive your modular?</h2>
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                  {[
-                   'Ready for delivery in 3 months',
-                   'Ready for delivery in 3-6 months',
-                   'Ready for delivery in 6-12 months',
-                   'Ready for delivery in 12+ months',
-                   'Don\'t know yet'
+                   'ASAP (within 3 months)',
+                   '3-6 months',
+                   '6-12 months',
+                   '12+ months'
                  ].map((timeline) => (
                    <label key={timeline} className={`text-center p-4 border rounded-lg cursor-pointer ${
                      formData.timeline === timeline ? 'border-[#D4AF37] bg-[#D4AF37]/10' : 'border-gray-300'
@@ -1446,17 +1553,17 @@ export default function QuoteBuilderPage() {
                        onChange={(e) => updateFormData('timeline', e.target.value)}
                        className="sr-only"
                      />
-                     <span className="text-sm font-semibold">{timeline}</span>
+                     <span className="font-semibold">{timeline}</span>
                    </label>
                  ))}
                </div>
              </div>
            )}
 
-          {/* Step 8: Number of Homes */}
-          {currentStep === 8 && (
+          {/* Step 9: Number of Homes */}
+          {currentStep === 9 && (
             <div>
-              <h2 className="text-lg md:text-xl font-bold text-[#2D2D2D] mb-4">Number of Homes</h2>
+              <h2 className="text-2xl font-bold text-[#2D2D2D] mb-6">Number of Homes</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {[
                   { value: '1', label: '1 Home' },
@@ -1487,7 +1594,7 @@ export default function QuoteBuilderPage() {
               {/* Custom Number Input for 4+ Homes */}
               {formData.numberOfHomes === '4+' && (
                 <div className="mt-6 p-4 border border-gray-300 rounded-lg bg-gray-50">
-                  <label className="block text-xs font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     How many homes do you intend to purchase?
                   </label>
                   <input
@@ -1507,10 +1614,10 @@ export default function QuoteBuilderPage() {
             </div>
           )}
 
-          {/* Step 9: Financing */}
-          {currentStep === 9 && (
+          {/* Step 10: Financing */}
+          {currentStep === 10 && (
              <div>
-               <h2 className="text-lg md:text-xl font-bold text-[#2D2D2D] mb-4">Financing</h2>
+               <h2 className="text-2xl font-bold text-[#2D2D2D] mb-6">Financing</h2>
                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                  {[
                    { value: 'cash', label: 'Cash Payment' },
@@ -1534,7 +1641,7 @@ export default function QuoteBuilderPage() {
 
                {/* Financing Help Question */}
                <div className="mt-6">
-                 <label className="block text-xs font-medium text-gray-700 mb-3">
+                 <label className="block text-sm font-medium text-gray-700 mb-3">
                    Do you need help getting financing?
                  </label>
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1633,8 +1740,7 @@ export default function QuoteBuilderPage() {
                    </div>
                    
                    <p className="text-sm text-gray-600">
-                     This is a preliminary estimate. Final pricing may vary based on site conditions, permits, customizations, and market changes. 
-                     This quote includes a buffer for finishes and upgrades not specified in this estimate. Upgrade availability may vary.
+                     This is a preliminary estimate. Final pricing may vary based on site conditions, permits, and customizations.
                    </p>
                  </div>
                )}
@@ -1652,30 +1758,30 @@ export default function QuoteBuilderPage() {
             <button
               onClick={handlePrev}
               disabled={currentStep === 1}
-              className={`flex items-center px-6 py-4 md:py-3 rounded-lg transition-colors text-sm ${
+              className={`flex items-center px-6 py-4 md:py-3 rounded-lg transition-colors ${
                 currentStep === 1 
                   ? 'text-gray-400 cursor-not-allowed'
                   : 'text-[#D4AF37] hover:bg-[#D4AF37]/10'
               }`}
             >
-              <ChevronLeft size={16} className="mr-2" />
+              <ChevronLeft size={20} className="mr-2" />
               Previous
             </button>
 
             {currentStep < totalSteps ? (
               <button
                 onClick={handleNext}
-                className="flex items-center px-8 py-4 md:py-3 bg-[#D4AF37] text-white rounded-lg hover:bg-[#B8941F] transition-colors text-sm"
+                className="flex items-center px-8 py-4 md:py-3 bg-[#D4AF37] text-white rounded-lg hover:bg-[#B8941F] transition-colors"
               >
                 Next Step
-                <ChevronRight size={16} className="ml-2" />
+                <ChevronRight size={20} className="ml-2" />
               </button>
             ) : (
               <div className="flex gap-4">
                 <button
                   onClick={handleSubmit}
                   disabled={isSubmitting}
-                  className={`px-8 py-4 md:py-3 rounded-lg transition-colors font-semibold flex items-center text-sm ${
+                  className={`px-8 py-4 md:py-3 rounded-lg transition-colors font-semibold flex items-center ${
                     isSubmitting 
                       ? 'bg-gray-400 text-white cursor-not-allowed' 
                       : 'bg-[#68a71d] text-white hover:bg-[#5a8f1a]'
@@ -1683,13 +1789,34 @@ export default function QuoteBuilderPage() {
                 >
                   {isSubmitting ? (
                     <>
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
                       Generating PDF...
                     </>
                   ) : (
                     'Get My Quote'
                   )}
                 </button>
+                
+                {formData.model === 'pine1' && (
+                  <button
+                    onClick={generatePine1PDF}
+                    disabled={isGeneratingPDF}
+                    className={`px-6 py-3 rounded-lg transition-colors font-semibold flex items-center border-2 border-[#D4AF37] ${
+                      isGeneratingPDF 
+                        ? 'bg-gray-400 text-white cursor-not-allowed border-gray-400' 
+                        : 'bg-white text-[#D4AF37] hover:bg-[#D4AF37] hover:text-white'
+                    }`}
+                  >
+                    {isGeneratingPDF ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin mr-2"></div>
+                        Generating PDF...
+                      </>
+                  ) : (
+                    'Download Pine 1 PDF'
+                  )}
+                  </button>
+                )}
               </div>
             )}
           </div>
@@ -1697,6 +1824,18 @@ export default function QuoteBuilderPage() {
 
 
 
+        {/* Bottom CTA */}
+        <div className="text-center mt-8">
+          <p className="text-gray-600 mb-4">
+            Need help or have questions? Our team is here to assist you.
+          </p>
+          <Link
+            href="/contact"
+            className="inline-block bg-[#2D2D2D] text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors"
+          >
+            Contact Our Experts
+          </Link>
+        </div>
         </>
         )} {/* Close main form conditional */}
         

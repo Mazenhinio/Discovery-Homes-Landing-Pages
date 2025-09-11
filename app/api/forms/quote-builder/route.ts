@@ -143,9 +143,9 @@ export async function POST(request: NextRequest) {
 function calculatePricing(model: string, addOns: string[] = [], sqft?: string) {
   // Base pricing from documentation
   const basePrices = {
-    'pine-1': 174000,
-    'pine-2': 179000,
-    'pine-3': 99000,
+    'pine-1': 183000,
+    'pine-2': 188000,
+    'pine-3': 104000,
     'custom': 200000 // Starting price for custom
   }
   

@@ -30,13 +30,13 @@ export async function POST(request: NextRequest) {
     let basePrice = 0
     switch (model) {
       case 'pine1':
-        basePrice = 174000
+        basePrice = 183000
         break
       case 'pine2':
-        basePrice = 179000
+        basePrice = 188000
         break
       case 'pine3':
-        basePrice = 99000
+        basePrice = 104000
         break
       case 'custom':
         basePrice = 200000
