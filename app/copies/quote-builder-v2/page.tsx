@@ -225,11 +225,11 @@ export default function QuoteBuilderPage() {
   }
 
   const addOnRanges: Record<string, { min: number; max: number }> = {
-    'solar': { min: 15000, max: 20000 },
+    'solar': { min: 10000, max: 15000 },
     'net-zero': { min: 31500, max: 38500 },
     'off-grid': { min: 36000, max: 44000 },
-    'deck': { min: 8000, max: 12000 },
-    'appliances': { min: 12000, max: 15000 },
+    'deck': { min: 8000, max: 10000 },
+    'appliances': { min: 10000, max: 12000 },
     'smart-home': { min: 4500, max: 5500 },
     'fireplace': { min: 5000, max: 8000 },
   }
@@ -388,7 +388,7 @@ export default function QuoteBuilderPage() {
       if (formData.packageType === 'off-grid' && addon === 'off-grid') return
       switch (addon) {
         case 'solar':
-          addonCost += 17500 // Midpoint of $15,000-$20,000 range
+          addonCost += 12500 // Midpoint of $10,000-$15,000 range
           break
         case 'net-zero':
           addonCost += 35000
@@ -404,15 +404,15 @@ export default function QuoteBuilderPage() {
           if (isWithin150kmOfLloydminster(formData.postalCode)) {
             addonCost += 8000
           } else {
-            addonCost += 12000 // Higher cost for outside 150km range
+            addonCost += 10000 // Higher cost for outside 150km range
           }
           break
         case 'appliances':
           // Appliances pricing based on 150km range (similar to deck)
           if (isWithin150kmOfLloydminster(formData.postalCode)) {
-            addonCost += 12000
+            addonCost += 10000
           } else {
-            addonCost += 15000 // Higher cost for outside 150km range
+            addonCost += 12000 // Higher cost for outside 150km range
           }
           break
         case 'smart-home':
@@ -797,15 +797,27 @@ export default function QuoteBuilderPage() {
                       <ul className="text-xs text-yellow-700 space-y-1">
                         <li className="flex items-start">
                           <span className="text-yellow-600 mr-2 mt-0.5">•</span>
-                          <span>Prices may vary due to market changes and selected upgrades/finishes</span>
+                          <span>Prices may vary based on market conditions and selected finishes or upgrades</span>
                         </li>
                         <li className="flex items-start">
                           <span className="text-yellow-600 mr-2 mt-0.5">•</span>
-                          <span>This estimate includes a buffer for finishes and upgrades not specified in this quote</span>
+                          <span>This estimate includes a buffer for common upgrades and popular selections not priced individually in this quote</span>
                         </li>
                         <li className="flex items-start">
                           <span className="text-yellow-600 mr-2 mt-0.5">•</span>
-                          <span>Final pricing will be confirmed during consultation based on your specific requirements</span>
+                          <span>Most clients choose different finishes — no two builds are exactly alike, and we quote accordingly</span>
+                        </li>
+                        <li className="flex items-start">
+                          <span className="text-yellow-600 mr-2 mt-0.5">•</span>
+                          <span>Base model is already well-equipped with upgraded features — this is not a bare-bones starting point</span>
+                        </li>
+                        <li className="flex items-start">
+                          <span className="text-yellow-600 mr-2 mt-0.5">•</span>
+                          <span>Layouts are fixed per model unless you're building fully custom (which follows a separate process)</span>
+                        </li>
+                        <li className="flex items-start">
+                          <span className="text-yellow-600 mr-2 mt-0.5">•</span>
+                          <span>Final pricing is confirmed during your consultation, based on your specific preferences and needs</span>
                         </li>
                       </ul>
                     </div>
@@ -1354,7 +1366,7 @@ export default function QuoteBuilderPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                  {[
-                   { value: 'solar', label: 'Solar Panels', description: 'Reduce energy costs with solar power' },
+                   { value: 'solar', label: 'Solar Panels', description: 'Solar Panel prices vary based on energy consumption' },
                    { value: 'deck', label: 'Deck (Outdoor Living Space)', description: 'Extend your living area outdoors' },
                    { value: 'appliances', label: 'Upgraded Appliances', description: 'High-end kitchen and laundry appliances' },
                    { value: 'smart-home', label: 'Smart Home Package', description: 'Automated lighting, security, and climate control' },
