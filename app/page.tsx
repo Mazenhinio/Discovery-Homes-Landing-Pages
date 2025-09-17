@@ -3,6 +3,7 @@
 import { HeroSection } from '@/components/sections/HeroSection'
 import { OurHomesSection } from '@/components/sections/OurHomesSection'
 import { WhoWeServeSection } from '@/components/sections/WhoWeServeSection'
+import { PartnershipLogos } from '@/components/sections/PartnershipLogos'
 import { CTABanner } from '@/components/CTABanner'
 import { TrustSignals } from '@/components/TrustSignals'
 import { PathSelectionCTA } from '@/components/sections/PathSelectionCTA'
@@ -74,6 +75,10 @@ export default function Home() {
       
       <div className="animate-section section-luxury">
         <WhoWeServeSection />
+      </div>
+
+      <div className="animate-section">
+        <PartnershipLogos />
       </div>
 
       {/* Success Stories Section */}

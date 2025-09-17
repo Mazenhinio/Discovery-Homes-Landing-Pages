@@ -10,25 +10,47 @@ const smoothScrollTo = (elementId: string) => {
   console.log('Attempting to scroll to:', elementId);
   const element = document.getElementById(elementId);
   console.log('Element found:', element);
+  
   if (element) {
-    const offsetTop = element.offsetTop - 80; // Account for fixed header
-    console.log('Scrolling to offset:', offsetTop);
+    // Get the element's position relative to the document
+    const rect = element.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const elementTop = rect.top + scrollTop;
+    const offsetTop = elementTop - 80; // Account for fixed header
     
-    // Temporarily enable smooth scrolling for this action
-    const originalScrollBehavior = document.documentElement.style.scrollBehavior
-    document.documentElement.style.scrollBehavior = 'smooth'
+    console.log('Element rect:', rect);
+    console.log('Current scroll position:', scrollTop);
+    console.log('Element top position:', elementTop);
+    console.log('Target scroll position:', offsetTop);
     
-    window.scrollTo({
-      top: offsetTop,
-      behavior: 'smooth'
-    });
+    // Try smooth scroll first, fallback to instant scroll if needed
+    try {
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      });
+    } catch (error) {
+      console.log('Smooth scroll failed, using instant scroll:', error);
+      window.scrollTo(0, offsetTop);
+    }
     
-    // Restore original scroll behavior after animation
+    // Fallback: if smooth scroll doesn't work due to CSS, use manual animation
     setTimeout(() => {
-      document.documentElement.style.scrollBehavior = originalScrollBehavior
-    }, 1000)
+      const currentScroll = window.pageYOffset;
+      if (Math.abs(currentScroll - offsetTop) > 50) {
+        console.log('Smooth scroll may have failed, using manual animation');
+        window.scrollTo(0, offsetTop);
+      }
+    }, 100);
   } else {
     console.log('Element not found with ID:', elementId);
+    // Fallback: try to find any element with similar ID
+    const allElements = document.querySelectorAll('[id*="how-it-works"], [id*="success-stories"]');
+    console.log('Found elements with similar IDs:', allElements);
+    
+    // Additional debugging: check all elements with IDs
+    const allElementsWithIds = document.querySelectorAll('[id]');
+    console.log('All elements with IDs:', Array.from(allElementsWithIds).map(el => ({ id: el.id, tagName: el.tagName })));
   }
 };
 
@@ -72,8 +94,9 @@ export function Navigation() {
         : 'bg-white/95 backdrop-blur-sm'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex items-center">
+        <div className="flex justify-center items-center h-16 relative">
+          {/* Logo positioned absolutely to the left */}
+          <div className="absolute left-0 flex items-center">
             <Link href="/" className="flex items-center micro-interaction">
               <img
                 src="/assets/images/logo/logo-header.webp"
@@ -83,7 +106,7 @@ export function Navigation() {
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation - Centered */}
           <div className="hidden md:flex items-center space-x-8">
             {/* Our Builds Luxury Dropdown */}
             <div 
@@ -158,9 +181,6 @@ export function Navigation() {
               )}
             </div>
 
-            <Link href="/quote-builder" className="nav-link nav-link-eco nav-item">
-              <span className="font-semibold text-discovery-sage hover:text-discovery-lime transition-colors">Get Quote</span>
-            </Link>
             <button 
               onClick={() => smoothScrollTo('success-stories')}
               className="nav-link nav-item nav-link-smooth"
@@ -182,7 +202,7 @@ export function Navigation() {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden absolute right-0 flex items-center">
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-discovery-charcoal hover:text-discovery-gold focus:outline-none transition-all duration-300 micro-interaction"
@@ -269,13 +289,6 @@ export function Navigation() {
                 </div>
               </div>
 
-              <Link 
-                href="/quote-builder" 
-                className="block px-4 py-3 text-discovery-white hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/10 font-medium"
-                onClick={() => setIsOpen(false)}
-              >
-                Get Quote
-              </Link>
               <button 
                 onClick={() => {
                   smoothScrollTo('success-stories');

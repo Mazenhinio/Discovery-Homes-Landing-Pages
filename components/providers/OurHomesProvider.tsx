@@ -51,20 +51,35 @@ export function OurHomesProvider({ children }: { children: ReactNode }) {
         }, 1000)
         
         // Then change the tab if specified
-        if (tab && ourHomesRef.current) {
+        if (tab) {
           console.log('Setting active tab to:', tab)
           // Small delay to ensure scroll has started
           setTimeout(() => {
-            ourHomesRef.current?.setActiveTab(tab)
-            console.log('Tab changed to:', tab)
+            // Try the ref first (for pages using OurHomesSection component)
+            if (ourHomesRef.current) {
+              ourHomesRef.current.setActiveTab(tab)
+              console.log('Tab changed via ref to:', tab)
+            } else {
+              // Fallback: dispatch a custom event for pages with custom implementations
+              const event = new CustomEvent('setActiveTab', { detail: { tab } })
+              window.dispatchEvent(event)
+              console.log('Dispatched custom event for tab:', tab)
+            }
           }, 200)
         }
       } else {
         console.warn('Our Homes section not found on this page')
-        // Still try to change tab if we have the ref
-        if (tab && ourHomesRef.current) {
+        // Still try to change tab if we have the ref or dispatch event
+        if (tab) {
           console.log('Setting active tab to:', tab)
-          ourHomesRef.current?.setActiveTab(tab)
+          if (ourHomesRef.current) {
+            ourHomesRef.current.setActiveTab(tab)
+          } else {
+            // Dispatch custom event for pages with custom implementations
+            const event = new CustomEvent('setActiveTab', { detail: { tab } })
+            window.dispatchEvent(event)
+            console.log('Dispatched custom event for tab:', tab)
+          }
         }
       }
     }, 10)

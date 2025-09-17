@@ -57,7 +57,19 @@ export default function FirstNationsLandingPage() {
     calculateTimeLeft()
     const timer = setInterval(calculateTimeLeft, 1000)
     
-    return () => clearInterval(timer)
+    // Listen for custom tab change events from navigation
+    const handleTabChange = (event: CustomEvent) => {
+      const { tab } = event.detail
+      console.log('Received tab change event:', tab)
+      setActiveTab(tab)
+    }
+    
+    window.addEventListener('setActiveTab', handleTabChange as EventListener)
+    
+    return () => {
+      clearInterval(timer)
+      window.removeEventListener('setActiveTab', handleTabChange as EventListener)
+    }
   }, [])
 
   const handleFormSubmit = async (formData: any) => {
