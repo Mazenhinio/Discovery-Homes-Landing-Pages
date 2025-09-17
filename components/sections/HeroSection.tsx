@@ -7,6 +7,8 @@ export function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isPlaying, setIsPlaying] = useState(true)
   const [showText, setShowText] = useState(true)
+  const [deviceType, setDeviceType] = useState<'mobile' | 'tablet' | 'desktop'>('desktop')
+  const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 })
   const intervalRef = useRef<NodeJS.Timeout>()
   
   const slides = [
@@ -77,6 +79,60 @@ export function HeroSection() {
     setShowText(true)
   }, [])
 
+  // Device detection and image dimension calculation
+  useEffect(() => {
+    const detectDeviceAndCalculateDimensions = () => {
+      const userAgent = navigator.userAgent
+      const screenWidth = window.screen.width
+      const screenHeight = window.screen.height
+      
+      let device = 'desktop'
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent)) {
+        if (/iPad|Android.*Tablet|Windows.*Touch/i.test(userAgent) || (screenWidth >= 768 && screenWidth <= 1024)) {
+          device = 'tablet'
+        } else {
+          device = 'mobile'
+        }
+      }
+      
+      setDeviceType(device as 'mobile' | 'tablet' | 'desktop')
+      
+      // Calculate image container dimensions for mobile
+      if (device === 'mobile') {
+        // For mobile with object-contain, calculate the actual visible image area
+        const aspectRatio = 16 / 9 // Assuming landscape images
+        const containerWidth = screenWidth
+        const containerHeight = screenHeight
+        
+        let imageWidth, imageHeight
+        
+        if (containerWidth / containerHeight > aspectRatio) {
+          // Image fits by height
+          imageHeight = containerHeight
+          imageWidth = imageHeight * aspectRatio
+        } else {
+          // Image fits by width
+          imageWidth = containerWidth
+          imageHeight = imageWidth / aspectRatio
+        }
+        
+        // Make text container 70% of the actual image dimensions
+        const textWidth = imageWidth * 0.7
+        const textHeight = imageHeight * 0.7
+        
+        setImageDimensions({ width: textWidth, height: textHeight })
+      } else {
+        setImageDimensions({ width: 0, height: 0 })
+      }
+    }
+
+    detectDeviceAndCalculateDimensions()
+    
+    // Re-detect on resize
+    window.addEventListener('resize', detectDeviceAndCalculateDimensions)
+    return () => window.removeEventListener('resize', detectDeviceAndCalculateDimensions)
+  }, [])
+
   // Auto-advance carousel
   useEffect(() => {
     if (!isPlaying) {
@@ -96,7 +152,7 @@ export function HeroSection() {
   }, [nextSlide, isPlaying])
 
   return (
-    <section className="relative min-h-screen h-screen pt-16 overflow-hidden">
+    <section className="relative min-h-screen h-screen overflow-hidden" style={{ height: '100vh', width: '100vw', backgroundColor: 'rgba(45, 45, 45, 0.9)' }}>
       {/* Carousel Background */}
       <div className="absolute inset-0">
         {slides.map((slide, index) => (
@@ -106,11 +162,40 @@ export function HeroSection() {
               index === currentSlide ? 'opacity-100' : 'opacity-0'
             }`}
           >
-            <img
-              src={slide.image}
-              alt={`Discovery Homes Slide ${index + 1}`}
-              className="w-full h-full object-cover"
-            />
+            {/* Responsive Image Container - Adapts based on device type */}
+            <div className="absolute inset-0 w-full h-full">
+              {deviceType === 'desktop' ? (
+                // Desktop: Full image without container constraints
+                <img
+                  src={slide.image}
+                  alt={`Discovery Homes Slide ${index + 1}`}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'center center'
+                  }}
+                />
+              ) : (
+                // Mobile/Tablet: Responsive container for proper sizing
+                <div className="relative w-full h-full overflow-hidden">
+                  <img
+                    src={slide.image}
+                    alt={`Discovery Homes Slide ${index + 1}`}
+                    className="absolute inset-0 w-full h-full object-contain sm:object-cover"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'contain',
+                      objectPosition: 'center center',
+                      minWidth: '100%',
+                      minHeight: '100%'
+                    }}
+                  />
+                </div>
+              )}
+            </div>
           </div>
         ))}
       </div>
@@ -150,59 +235,71 @@ export function HeroSection() {
         <ChevronUp size={20} className="sm:w-6 sm:h-6" />
       </button>
 
-      {/* Text Content - Smooth animation */}
-      <div className={`absolute inset-0 flex items-center justify-center z-10 transition-all duration-700 ease-out overflow-visible pt-16 sm:pt-20 ${
+      {/* Text Content - Bound to image dimensions */}
+      <div className={`absolute inset-0 flex items-center justify-center z-10 transition-all duration-700 ease-out overflow-hidden ${
         showText 
           ? 'opacity-100 translate-y-0' 
           : 'opacity-0 translate-y-8 pointer-events-none'
       }`}>
-        <div className={`text-center text-yellow-400 max-w-4xl px-6 sm:px-8 py-12 sm:py-16 md:py-20 transition-all duration-500 ease-out delay-100 relative mx-4 sm:mx-6 ${
+        {/* Responsive text container that adapts to image boundaries */}
+        <div className={`relative w-full h-full flex items-center justify-center px-4 sm:px-6 md:px-8 transition-all duration-500 ease-out delay-100 ${
           showText ? 'scale-100' : 'scale-95'
         }`}>
-          {/* Dark backdrop for better contrast */}
-          <div className="absolute inset-0 bg-black/14 rounded-3xl -z-10 -m-2 sm:-m-4 md:-m-6"></div>
-          
-                                  <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 sm:mb-6 leading-[1.1] sm:leading-tight transition-all duration-600 ease-out drop-shadow-2xl text-discovery-lime nature-shimmer leading-normal pt-4 pb-2 ${
-                          showText ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
-                        }`}>
-            {slides[currentSlide].title}
-          </h1>
-          <p className={`text-lg sm:text-xl md:text-2xl mb-3 sm:mb-4 font-bold transition-all duration-600 ease-out delay-100 text-discovery-sage ${
-            showText ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
-          }`}>
-            {slides[currentSlide].subtitle}
-          </p>
-          <p className={`text-sm sm:text-base md:text-lg mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed text-white transition-all duration-600 ease-out delay-150 ${
-            showText ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
-          }`}>
-            High-quality, culturally-respectful modular housing that respects the land, empowers communities, and helps Canadians unlock the potential of their property.
-          </p>
-          <div className={`flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-6 sm:mb-8 transition-all duration-600 ease-out delay-200 ${
-            showText ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
-          }`}>
-            <a 
-              href="/quote-builder"
-              className="btn-nature px-6 sm:px-8 py-3 rounded-lg text-base sm:text-lg font-semibold glow-green growth-pulse transition-all duration-300 hover:scale-105"
+           {/* Text content container with responsive sizing */}
+           <div 
+             className="text-center text-yellow-400 w-auto h-auto px-2 sm:px-3 py-2 sm:py-3 md:py-4 relative"
+             style={deviceType === 'mobile' && imageDimensions.width > 0 ? {
+               maxWidth: `${imageDimensions.width}px`,
+               maxHeight: `${imageDimensions.height}px`,
+               width: 'auto',
+               height: 'auto'
+             } : {
+               maxWidth: deviceType === 'tablet' ? '70vw' : '60vw',
+               maxHeight: deviceType === 'tablet' ? '60vh' : '50vh',
+               width: 'auto',
+               height: 'auto'
+             }}
+           >
+            {/* Dark backdrop for better contrast */}
+            <div className="absolute inset-0 bg-black/20 rounded-2xl sm:rounded-3xl -z-10 -m-2 sm:-m-4"></div>
+            
+             <h1 className={`text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-black mb-1 sm:mb-2 md:mb-3 leading-tight transition-all duration-600 ease-out drop-shadow-2xl text-discovery-lime nature-shimmer ${
+               showText ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
+             }`}>
+               {slides[currentSlide].title}
+             </h1>
+             <p className={`text-xs sm:text-sm md:text-base lg:text-lg mb-1 sm:mb-2 font-bold transition-all duration-600 ease-out delay-100 text-discovery-sage ${
+               showText ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
+             }`}>
+               {slides[currentSlide].subtitle}
+             </p>
+             <div className={`flex flex-col sm:flex-row gap-1 sm:gap-2 justify-center mb-2 sm:mb-3 md:mb-4 transition-all duration-600 ease-out delay-200 ${
+               showText ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
+             }`}>
+               <a 
+                 href="/quote-builder"
+                 className="btn-nature px-2 sm:px-3 md:px-4 py-1 sm:py-1 md:py-2 rounded-lg text-xs sm:text-sm md:text-base font-semibold glow-green growth-pulse transition-all duration-300 hover:scale-105"
+               >
+                 Start Building My Home →
+               </a>
+               <a 
+                 href="/success-stories"
+                 className="btn-forest px-2 sm:px-3 md:px-4 py-1 sm:py-1 md:py-2 rounded-lg text-xs sm:text-sm md:text-base font-semibold transition-all duration-300 hover:scale-105"
+               >
+                 Watch Success Stories
+               </a>
+             </div>
+            
+            {/* Hide Text Button - Smooth animation */}
+            <button
+              onClick={hideText}
+              className={`glass-eco text-discovery-lime p-2 sm:p-3 rounded-full hover:glow-lime transition-all duration-600 ease-out delay-300 hover:scale-105 ${
+                showText ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+              }`}
             >
-              Start Building My Home →
-            </a>
-            <a 
-              href="/success-stories"
-              className="btn-forest px-6 sm:px-8 py-3 rounded-lg text-base sm:text-lg font-semibold transition-all duration-300 hover:scale-105"
-            >
-              Watch Success Stories
-            </a>
+              <ChevronDown size={16} className="sm:w-5 sm:h-5" />
+            </button>
           </div>
-          
-          {/* Hide Text Button - Smooth animation */}
-          <button
-            onClick={hideText}
-            className={`glass-eco text-discovery-lime p-3 rounded-full hover:glow-lime transition-all duration-600 ease-out delay-300 hover:scale-105 ${
-              showText ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}
-          >
-            <ChevronDown size={20} />
-          </button>
         </div>
       </div>
 

@@ -6,21 +6,21 @@ export function WhoWeServeSection() {
     {
       title: "Indigenous Communities",
       description: "Culturally-aligned, grant-ready housing solutions with dedicated support and funding guidance for First Nations across Western Canada.",
-      href: "/copies/first-nations-v2",
+      href: "/first-nations",
       features: ["Cultural respect", "Grant assistance", "Community partnerships"],
       color: "bg-blue-100 text-blue-800 border-blue-200"
     },
     {
       title: "Resort & Airbnb Owners", 
       description: "High-ROI cabins and rental units designed to enhance guest experiences and maximize revenue potential.",
-      href: "/copies/resort-owners-v2",
+      href: "/resort-owners",
       features: ["Revenue optimization", "Guest experience", "Quick deployment"],
       color: "bg-green-100 text-green-800 border-green-200"
     },
     {
       title: "Developers & Landowners",
       description: "Scalable housing solutions for landowners, developers, and large-scale residential projects.",
-      href: "/copies/land-owners-v2",
+      href: "/land-owners",
       features: ["Scalable solutions", "Project management", "Timeline certainty"],
       color: "bg-indigo-100 text-indigo-800 border-indigo-200"
     }

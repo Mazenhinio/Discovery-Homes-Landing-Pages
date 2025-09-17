@@ -4,14 +4,9 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { ArrowRight, Download, Calendar, MessageCircle, Star, Users, Home, Heart, Shield, Award, DollarSign, TrendingUp, Building, Calculator, MapPin, Leaf, Globe, Zap, Clock } from 'lucide-react'
 import { LeadCaptureForm } from '@/components/LeadCaptureForm'
-
-
 import { CTABanner } from '@/components/CTABanner'
-import { FirstNationsScheduler } from '@/components/FirstNationsScheduler'
-import { FirstNationsAnalytics } from '@/components/FirstNationsAnalytics'
-import { FirstNationsChatbot } from '@/components/FirstNationsChatbot'
 
-export default function FirstNationsLandingPage() {
+export default function LandOwnersLandingPage() {
   const [isFormSubmitted, setIsFormSubmitted] = useState(false)
   const [isClient, setIsClient] = useState(false)
   const [showDownloadForm, setShowDownloadForm] = useState(false)
@@ -20,14 +15,14 @@ export default function FirstNationsLandingPage() {
     email: '',
     phone: ''
   })
-  const [activeTab, setActiveTab] = useState('pine')
-  const [showThankYou, setShowThankYou] = useState(false)
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0
   })
+  const [activeTab, setActiveTab] = useState('pine')
+  const [showThankYou, setShowThankYou] = useState(false)
 
   useEffect(() => {
     setIsClient(true)
@@ -62,7 +57,7 @@ export default function FirstNationsLandingPage() {
 
   const handleFormSubmit = async (formData: any) => {
     try {
-      const response = await fetch('/api/forms/first-nations', {
+      const response = await fetch('/api/forms/land-owners', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -81,7 +76,7 @@ export default function FirstNationsLandingPage() {
   const handleDownloadFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const response = await fetch('https://services.leadconnectorhq.com/hooks/02vJIYEzMsesDcYai65O/webhook-trigger/bbf2c818-151c-4366-b401-cc3b2d2bb222', {
+      const response = await fetch('https://services.leadconnectorhq.com/hooks/02vJIYEzMsesDcYai65O/webhook-trigger/HbWk0Go6KNcxvahZph0m', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -91,7 +86,7 @@ export default function FirstNationsLandingPage() {
           email: downloadFormData.email,
           phone: downloadFormData.phone,
           formType: 'download-guide',
-          source: 'first-nations-landing-page',
+          source: 'land-owners-landing-page',
           timestamp: new Date().toISOString()
         }),
       })
@@ -102,6 +97,8 @@ export default function FirstNationsLandingPage() {
         setDownloadFormData({ name: '', email: '', phone: '' })
         // Show custom thank you message
         setShowThankYou(true)
+        // Hide thank you message after 5 seconds
+        setTimeout(() => setShowThankYou(false), 5000)
       } else {
         const errorData = await response.text()
         console.error('Webhook error:', errorData)
@@ -120,8 +117,8 @@ export default function FirstNationsLandingPage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="/assets/images/new-content/Landing Page - Indigenous/CB indegen1_bloom_low_6x.webp"
-            alt="First Nations Community Housing"
+            src="/assets/images/new-content/Landing Page- Land Owners/CB-PrairieFarm-Hero__Prairie Farm – Hero__Custom-Build__v01.webp"
+            alt="Land Development Investment"
             fill
             className="object-cover"
             priority
@@ -132,17 +129,17 @@ export default function FirstNationsLandingPage() {
         {/* Hero Content */}
         <div className="relative z-10 text-center text-discovery-white px-4 max-w-6xl mx-auto">
           <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 leading-tight text-discovery-white">
-            Building Homes, 
-            <span className="block text-discovery-gold">Building Communities</span>
+            Transform Your Land 
+            <span className="block text-discovery-gold">Into Opportunity</span>
           </h1>
           <p className="text-xl md:text-2xl mb-8 max-w-4xl mx-auto leading-relaxed">
-            Discovery Homes proudly partners with First Nations communities to create sustainable, 
-            culturally-appropriate housing solutions that honor tradition while embracing modern innovation.
+            Discovery Homes helps land owners unlock the full potential of their properties with 
+            sustainable modular development solutions that maximize value and minimize environmental impact.
           </p>
           
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <a href="/copies/quote-builder-v2" className="bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center gap-2 group">
+            <a href="/quote-builder" className="bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center gap-2 group">
               Get Instant Quote
               <ArrowRight className="group-hover:translate-x-1 transition-transform" />
             </a>
@@ -151,7 +148,7 @@ export default function FirstNationsLandingPage() {
               className="border-2 border-discovery-white text-discovery-white hover:bg-discovery-white hover:text-discovery-charcoal px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center gap-2"
             >
               <Download className="w-5 h-5" />
-              Download Guide
+              Download Development Guide
             </button>
           </div>
         </div>
@@ -164,78 +161,82 @@ export default function FirstNationsLandingPage() {
         </div>
       </section>
 
-      {/* Trust Signals */}
+      {/* Development Statistics */}
       <section className="py-16 bg-discovery-charcoal">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div className="grid md:grid-cols-4 gap-8 text-center">
             <div className="text-discovery-white">
-              <div className="text-4xl font-bold text-discovery-gold mb-2">15+</div>
-              <div className="text-sm">Years Experience</div>
+              <div className="text-4xl font-bold text-discovery-gold mb-2">3-5x</div>
+              <div className="text-sm">Land Value Increase</div>
             </div>
             <div className="text-discovery-white">
-              <div className="text-4xl font-bold text-discovery-gold mb-2">50+</div>
-              <div className="text-sm">First Nations Projects</div>
+              <div className="text-4xl font-bold text-discovery-gold mb-2">90 Days</div>
+              <div className="text-sm">From Planning to Revenue</div>
+            </div>
+            <div className="text-discovery-white">
+              <div className="text-4xl font-bold text-discovery-gold mb-2">40%</div>
+              <div className="text-sm">Lower Development Costs</div>
             </div>
             <div className="text-discovery-white">
               <div className="text-4xl font-bold text-discovery-gold mb-2">100%</div>
-              <div className="text-sm">Community Satisfaction</div>
-            </div>
-            <div className="text-discovery-white">
-              <div className="text-4xl font-bold text-discovery-gold mb-2">24/7</div>
-              <div className="text-sm">Support Available</div>
+              <div className="text-sm">Sustainable Solutions</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Our Commitment Section */}
+
+      {/* Land Development Benefits */}
       <section className="py-20 bg-discovery-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-6">
-              Our Commitment to First Nations Communities
+              Why Land Owners Choose Discovery Homes
             </h2>
             <p className="text-xl text-discovery-charcoal-light max-w-3xl mx-auto">
-              We understand the unique cultural, environmental, and economic considerations that shape 
-              housing needs in First Nations communities. Our approach is built on respect, collaboration, 
-              and sustainable development.
+              Our modular development approach transforms underutilized land into profitable, 
+              sustainable communities while preserving your property's natural beauty.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center p-8 rounded-2xl bg-gradient-to-br from-discovery-sage/10 to-discovery-gold/10">
               <div className="w-16 h-16 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-6">
-                <Heart className="w-8 h-8 text-discovery-charcoal" />
+                <TrendingUp className="w-8 h-8 text-discovery-charcoal" />
               </div>
               <h3 className="text-2xl font-serif font-bold text-discovery-charcoal mb-4">
-                Cultural Respect
+                Maximize Land Value
               </h3>
               <p className="text-discovery-charcoal-light">
-                We honor traditional values and incorporate cultural elements into our designs, 
-                ensuring each home reflects the community&apos;s heritage and identity.
+                Transform raw land into income-generating properties with 3-5x value increase 
+                through strategic modular development and community planning.
               </p>
             </div>
 
             <div className="text-center p-8 rounded-2xl bg-gradient-to-br from-discovery-sage/10 to-discovery-gold/10">
               <div className="w-16 h-16 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-6">
-                <Shield className="w-8 h-8 text-discovery-charcoal" />
+                <Leaf className="w-8 h-8 text-discovery-charcoal" />
               </div>
               <h3 className="text-2xl font-serif font-bold text-discovery-charcoal mb-4">
                 Sustainable Development
               </h3>
               <p className="text-discovery-charcoal-light">
-                Our modular homes are built with environmental responsibility in mind, 
-                using sustainable materials and energy-efficient systems.
+                Eco-friendly modular construction minimizes environmental impact while creating 
+                beautiful, energy-efficient communities that respect your land's natural features.
               </p>
             </div>
 
             <div className="text-center p-8 rounded-2xl bg-gradient-to-br from-discovery-sage/10 to-discovery-gold/10">
               <div className="w-16 h-16 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-6">
-                <Users className="w-8 h-8 text-discovery-charcoal" />
+                <Zap className="w-8 h-8 text-discovery-charcoal" />
               </div>
               <h3 className="text-2xl font-serif font-bold text-discovery-charcoal mb-4">
-                Community Partnership
+                Rapid Implementation
               </h3>
+              <p className="text-discovery-charcoal-light">
+                Go from concept to revenue in 90 days with our streamlined development process, 
+                including zoning, permits, and infrastructure planning.
+              </p>
             </div>
           </div>
         </div>
@@ -266,7 +267,7 @@ export default function FirstNationsLandingPage() {
             {/* CTA Button */}
             <div className="mb-12">
               <a 
-                href="/copies/quote-builder-v2"
+                href="/quote-builder"
                 className="inline-block bg-discovery-charcoal text-discovery-white px-12 py-4 rounded-lg font-bold text-xl border-2 border-discovery-charcoal hover:bg-discovery-white hover:text-discovery-charcoal transition-all duration-300"
               >
                 CLAIM YOUR DISCOUNT
@@ -304,35 +305,14 @@ export default function FirstNationsLandingPage() {
         </div>
       </section>
 
-      {/* Additional CTA Section */}
-      <section className="py-16 bg-discovery-white">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-discovery-charcoal mb-6">
-            Ready to Get Started?
-          </h2>
-          <p className="text-xl text-discovery-charcoal-light mb-8">
-            Join the First Nations communities already building their future with Discovery Homes.
-          </p>
-          <a 
-            href="/copies/quote-builder-v2"
-            className="inline-block bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center gap-2 group mx-auto"
-          >
-            Get Instant Quote
-            <ArrowRight className="group-hover:translate-x-1 transition-transform" />
-          </a>
-        </div>
-      </section>
-
       {/* Our Homes Section */}
       <section id="our-homes" className="py-20 bg-discovery-white">
         <div className="max-w-7xl mx-auto px-4">
+          {/* Section Header */}
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-6">
               OUR HOMES
             </h2>
-            <p className="text-xl text-discovery-charcoal-light max-w-3xl mx-auto">
-              
-            </p>
             
             {/* Tab Navigation */}
             <div className="flex flex-wrap justify-center gap-4 mb-8">
@@ -361,46 +341,87 @@ export default function FirstNationsLandingPage() {
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             {/* Left Column - Images */}
             <div className="space-y-6">
-              {activeTab === 'pine' && (
-                <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl">
-                  <Image
-                    src="/assets/images/new-content/PIne 1 - Pine/xf pine 1 front right scandanavian.webp"
-                    alt="Pine Model - The Classic"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              )}
-              {activeTab === 'spruce' && (
-                <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl">
-                  <Image
-                    src="/assets/images/new-content/Pine 2- Spruce/XF pien 1 and 2 charcoal.webp"
-                    alt="Spruce Model - The Versatile"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              )}
-              {activeTab === 'willow' && (
-                <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl">
-                  <Image
-                    src="/assets/images/new-content/Pine 3- Willow/XF pine 3 scandanavian front right .webp"
-                    alt="Willow Model - The Spacious"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              )}
-              {activeTab === 'custom' && (
-                <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl">
-                  <Image
-                    src="/assets/images/new-content/Landing Page - Indigenous/CB indegen.webp"
-                    alt="Custom Build - The Unique"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              )}
+              {/* Main Model Image */}
+              <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl">
+                <Image
+                  src={
+                    activeTab === 'pine' ? '/assets/images/new-content/PIne 1 - Pine/xf pine 1 front right scandanavian.webp' :
+                    activeTab === 'spruce' ? '/assets/images/new-content/Pine 2- Spruce/XF pien 1 and 2 charcoal.webp' :
+                    activeTab === 'willow' ? '/assets/images/new-content/Pine 3- Willow/XF pine 3 scandanavian front right .webp' :
+                    '/assets/images/new-content/Custom Builds/CB-LakesideRetreat-Front__Lakeside-Retreat__CustomBuild__v01.webp'
+                  }
+                  alt={`${activeTab} model`}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+
+              {/* Image Gallery */}
+              <div className="grid grid-cols-2 gap-4">
+                {activeTab === 'pine' && [
+                  '/assets/images/new-content/PIne 1 - Pine/IF Pine 1 - nordic white - living room.webp',
+                  '/assets/images/new-content/PIne 1 - Pine/IF pine1-kitchen-NW.webp',
+                  '/assets/images/new-content/PIne 1 - Pine/IF pine1-bedroom-NW.webp',
+                  '/assets/images/new-content/PIne 1 - Pine/IF Pine1-bathroom-NW.webp'
+                ].map((src, index) => (
+                  <div key={index} className="relative h-32 rounded-xl overflow-hidden shadow-lg">
+                    <Image
+                      src={src}
+                      alt={`Pine interior ${index + 1}`}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
+
+                {activeTab === 'spruce' && [
+                  '/assets/images/new-content/Pine 2- Spruce/IF pine1-kitchen-E&S.webp',
+                  '/assets/images/new-content/Pine 2- Spruce/IF pine1-living-E&S.webp',
+                  '/assets/images/new-content/Pine 2- Spruce/IF pine1-bedroom-E&S.webp',
+                  '/assets/images/new-content/Pine 2- Spruce/IF pine1-bedroom-IC.webp'
+                ].map((src, index) => (
+                  <div key={index} className="relative h-32 rounded-xl overflow-hidden shadow-lg">
+                    <Image
+                      src={src}
+                      alt={`Spruce interior ${index + 1}`}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
+
+                {activeTab === 'willow' && [
+                  '/assets/images/new-content/Pine 3- Willow/IF pine 3 Nordic Whitw.png',
+                  '/assets/images/new-content/Pine 3- Willow/IF Pine3-kitchen-NW.webp',
+                  '/assets/images/new-content/Pine 3- Willow/IF Pine3-kitchen-E&S.webp',
+                  '/assets/images/new-content/Pine 3- Willow/IF Pine3-room-E&S.webp'
+                ].map((src, index) => (
+                  <div key={index} className="relative h-32 rounded-xl overflow-hidden shadow-lg">
+                    <Image
+                      src={src}
+                      alt={`Willow interior ${index + 1}`}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
+
+                {activeTab === 'custom' && [
+                  '/assets/images/new-content/Custom Builds/cb coastal.webp',
+                  '/assets/images/new-content/Custom Builds/cb lakeside.webp',
+                  '/assets/images/new-content/Custom Builds/CB-LakesideRetreat-Front__Lakeside-Retreat__CustomBuild__v01.webp',
+                  '/assets/images/new-content/Custom Builds/CB-ResortCluster-Hero__Resort Cluster – Hero__Resort Cluster__v01.webp'
+                ].map((src, index) => (
+                  <div key={index} className="relative h-32 rounded-xl overflow-hidden shadow-lg">
+                    <Image
+                      src={src}
+                      alt={`Custom build ${index + 1}`}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* Right Column - Details */}
@@ -408,12 +429,10 @@ export default function FirstNationsLandingPage() {
               {activeTab === 'pine' && (
                 <>
                   <div>
-                    <h3 className="text-3xl font-serif font-bold text-discovery-charcoal mb-4">
-                      Pine Model - The Classic
-                    </h3>
+                    <h3 className="text-3xl font-serif font-bold text-discovery-charcoal mb-2">Pine</h3>
+                    <p className="text-xl text-discovery-gold font-semibold mb-4">The Efficient One</p>
                     <p className="text-lg text-discovery-charcoal-light mb-6">
-                      Perfect for couples and small families seeking a cozy home experience. 
-                      This model offers timeless appeal and efficient use of space.
+                      Ideal for singles, couples, or resort units — blending simplicity with style in a compact footprint.
                     </p>
                   </div>
                   
@@ -456,12 +475,10 @@ export default function FirstNationsLandingPage() {
               {activeTab === 'spruce' && (
                 <>
                   <div>
-                    <h3 className="text-3xl font-serif font-bold text-discovery-charcoal mb-4">
-                      Spruce Model - The Versatile
-                    </h3>
+                    <h3 className="text-3xl font-serif font-bold text-discovery-charcoal mb-2">Spruce</h3>
+                    <p className="text-xl text-discovery-gold font-semibold mb-4">The Versatile One</p>
                     <p className="text-lg text-discovery-charcoal-light mb-6">
-                      Ideal for families and groups, offering flexible sleeping arrangements 
-                      and spacious common areas for community gatherings.
+                      Perfect for families or rental markets, with extra space and a flexible layout.
                     </p>
                   </div>
                   
@@ -504,12 +521,10 @@ export default function FirstNationsLandingPage() {
               {activeTab === 'willow' && (
                 <>
                   <div>
-                    <h3 className="text-3xl font-serif font-bold text-discovery-charcoal mb-4">
-                      Willow Model - The Spacious
-                    </h3>
+                    <h3 className="text-3xl font-serif font-bold text-discovery-charcoal mb-2">Willow</h3>
+                    <p className="text-xl text-discovery-gold font-semibold mb-4">The Minimalist</p>
                     <p className="text-lg text-discovery-charcoal-light mb-6">
-                      Our largest model, perfect for extended families and community leaders. 
-                      Features premium finishes and spacious layouts.
+                      A modern, tiny‑home solution — perfect as an office, rental, or weekend retreat.
                     </p>
                   </div>
                   
@@ -523,7 +538,7 @@ export default function FirstNationsLandingPage() {
                       <div className="text-sm text-discovery-charcoal-light">Layout</div>
                     </div>
                     <div className="bg-discovery-gold/10 p-4 rounded-xl">
-                      <div className="text-2xl font-bold text-discovery-charcoal">$104,000</div>
+                      <div className="text-2xl font-bold text-discovery-charcoal">$99,000</div>
                       <div className="text-sm text-discovery-charcoal-light">Starting Price</div>
                     </div>
                     <div className="bg-discovery-gold/10 p-4 rounded-xl">
@@ -552,11 +567,10 @@ export default function FirstNationsLandingPage() {
               {activeTab === 'custom' && (
                 <>
                   <div>
-                    <h3 className="text-3xl font-serif font-bold text-discovery-charcoal mb-4">
-                      Custom Build - The Unique
-                    </h3>
+                    <h3 className="text-3xl font-serif font-bold text-discovery-charcoal mb-2">Custom Build</h3>
+                    <p className="text-xl text-discovery-gold font-semibold mb-4">Tailored to Your Vision</p>
                     <p className="text-lg text-discovery-charcoal-light mb-6">
-                      Fully tailored modular homes crafted to fit each community's unique needs and cultural preferences.
+                      Fully tailored modular homes crafted to fit each customer's unique needs and preferences.
                     </p>
                   </div>
                   
@@ -592,6 +606,7 @@ export default function FirstNationsLandingPage() {
                   </div>
                 </>
               )}
+
             </div>
           </div>
         </div>
@@ -605,8 +620,8 @@ export default function FirstNationsLandingPage() {
               Success Stories
             </h2>
             <p className="text-xl text-discovery-sage max-w-3xl mx-auto">
-              See how we&apos;ve helped First Nations communities across Canada create sustainable, 
-              beautiful homes that strengthen their communities.
+              See how we&apos;ve helped land owners across Canada transform their properties into 
+              sustainable, profitable communities.
             </p>
           </div>
 
@@ -616,114 +631,112 @@ export default function FirstNationsLandingPage() {
               {/* First set of stories */}
               {[
                 {
-                  title: "Nak'azdli Whut'en First Nation",
-                  description: "20 sustainable modular homes built with cultural consultation and community input",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/LP-IND-4__Cultural touch – mural__Indigenous Communities__v01.webp"
+                  title: "Prairie Farm Development",
+                  description: "Transformed 50 acres into sustainable community with 3x land value increase",
+                  image: "/assets/images/new-content/Landing Page- Land Owners/cb phariri farm.webp"
                 },
                 {
-                  title: "Tla'amin Nation",
-                  description: "Community center and residential complex with traditional design elements",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/LP-IND-6__Interior lifestyle—Grandmother baking bannock__Indigenous Communities__v01.webp"
+                  title: "Mountain Retreat Project",
+                  description: "Converted family land into premium rental community with 90-day deployment",
+                  image: "/assets/images/new-content/Landing Page- Land Owners/LP-CAB-3__Cabin Living — Seasonal appeal – winter__Pine 2__v01.webp"
                 },
                 {
-                  title: "Ktunaxa Nation",
-                  description: "Energy-efficient homes incorporating local materials and cultural motifs",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/CB indegen.webp"
+                  title: "Lakeside Community",
+                  description: "Developed waterfront property into mixed-use community with 40% cost savings",
+                  image: "/assets/images/new-content/Landing Page- Land Owners/CB-PrairieFarm-Rear__Prairie-Farm–Rear__No-Model__v01.webp"
                 },
                 {
-                  title: "Squamish Nation",
-                  description: "Multi-generational housing complex preserving cultural heritage",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/CB indegen1_bloom_low_6x.webp"
+                  title: "Forest Development",
+                  description: "Created eco-friendly community preserving natural features with 100% sustainable design",
+                  image: "/assets/images/new-content/Landing Page- Land Owners/LP-CAB-5__Interior_Comfort__Cabin_Living__v01.webp"
                 },
                 {
-                  title: "Musqueam Nation",
-                  description: "Eco-friendly community development with traditional architecture",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/LP-IND-4__Cultural touch – mural__Indigenous Communities__v01.webp"
+                  title: "Rural Expansion",
+                  description: "Expanded agricultural land into residential community achieving 5x ROI",
+                  image: "/assets/images/new-content/Landing Page- Land Owners/LP delivery.webp"
                 },
                 {
-                  title: "Tsleil-Waututh Nation",
-                  description: "Sustainable housing project with renewable energy integration",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/LP-IND-6__Interior lifestyle—Grandmother baking bannock__Indigenous Communities__v01.webp"
+                  title: "Off-Grid Project",
+                  description: "Built self-sufficient community in remote location with renewable energy",
+                  image: "/assets/images/new-content/Landing Page- Land Owners/LP offgrid.webp"
                 },
                 {
-                  title: "Stó:lō Nation",
-                  description: "Cultural preservation through modern modular housing solutions",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/CB indegen.webp"
+                  title: "Coastal Development",
+                  description: "Developed premium waterfront community with luxury amenities and premium pricing",
+                  image: "/assets/images/new-content/Landing Page- Land Owners/CB-PrairieFarm-Hero__Prairie Farm – Hero__Custom-Build__v01.webp"
                 },
                 {
-                  title: "Nisga'a Nation",
-                  description: "Community-driven development with traditional building techniques",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/CB indegen1_bloom_low_6x.webp"
-                }
-              ].map((story, index) => (
+                  title: "Agricultural Hub",
+                  description: "Created multi-use development combining residential and agricultural uses",
+                  image: "/assets/images/new-content/Landing Page- Land Owners/cb phariri farm.webp"
+              }
+            ].map((story, index) => (
                 <div key={`first-${index}`} className="flex-shrink-0 w-80 mx-4 bg-discovery-charcoal-light rounded-2xl overflow-hidden shadow-2xl">
-                  <div className="relative h-48">
-                    <Image
-                      src={story.image}
-                      alt={story.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-serif font-bold text-discovery-white mb-3">
-                      {story.title}
-                    </h3>
-                    <p className="text-discovery-sage text-sm leading-relaxed mb-4">
-                      {story.description}
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-4 h-4 fill-discovery-gold text-discovery-gold" />
-                        ))}
-                      </div>
-                    </div>
+                <div className="relative h-48">
+                  <Image
+                    src={story.image}
+                    alt={story.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-serif font-bold text-discovery-white mb-2">
+                    {story.title}
+                  </h3>
+                  <p className="text-discovery-sage mb-4">
+                    {story.description}
+                  </p>
+                  <div className="flex items-center gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-discovery-gold text-discovery-gold" />
+                    ))}
                   </div>
                 </div>
-              ))}
+              </div>
+            ))}
               
               {/* Duplicate set for seamless loop */}
-            {[
-              {
-                title: "Nak'azdli Whut'en First Nation",
-                  description: "20 sustainable modular homes built with cultural consultation and community input",
-                image: "/assets/images/new-content/Landing Page - Indigenous/LP-IND-4__Cultural touch – mural__Indigenous Communities__v01.webp"
-              },
-              {
-                title: "Tla'amin Nation",
-                description: "Community center and residential complex with traditional design elements",
-                image: "/assets/images/new-content/Landing Page - Indigenous/LP-IND-6__Interior lifestyle—Grandmother baking bannock__Indigenous Communities__v01.webp"
-              },
-              {
-                title: "Ktunaxa Nation",
-                description: "Energy-efficient homes incorporating local materials and cultural motifs",
-                image: "/assets/images/new-content/Landing Page - Indigenous/CB indegen.webp"
+              {[
+                {
+                  title: "Prairie Farm Development",
+                  description: "Transformed 50 acres into sustainable community with 3x land value increase",
+                  image: "/assets/images/new-content/Landing Page- Land Owners/cb phariri farm.webp"
                 },
                 {
-                  title: "Squamish Nation",
-                  description: "Multi-generational housing complex preserving cultural heritage",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/CB indegen1_bloom_low_6x.webp"
+                  title: "Mountain Retreat Project",
+                  description: "Converted family land into premium rental community with 90-day deployment",
+                  image: "/assets/images/new-content/Landing Page- Land Owners/LP-CAB-3__Cabin Living — Seasonal appeal – winter__Pine 2__v01.webp"
                 },
                 {
-                  title: "Musqueam Nation",
-                  description: "Eco-friendly community development with traditional architecture",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/LP-IND-4__Cultural touch – mural__Indigenous Communities__v01.webp"
+                  title: "Lakeside Community",
+                  description: "Developed waterfront property into mixed-use community with 40% cost savings",
+                  image: "/assets/images/new-content/Landing Page- Land Owners/CB-PrairieFarm-Rear__Prairie-Farm–Rear__No-Model__v01.webp"
                 },
                 {
-                  title: "Tsleil-Waututh Nation",
-                  description: "Sustainable housing project with renewable energy integration",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/LP-IND-6__Interior lifestyle—Grandmother baking bannock__Indigenous Communities__v01.webp"
+                  title: "Forest Development",
+                  description: "Created eco-friendly community preserving natural features with 100% sustainable design",
+                  image: "/assets/images/new-content/Landing Page- Land Owners/LP-CAB-5__Interior_Comfort__Cabin_Living__v01.webp"
                 },
                 {
-                  title: "Stó:lō Nation",
-                  description: "Cultural preservation through modern modular housing solutions",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/CB indegen.webp"
+                  title: "Rural Expansion",
+                  description: "Expanded agricultural land into residential community achieving 5x ROI",
+                  image: "/assets/images/new-content/Landing Page- Land Owners/LP delivery.webp"
                 },
                 {
-                  title: "Nisga'a Nation",
-                  description: "Community-driven development with traditional building techniques",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/CB indegen1_bloom_low_6x.webp"
+                  title: "Off-Grid Project",
+                  description: "Built self-sufficient community in remote location with renewable energy",
+                  image: "/assets/images/new-content/Landing Page- Land Owners/LP offgrid.webp"
+                },
+                {
+                  title: "Coastal Development",
+                  description: "Developed premium waterfront community with luxury amenities and premium pricing",
+                  image: "/assets/images/new-content/Landing Page- Land Owners/CB-PrairieFarm-Hero__Prairie Farm – Hero__Custom-Build__v01.webp"
+                },
+                {
+                  title: "Agricultural Hub",
+                  description: "Created multi-use development combining residential and agricultural uses",
+                  image: "/assets/images/new-content/Landing Page- Land Owners/cb phariri farm.webp"
               }
             ].map((story, index) => (
                 <div key={`second-${index}`} className="flex-shrink-0 w-80 mx-4 bg-discovery-charcoal-light rounded-2xl overflow-hidden shadow-2xl">
@@ -736,32 +749,36 @@ export default function FirstNationsLandingPage() {
                   />
                 </div>
                 <div className="p-6">
-                    <h3 className="text-xl font-serif font-bold text-discovery-white mb-3">
+                  <h3 className="text-xl font-serif font-bold text-discovery-white mb-2">
                     {story.title}
                   </h3>
-                    <p className="text-discovery-sage text-sm leading-relaxed mb-4">
+                  <p className="text-discovery-sage mb-4">
                     {story.description}
                   </p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex">
+                  <div className="flex items-center gap-1">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} className="w-4 h-4 fill-discovery-gold text-discovery-gold" />
                     ))}
-                      </div>
                   </div>
                 </div>
               </div>
             ))}
             </div>
           </div>
-
+          
           {/* Success Stories CTA */}
           <div className="text-center mt-16">
+            <h3 className="text-2xl md:text-3xl font-serif font-bold text-discovery-white mb-6">
+              Ready to Create Your Success Story?
+            </h3>
+            <p className="text-xl text-discovery-sage mb-8 max-w-2xl mx-auto">
+              Join these land owners in transforming your property into a sustainable, profitable community.
+            </p>
             <a 
-              href="/copies/quote-builder-v2"
-              className="inline-block bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center gap-2 group mx-auto"
+              href="/quote-builder"
+              className="inline-block bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-10 py-4 rounded-lg font-semibold text-xl transition-all duration-300 flex items-center gap-2 group mx-auto"
             >
-              Get Instant Quote
+              Start Your Project Today
               <ArrowRight className="group-hover:translate-x-1 transition-transform" />
             </a>
           </div>
@@ -776,8 +793,8 @@ export default function FirstNationsLandingPage() {
               HOW IT WORKS
             </h2>
             <p className="text-xl text-discovery-charcoal-light max-w-3xl mx-auto">
-              Our streamlined process ensures your community housing project is delivered 
-              with quality craftsmanship, sustainable practices, and cultural sensitivity.
+              Our streamlined process ensures your land development project is delivered 
+              with quality craftsmanship, sustainable practices, and maximum value creation.
             </p>
           </div>
 
@@ -787,18 +804,18 @@ export default function FirstNationsLandingPage() {
             <div className="hidden lg:block absolute top-16 left-0 right-0 h-0.5 bg-gradient-to-r from-discovery-gold via-discovery-sage to-discovery-gold"></div>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {/* Step 1: Build Your Dream House */}
+              {/* Step 1: Build Your Dream Development */}
               <div className="text-center relative">
                 <div className="w-16 h-16 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
                   <Home className="w-8 h-8 text-discovery-charcoal" />
                 </div>
                 <div className="bg-discovery-white rounded-2xl p-6 shadow-lg border border-discovery-gold/20">
                   <h3 className="text-xl font-serif font-bold text-discovery-charcoal mb-4">
-                    Build Your Dream House
+                    Build Your Dream Development
                   </h3>
                   <p className="text-discovery-charcoal-light leading-relaxed">
-                    Start with our quote builder to design your perfect modular home. 
-                    Choose from Pine, Spruce, Willow, or create a custom build tailored to your community's needs.
+                    Start with our quote builder to design your perfect modular development. 
+                    Choose from Pine, Spruce, Willow, or create a custom build tailored to your land's potential.
                   </p>
                 </div>
               </div>
@@ -813,8 +830,8 @@ export default function FirstNationsLandingPage() {
                     Discovery Call
                   </h3>
                   <p className="text-discovery-charcoal-light leading-relaxed">
-                    Connect with our First Nations housing specialists for a personalized consultation 
-                    about your community's specific needs and cultural requirements.
+                    Our land development specialists connect with you to understand 
+                    your property characteristics, zoning requirements, and investment goals.
                   </p>
                 </div>
               </div>
@@ -822,15 +839,15 @@ export default function FirstNationsLandingPage() {
               {/* Step 3: Procure & Manufacture */}
               <div className="text-center relative">
                 <div className="w-16 h-16 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
-                  <Building className="w-8 h-8 text-discovery-charcoal" />
+                  <Award className="w-8 h-8 text-discovery-charcoal" />
                 </div>
                 <div className="bg-discovery-white rounded-2xl p-6 shadow-lg border border-discovery-gold/20">
                   <h3 className="text-xl font-serif font-bold text-discovery-charcoal mb-4">
                     Procure & Manufacture
                   </h3>
                   <p className="text-discovery-charcoal-light leading-relaxed">
-                    We source sustainable materials and manufacture your modular homes in our 
-                    controlled facility, ensuring quality and cultural design integration.
+                    We source sustainable materials and manufacture your modular homes in our climate-controlled 
+                    facility, ensuring quality construction and efficient production timelines.
                   </p>
                 </div>
               </div>
@@ -838,15 +855,15 @@ export default function FirstNationsLandingPage() {
               {/* Step 4: Deliver & Install */}
               <div className="text-center relative">
                 <div className="w-16 h-16 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
-                  <Zap className="w-8 h-8 text-discovery-charcoal" />
+                  <ArrowRight className="w-8 h-8 text-discovery-charcoal" />
                 </div>
                 <div className="bg-discovery-white rounded-2xl p-6 shadow-lg border border-discovery-gold/20">
                   <h3 className="text-xl font-serif font-bold text-discovery-charcoal mb-4">
                     Deliver & Install
                   </h3>
                   <p className="text-discovery-charcoal-light leading-relaxed">
-                    Our expert team delivers and installs your modular homes with minimal 
-                    site disruption, respecting your land and community protocols.
+                    Your completed modular development is delivered to your site and professionally installed by 
+                    our experienced team, ready for occupancy and revenue generation.
                   </p>
                 </div>
               </div>
@@ -855,31 +872,34 @@ export default function FirstNationsLandingPage() {
         </div>
       </section>
 
-      {/* Lead Capture Section */}
+
+
+
+
+
+      {/* Start Your Land Development Journey */}
       <section className="py-20 bg-gradient-to-br from-discovery-sage/20 to-discovery-gold/20">
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-stretch">
             <div className="flex flex-col justify-between">
               <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-6">
-                Start Your Community&apos;s Housing Journey
+                Start Your Land Development Journey
               </h2>
               <p className="text-xl text-discovery-charcoal-light mb-8">
-                Ready to explore how Discovery Homes can help your First Nations community? 
-                Download our comprehensive guide and schedule a consultation with our experts.
+                Ready to unlock your property's potential? Download our comprehensive guide and schedule a consultation with our land development experts.
               </p>
-              
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <div className="w-6 h-6 bg-discovery-gold rounded-full flex items-center justify-center">
                     <div className="w-2 h-2 bg-discovery-charcoal rounded-full"></div>
                   </div>
-                  <span className="text-discovery-charcoal">Free consultation with our First Nations housing specialists</span>
+                  <span className="text-discovery-charcoal">Free consultation with our land development specialists</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="w-6 h-6 bg-discovery-gold rounded-full flex items-center justify-center">
                     <div className="w-2 h-2 bg-discovery-charcoal rounded-full"></div>
                   </div>
-                  <span className="text-discovery-charcoal">Comprehensive guide to First Nations housing solutions</span>
+                  <span className="text-discovery-charcoal">Comprehensive guide to land development solutions</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="w-6 h-6 bg-discovery-gold rounded-full flex items-center justify-center">
@@ -888,11 +908,20 @@ export default function FirstNationsLandingPage() {
                   <span className="text-discovery-charcoal">Funding and financing assistance for your project</span>
                 </div>
               </div>
+              <div className="pt-6">
+                <a 
+                  href="/quote-builder"
+                  className="inline-block bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center gap-2 group"
+                >
+                  Get Instant Quote
+                  <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+                </a>
+              </div>
             </div>
 
-            {/* Right Column - Product Image */}
+            {/* Right Column - Product Image and Features */}
             <div className="h-full">
-               
+
               {/* Key Benefits */}
               <div className="bg-discovery-white rounded-2xl p-8 shadow-xl flex flex-col h-full">
                 <h3 className="text-2xl font-serif font-bold text-discovery-charcoal mb-6 text-center">
@@ -903,85 +932,41 @@ export default function FirstNationsLandingPage() {
                     <div className="w-8 h-8 bg-discovery-gold rounded-full flex items-center justify-center">
                       <TrendingUp className="w-4 h-4 text-discovery-charcoal" />
                     </div>
-                    <span className="text-discovery-charcoal font-medium">Sustainable & Durable Construction</span>
+                    <span className="text-discovery-charcoal font-medium">3-5x Land Value Increase</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 bg-discovery-sage rounded-full flex items-center justify-center">
                       <Clock className="w-4 h-4 text-discovery-charcoal" />
                     </div>
-                    <span className="text-discovery-charcoal font-medium">Move-In Ready in Weeks</span>
+                    <span className="text-discovery-charcoal font-medium">90 Days to Revenue</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 bg-discovery-gold rounded-full flex items-center justify-center">
                       <DollarSign className="w-4 h-4 text-discovery-charcoal" />
                     </div>
-                    <span className="text-discovery-charcoal font-medium">Cost-Effective Solutions</span>
+                    <span className="text-discovery-charcoal font-medium">40% Lower Development Costs</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 bg-discovery-sage rounded-full flex items-center justify-center">
                       <Leaf className="w-4 h-4 text-discovery-charcoal" />
                     </div>
-                    <span className="text-discovery-charcoal font-medium">Eco-Friendly Materials</span>
+                    <span className="text-discovery-charcoal font-medium">100% Sustainable Solutions</span>
                   </div>
                 </div>
-               </div>
-             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Certifications & Partnerships */}
-      <section className="py-20 bg-discovery-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-6">
-              Certifications & Partnerships
-            </h2>
-            <p className="text-xl text-discovery-charcoal-light max-w-3xl mx-auto">
-              We maintain the highest standards and work with trusted partners to ensure 
-              the best outcomes for First Nations communities.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { title: "Indigenous Business Certification", icon: Award },
-              { title: "Sustainable Building Certified", icon: Shield },
-              { title: "First Nations Housing Authority Partner", icon: Home },
-              { title: "Cultural Consultation Certified", icon: Heart }
-            ].map((cert, index) => (
-              <div key={index} className="text-center p-6 rounded-2xl bg-gradient-to-br from-discovery-gold/10 to-discovery-sage/10">
-                <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-4">
-                  <cert.icon className="w-6 h-6 text-discovery-charcoal" />
-                </div>
-                <h3 className="font-semibold text-discovery-charcoal">
-                  {cert.title}
-                </h3>
               </div>
-            ))}
-          </div>
-
-          {/* CTA Button */}
-          <div className="text-center mt-16">
-            <a 
-              href="/copies/quote-builder-v2"
-              className="inline-block bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center gap-2 group mx-auto"
-            >
-              Get Instant Quote
-              <ArrowRight className="group-hover:translate-x-1 transition-transform" />
-            </a>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Download Our Guide Section */}
+      {/* Download Guide Section */}
       <section className="py-20 bg-gradient-to-br from-discovery-sage/20 to-discovery-gold/20">
         <div className="max-w-4xl mx-auto px-4">
           <div className="bg-discovery-white rounded-2xl p-12 shadow-xl border-2 border-discovery-charcoal">
             <div className="text-center">
               <h2 className="text-3xl md:text-4xl font-serif font-bold text-discovery-charcoal mb-6">
-                Download Our Guide For Modular Homes For First Nation Communities:
-              </h2>
+                Download Our Guide For Modular Homes For Land Development:
+            </h2>
               
               <h3 className="text-xl font-semibold text-discovery-charcoal mb-8">
                 What it includes:
@@ -994,7 +979,7 @@ export default function FirstNationsLandingPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
                   </div>
-                  <span className="text-discovery-charcoal font-medium text-lg">Comprehensive First Nations housing solutions overview</span>
+                  <span className="text-discovery-charcoal font-medium text-lg">Comprehensive land development solutions overview</span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center">
@@ -1002,7 +987,7 @@ export default function FirstNationsLandingPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                     </svg>
                   </div>
-                  <span className="text-discovery-charcoal font-medium text-lg">Cultural consultation and community engagement strategies</span>
+                  <span className="text-discovery-charcoal font-medium text-lg">Property assessment and development planning</span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center">
@@ -1020,7 +1005,7 @@ export default function FirstNationsLandingPage() {
                   </div>
                   <span className="text-discovery-charcoal font-medium text-lg">Project planning and timeline assistance</span>
                 </div>
-              </div>
+          </div>
 
               <button 
                 onClick={() => setShowDownloadForm(true)}
@@ -1028,35 +1013,11 @@ export default function FirstNationsLandingPage() {
               >
                 Download Guide
               </button>
-            </div>
+              </div>
           </div>
         </div>
       </section>
 
-      {/* Custom Thank You Message */}
-      {showThankYou && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-discovery-white rounded-2xl p-8 max-w-md w-full text-center">
-            <div className="w-16 h-16 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-6">
-              <svg className="w-8 h-8 text-discovery-charcoal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <h3 className="text-2xl font-serif font-bold text-discovery-charcoal mb-4">
-              Thank You!
-            </h3>
-            <p className="text-discovery-charcoal-light mb-6">
-              Your guide will be sent to your email shortly. We'll also connect you with our First Nations housing specialists for a personalized consultation.
-            </p>
-            <button 
-              onClick={() => setShowThankYou(false)}
-              className="bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-6 py-3 rounded-lg font-semibold transition-all duration-300"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* Download Guide Popup Form */}
       {showDownloadForm && (
@@ -1070,15 +1031,10 @@ export default function FirstNationsLandingPage() {
               >
                 ×
               </button>
-            </div>
+                  </div>
             
-            <p className="text-gray-600 mb-6">
-              Get instant access to our comprehensive First Nations housing guide with funding resources, 
-              cultural considerations, and project planning tips.
-            </p>
-            
-            <form onSubmit={handleDownloadFormSubmit} className="space-y-4">
-              <div>
+            <form onSubmit={handleDownloadFormSubmit} className="space-y-6">
+                  <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
                 <input
                   type="text"
@@ -1088,9 +1044,9 @@ export default function FirstNationsLandingPage() {
                   placeholder="Enter your full name"
                   required
                 />
-              </div>
-              
-              <div>
+                </div>
+                
+                  <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
                 <input
                   type="email"
@@ -1100,9 +1056,9 @@ export default function FirstNationsLandingPage() {
                   placeholder="Enter your email address"
                   required
                 />
-              </div>
-              
-              <div>
+                </div>
+                
+                  <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
                 <input
                   type="tel"
@@ -1112,7 +1068,7 @@ export default function FirstNationsLandingPage() {
                   placeholder="Enter your phone number"
                   required
                 />
-              </div>
+                  </div>
               
               <div className="flex gap-4 pt-4">
                 <button
@@ -1129,8 +1085,33 @@ export default function FirstNationsLandingPage() {
                   <Download className="w-4 h-4" />
                   Download Guide
                 </button>
-              </div>
+                </div>
             </form>
+              </div>
+            </div>
+      )}
+
+      {/* Custom Thank You Message */}
+      {showThankYou && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-discovery-white rounded-2xl p-8 max-w-md w-full shadow-2xl">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-6">
+                <div className="w-8 h-8 text-discovery-charcoal text-2xl">✓</div>
+              </div>
+              <h3 className="text-2xl font-serif font-bold text-discovery-charcoal mb-4">
+                Thank You!
+              </h3>
+              <p className="text-discovery-charcoal-light mb-6">
+                Your guide will be sent to your email shortly.
+              </p>
+              <button 
+                onClick={() => setShowThankYou(false)}
+                className="bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-8 py-3 rounded-lg font-semibold transition-colors"
+              >
+                OK
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
-import { analyticsConfig, trackPageView } from '@/lib/analytics'
+import { analyticsConfig, trackPageView, trackDeviceInfo } from '@/lib/analytics'
 
 interface AnalyticsProviderProps {
   children: React.ReactNode
@@ -17,6 +17,11 @@ export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
       trackPageView(pathname)
     }
   }, [pathname])
+
+  useEffect(() => {
+    // Track device information on initial load
+    trackDeviceInfo()
+  }, [])
 
   useEffect(() => {
     // Initialize Google Analytics 4

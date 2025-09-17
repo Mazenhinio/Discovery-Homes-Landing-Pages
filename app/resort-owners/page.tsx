@@ -139,7 +139,7 @@ export default function ResortOwnersLandingPage() {
           
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <a href="/copies/quote-builder-v2" className="bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center gap-2 group">
+            <a href="/quote-builder" className="bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center gap-2 group">
               Get Instant Quote
               <ArrowRight className="group-hover:translate-x-1 transition-transform" />
             </a>
@@ -198,7 +198,7 @@ export default function ResortOwnersLandingPage() {
               Our team is ready to help you unlock your property's potential.
             </p>
             <a 
-              href="/copies/quote-builder-v2"
+              href="/quote-builder"
               className="inline-block bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-12 py-4 rounded-lg font-semibold text-xl transition-all duration-300 flex items-center gap-2 group mx-auto"
             >
               Get Instant Quote
@@ -289,7 +289,7 @@ export default function ResortOwnersLandingPage() {
             {/* CTA Button */}
             <div className="mb-12">
               <a 
-                href="/copies/quote-builder-v2"
+                href="/quote-builder"
                 className="inline-block bg-discovery-charcoal text-discovery-white px-12 py-4 rounded-lg font-bold text-xl border-2 border-discovery-charcoal hover:bg-discovery-white hover:text-discovery-charcoal transition-all duration-300"
               >
                 CLAIM YOUR DISCOUNT
@@ -797,7 +797,7 @@ export default function ResortOwnersLandingPage() {
               Join these land owners in transforming your property into a sustainable, profitable community.
             </p>
             <a 
-              href="/copies/quote-builder-v2"
+              href="/quote-builder"
               className="inline-block bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-10 py-4 rounded-lg font-semibold text-xl transition-all duration-300 flex items-center gap-2 group mx-auto"
             >
               Start Your Project Today
@@ -932,7 +932,7 @@ export default function ResortOwnersLandingPage() {
                </div>
                <div className="pt-6">
                  <a 
-                   href="/copies/quote-builder-v2"
+                   href="/quote-builder"
                    className="inline-block bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center gap-2 group"
                  >
                    Get Instant Quote

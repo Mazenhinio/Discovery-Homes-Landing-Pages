@@ -4,11 +4,11 @@ This is a standalone project containing the copy pages for Discovery Homes modul
 
 ## Pages Included
 
-- **First Nations Landing Page** (`/copies/first-nations-v2`)
-- **Land Owners Landing Page** (`/copies/land-owners-v2`) 
-- **Resort Owners Landing Page** (`/copies/resort-owners-v2`)
-- **Quote Builder** (`/copies/quote-builder-v2`)
-- **Home Page Copy** (`/copies/home-v2`)
+- **First Nations Landing Page** (`/first-nations`)
+- **Land Owners Landing Page** (`/land-owners`) 
+- **Resort Owners Landing Page** (`/resort-owners`)
+- **Quote Builder** (`/quote-builder`)
+- **Home Page** (`/`)
 
 ## Features
 

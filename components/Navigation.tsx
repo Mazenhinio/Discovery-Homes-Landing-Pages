@@ -160,7 +160,7 @@ export function Navigation() {
               )}
             </div>
 
-            <Link href="/copies/quote-builder-v2" className="nav-link nav-link-eco nav-item">
+            <Link href="/quote-builder" className="nav-link nav-link-eco nav-item">
               <span className="font-semibold text-discovery-sage hover:text-discovery-lime transition-colors">Get Quote</span>
             </Link>
             <button 
@@ -185,7 +185,7 @@ export function Navigation() {
               <span className="font-medium">Contact</span>
             </Link>
             <Link 
-              href="/copies/quote-builder-v2" 
+              href="/quote-builder" 
               className="btn-nature nav-item shadow-sage micro-interaction glow-green"
             >
               Start Your Quote
@@ -280,7 +280,7 @@ export function Navigation() {
               </div>
 
               <Link 
-                href="/copies/quote-builder-v2" 
+                href="/quote-builder" 
                 className="block px-4 py-3 text-discovery-white hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/10 font-medium"
                 onClick={() => setIsOpen(false)}
               >
@@ -323,7 +323,7 @@ export function Navigation() {
               
               <div className="pt-4 border-t border-white/20">
                 <Link 
-                  href="/copies/quote-builder-v2" 
+                  href="/quote-builder" 
                   className="block mx-2 px-6 py-3 bg-gradient-to-r from-discovery-sage to-discovery-forest text-discovery-white rounded-lg font-semibold text-center shadow-sage micro-interaction glow-green"
                   onClick={() => setIsOpen(false)}
                 >

@@ -56,6 +56,58 @@ export const trackPageView = (url: string) => {
   trackEvent('page_view', { page_location: url })
 }
 
+// Device detection utilities
+export const getDeviceInfo = () => {
+  if (typeof window === 'undefined') return null
+  
+  const userAgent = navigator.userAgent
+  const screenWidth = window.screen.width
+  const screenHeight = window.screen.height
+  
+  // Device type detection
+  let deviceType = 'desktop'
+  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent)) {
+    if (/iPad|Android.*Tablet|Windows.*Touch/i.test(userAgent) || (screenWidth >= 768 && screenWidth <= 1024)) {
+      deviceType = 'tablet'
+    } else {
+      deviceType = 'mobile'
+    }
+  }
+  
+  // Operating system detection
+  let os = 'unknown'
+  if (/Windows/i.test(userAgent)) os = 'windows'
+  else if (/Mac/i.test(userAgent)) os = 'macos'
+  else if (/Linux/i.test(userAgent)) os = 'linux'
+  else if (/Android/i.test(userAgent)) os = 'android'
+  else if (/iPhone|iPad|iPod/i.test(userAgent)) os = 'ios'
+  
+  // Browser detection
+  let browser = 'unknown'
+  if (/Chrome/i.test(userAgent) && !/Edge/i.test(userAgent)) browser = 'chrome'
+  else if (/Firefox/i.test(userAgent)) browser = 'firefox'
+  else if (/Safari/i.test(userAgent) && !/Chrome/i.test(userAgent)) browser = 'safari'
+  else if (/Edge/i.test(userAgent)) browser = 'edge'
+  else if (/Opera/i.test(userAgent)) browser = 'opera'
+  
+  return {
+    deviceType,
+    os,
+    browser,
+    screenWidth,
+    screenHeight,
+    userAgent: userAgent.substring(0, 100) // Truncate for privacy
+  }
+}
+
+// Device tracking function
+export const trackDeviceInfo = () => {
+  const deviceInfo = getDeviceInfo()
+  if (deviceInfo) {
+    trackEvent('device_info', deviceInfo)
+  }
+}
+
 // Custom event tracking for business metrics
 export const trackBusinessEvent = {
   // Quote builder events
@@ -74,6 +126,9 @@ export const trackBusinessEvent = {
   // Property type interest
   propertyTypeViewed: (type: string) => trackEvent('property_type_viewed', { type }),
   customBuildViewed: (style: string) => trackEvent('custom_build_viewed', { style }),
+  
+  // Device tracking
+  deviceInfoTracked: () => trackDeviceInfo(),
 }
 
 // Type declarations for global analytics objects

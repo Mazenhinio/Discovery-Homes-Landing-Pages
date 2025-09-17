@@ -70,7 +70,7 @@ export function TrustSignals() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="section-sm glass-dark relative overflow-hidden">
+    <section ref={sectionRef} className="relative overflow-hidden" style={{ backgroundColor: 'rgba(45, 45, 45, 0.9)', backdropFilter: 'blur(20px) saturate(180%)', boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}>
       {/* Background pattern */}
       <div className="absolute inset-0 bg-pattern opacity-10"></div>
       
@@ -80,7 +80,7 @@ export function TrustSignals() {
         <div className="floating-element absolute bottom-4 right-10 w-20 h-20 bg-discovery-gold/15 rounded-full blur-xl"></div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 relative z-10">
         {/* Section Header */}
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold text-discovery-white mb-4">
