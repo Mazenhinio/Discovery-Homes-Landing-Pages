@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { Menu, X, ChevronDown } from 'lucide-react'
+import { useOurHomes } from '@/components/providers/OurHomesProvider'
 
 // Smooth scroll function
 const smoothScrollTo = (elementId: string) => {
@@ -12,10 +13,20 @@ const smoothScrollTo = (elementId: string) => {
   if (element) {
     const offsetTop = element.offsetTop - 80; // Account for fixed header
     console.log('Scrolling to offset:', offsetTop);
+    
+    // Temporarily enable smooth scrolling for this action
+    const originalScrollBehavior = document.documentElement.style.scrollBehavior
+    document.documentElement.style.scrollBehavior = 'smooth'
+    
     window.scrollTo({
       top: offsetTop,
       behavior: 'smooth'
     });
+    
+    // Restore original scroll behavior after animation
+    setTimeout(() => {
+      document.documentElement.style.scrollBehavior = originalScrollBehavior
+    }, 1000)
   } else {
     console.log('Element not found with ID:', elementId);
   }
@@ -26,6 +37,7 @@ export function Navigation() {
   const [isBuildsDropdownOpen, setIsBuildsDropdownOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const dropdownTimeoutRef = useRef<NodeJS.Timeout>()
+  const { scrollToOurHomes } = useOurHomes()
 
   // No nav-widget coupling; nav is purely responsive by CSS
 
@@ -92,61 +104,47 @@ export function Navigation() {
               {isBuildsDropdownOpen && (
                 <div className="absolute top-full left-0 w-64 dropdown-luxury z-50">
                   <div className="py-2">
-                    <Link 
-                      href="/our-builds" 
-                      className="dropdown-item block text-discovery-charcoal hover:text-discovery-gold font-medium"
+                    <button 
+                      onClick={() => scrollToOurHomes('pine')}
+                      className="dropdown-item block text-discovery-charcoal hover:text-discovery-gold w-full text-left"
                     >
                       <div className="flex items-center space-x-3">
                         <div>
-                          <div className="font-semibold">All Builds</div>
-                          <div className="text-xs text-gray-500">Complete Overview</div>
+                          <div className="font-semibold">Pine</div>
+                          <div className="text-xs text-gray-500">504 sq/ft • 1 Bedroom • $183,000</div>
                         </div>
                       </div>
-                    </Link>
+                    </button>
+                    
+                    <button 
+                      onClick={() => scrollToOurHomes('spruce')}
+                      className="dropdown-item block text-discovery-charcoal hover:text-discovery-gold w-full text-left"
+                    >
+                      <div className="flex items-center space-x-3">
+                        <div>
+                          <div className="font-semibold">Spruce</div>
+                          <div className="text-xs text-gray-500">504 sq/ft • 2 Bedroom + Loft • $188,000</div>
+                        </div>
+                      </div>
+                    </button>
+                    
+                    <button 
+                      onClick={() => scrollToOurHomes('willow')}
+                      className="dropdown-item block text-discovery-charcoal hover:text-discovery-gold w-full text-left"
+                    >
+                      <div className="flex items-center space-x-3">
+                        <div>
+                          <div className="font-semibold">Willow</div>
+                          <div className="text-xs text-gray-500">240 sq/ft + Loft • $104,000</div>
+                        </div>
+                      </div>
+                    </button>
                     
                     <div className="border-t border-gray-100 my-2"></div>
                     
-                    <Link 
-                      href="/our-builds/pine-1" 
-                      className="dropdown-item block text-discovery-charcoal hover:text-discovery-gold"
-                    >
-                      <div className="flex items-center space-x-3">
-                        <div>
-                                                <div className="font-semibold">Pine</div>
-                      <div className="text-xs text-gray-500">504 sq/ft • 1 Bedroom • $174,000</div>
-                        </div>
-                      </div>
-                    </Link>
-                    
-                    <Link 
-                      href="/our-builds/pine-2" 
-                      className="dropdown-item block text-discovery-charcoal hover:text-discovery-gold"
-                    >
-                      <div className="flex items-center space-x-3">
-                        <div>
-                                                <div className="font-semibold">Spruce</div>
-                      <div className="text-xs text-gray-500">504 sq/ft • 2 Bedroom + Loft • $179,000</div>
-                        </div>
-                      </div>
-                    </Link>
-                    
-                    <Link 
-                      href="/our-builds/pine-3" 
-                      className="dropdown-item block text-discovery-charcoal hover:text-discovery-gold"
-                    >
-                      <div className="flex items-center space-x-3">
-                        <div>
-                                                <div className="font-semibold">Willow</div>
-                      <div className="text-xs text-gray-500">240 sq/ft + Loft • $99,000</div>
-                        </div>
-                      </div>
-                    </Link>
-                    
-                    <div className="border-t border-gray-100 my-2"></div>
-                    
-                    <Link 
-                      href="/our-builds/custom" 
-                      className="dropdown-item block text-discovery-charcoal hover:text-discovery-gold"
+                    <button 
+                      onClick={() => scrollToOurHomes('custom')}
+                      className="dropdown-item block text-discovery-charcoal hover:text-discovery-gold w-full text-left"
                     >
                       <div className="flex items-center space-x-3">
                         <div>
@@ -154,7 +152,7 @@ export function Navigation() {
                           <div className="text-xs text-gray-500">Tailored to Your Vision</div>
                         </div>
                       </div>
-                    </Link>
+                    </button>
                   </div>
                 </div>
               )}
@@ -163,12 +161,6 @@ export function Navigation() {
             <Link href="/quote-builder" className="nav-link nav-link-eco nav-item">
               <span className="font-semibold text-discovery-sage hover:text-discovery-lime transition-colors">Get Quote</span>
             </Link>
-            <button 
-              onClick={() => smoothScrollTo('our-homes')}
-              className="nav-link nav-item nav-link-smooth"
-            >
-              <span className="font-medium">Our Homes</span>
-            </button>
             <button 
               onClick={() => smoothScrollTo('success-stories')}
               className="nav-link nav-item nav-link-smooth"
@@ -181,9 +173,6 @@ export function Navigation() {
             >
               <span className="font-medium">How It Works</span>
             </button>
-            <Link href="/contact" className="nav-link nav-item">
-              <span className="font-medium">Contact</span>
-            </Link>
             <Link 
               href="/quote-builder" 
               className="btn-nature nav-item shadow-sage micro-interaction glow-green"
@@ -240,41 +229,42 @@ export function Navigation() {
                   isBuildsDropdownOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                 }`}>
                   <div className="pl-4 space-y-1 border-l-2 border-discovery-gold/30 ml-4">
-                    <Link 
-                      href="/our-builds" 
-                      className="block px-4 py-2 text-sm text-discovery-white/80 hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/5"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      All Builds
-                    </Link>
-                    <Link 
-                      href="/our-builds/pine-1" 
-                      className="block px-4 py-2 text-sm text-discovery-white/80 hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/5"
-                      onClick={() => setIsOpen(false)}
+                    <button 
+                      onClick={() => {
+                        scrollToOurHomes('pine');
+                        setIsOpen(false);
+                      }}
+                      className="block w-full text-left px-4 py-2 text-sm text-discovery-white/80 hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/5"
                     >
                       Pine - The Efficient One
-                    </Link>
-                    <Link 
-                      href="/our-builds/pine-2" 
-                      className="block px-4 py-2 text-sm text-discovery-white/80 hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/5"
-                      onClick={() => setIsOpen(false)}
+                    </button>
+                    <button 
+                      onClick={() => {
+                        scrollToOurHomes('spruce');
+                        setIsOpen(false);
+                      }}
+                      className="block w-full text-left px-4 py-2 text-sm text-discovery-white/80 hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/5"
                     >
                       Spruce - The Versatile One
-                    </Link>
-                    <Link 
-                      href="/our-builds/pine-3" 
-                      className="block px-4 py-2 text-sm text-discovery-white/80 hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/5"
-                      onClick={() => setIsOpen(false)}
+                    </button>
+                    <button 
+                      onClick={() => {
+                        scrollToOurHomes('willow');
+                        setIsOpen(false);
+                      }}
+                      className="block w-full text-left px-4 py-2 text-sm text-discovery-white/80 hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/5"
                     >
                       Willow - The Minimalist
-                    </Link>
-                    <Link 
-                      href="/our-builds/custom" 
-                      className="block px-4 py-2 text-sm text-discovery-white/80 hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/5"
-                      onClick={() => setIsOpen(false)}
+                    </button>
+                    <button 
+                      onClick={() => {
+                        scrollToOurHomes('custom');
+                        setIsOpen(false);
+                      }}
+                      className="block w-full text-left px-4 py-2 text-sm text-discovery-white/80 hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/5"
                     >
                       Custom Build Options
-                    </Link>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -286,15 +276,6 @@ export function Navigation() {
               >
                 Get Quote
               </Link>
-              <button 
-                onClick={() => {
-                  smoothScrollTo('our-homes');
-                  setIsOpen(false);
-                }}
-                className="block w-full text-left px-4 py-3 text-discovery-white hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/10 nav-link-smooth"
-              >
-                Our Homes
-              </button>
               <button 
                 onClick={() => {
                   smoothScrollTo('success-stories');
@@ -313,13 +294,6 @@ export function Navigation() {
               >
                 How It Works
               </button>
-              <Link 
-                href="/contact" 
-                className="block px-4 py-3 text-discovery-white hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/10"
-                onClick={() => setIsOpen(false)}
-              >
-                Contact
-              </Link>
               
               <div className="pt-4 border-t border-white/20">
                 <Link 

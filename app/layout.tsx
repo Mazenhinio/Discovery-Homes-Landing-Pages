@@ -8,6 +8,7 @@ import { SmoothScrollProvider } from '@/components/providers/SmoothScrollProvide
 import { AnimationProvider } from '@/components/providers/AnimationProvider'
 import { ToastProvider } from '@/components/providers/ToastProvider'
 import { AnalyticsProvider } from '@/components/providers/AnalyticsProvider'
+import { OurHomesProvider } from '@/components/providers/OurHomesProvider'
 import { Analytics } from '@vercel/analytics/react'
 
 export const metadata: Metadata = {
@@ -142,13 +143,15 @@ export default function RootLayout({
           <SmoothScrollProvider>
             <ToastProvider>
               <AnalyticsProvider>
-                <Navigation />
-                <main className="flex-1">
-                  {children}
-                </main>
-                <Footer />
-                <MayaChatbot />
-                <VapiWidget />
+                <OurHomesProvider>
+                  <Navigation />
+                  <main className="flex-1">
+                    {children}
+                  </main>
+                  <Footer />
+                  <MayaChatbot />
+                  <VapiWidget />
+                </OurHomesProvider>
               </AnalyticsProvider>
             </ToastProvider>
           </SmoothScrollProvider>

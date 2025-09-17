@@ -152,7 +152,17 @@ export function HeroSection() {
   }, [nextSlide, isPlaying])
 
   return (
-    <section className="relative min-h-screen h-screen overflow-hidden" style={{ height: '100vh', width: '100vw', backgroundColor: 'rgba(45, 45, 45, 0.9)' }}>
+    <section 
+      className="relative h-[35vh] sm:h-[45vh] md:h-[55vh] lg:h-screen overflow-hidden" 
+      style={{ 
+        width: '100vw',
+        ...(deviceType === 'mobile' && {
+          backgroundColor: 'rgba(45, 45, 45, 0.9)',
+          backdropFilter: 'blur(20px) saturate(180%)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+        })
+      }}
+    >
       {/* Carousel Background */}
       <div className="absolute inset-0">
         {slides.map((slide, index) => (
@@ -260,33 +270,37 @@ export function HeroSection() {
                height: 'auto'
              }}
            >
-            {/* Dark backdrop for better contrast */}
-            <div className="absolute inset-0 bg-black/20 rounded-2xl sm:rounded-3xl -z-10 -m-2 sm:-m-4"></div>
             
              <h1 className={`text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-black mb-1 sm:mb-2 md:mb-3 leading-tight transition-all duration-600 ease-out drop-shadow-2xl text-discovery-lime nature-shimmer ${
                showText ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
              }`}>
                {slides[currentSlide].title}
              </h1>
-             <p className={`text-xs sm:text-sm md:text-base lg:text-lg mb-1 sm:mb-2 font-bold transition-all duration-600 ease-out delay-100 text-discovery-sage ${
+             <p className={`text-xs sm:text-xs md:text-sm lg:text-sm mb-2 sm:mb-3 font-bold transition-all duration-600 ease-out delay-100 text-discovery-lime ${
                showText ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
              }`}>
                {slides[currentSlide].subtitle}
              </p>
-             <div className={`flex flex-col sm:flex-row gap-1 sm:gap-2 justify-center mb-2 sm:mb-3 md:mb-4 transition-all duration-600 ease-out delay-200 ${
+             <div className={`flex flex-col sm:flex-row gap-1 sm:gap-2 md:gap-3 justify-center mb-2 sm:mb-3 md:mb-4 transition-all duration-600 ease-out delay-200 ${
                showText ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
              }`}>
                <a 
-                 href="/quote-builder"
-                 className="btn-nature px-2 sm:px-3 md:px-4 py-1 sm:py-1 md:py-2 rounded-lg text-xs sm:text-sm md:text-base font-semibold glow-green growth-pulse transition-all duration-300 hover:scale-105"
+                 href="/first-nations"
+                 className="bg-gradient-to-r from-discovery-forest to-discovery-sage text-white px-0 sm:px-1 md:px-2 py-0.5 sm:py-1.5 md:py-2 rounded text-[10px] sm:text-xs md:text-sm font-medium shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 hover:from-discovery-sage hover:to-discovery-lime whitespace-nowrap"
                >
-                 Start Building My Home →
+                 For First Nations Communities
                </a>
                <a 
-                 href="/success-stories"
-                 className="btn-forest px-2 sm:px-3 md:px-4 py-1 sm:py-1 md:py-2 rounded-lg text-xs sm:text-sm md:text-base font-semibold transition-all duration-300 hover:scale-105"
+                 href="/resort-owners"
+                 className="bg-gradient-to-r from-discovery-sage to-discovery-lime text-white px-0 sm:px-1 md:px-2 py-0.5 sm:py-1.5 md:py-2 rounded text-[10px] sm:text-xs md:text-sm font-medium shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 hover:from-discovery-lime hover:to-discovery-gold whitespace-nowrap"
                >
-                 Watch Success Stories
+                 For Resort Owners
+               </a>
+               <a 
+                 href="/land-owners"
+                 className="bg-gradient-to-r from-discovery-lime to-discovery-gold text-white px-0 sm:px-1 md:px-2 py-0.5 sm:py-1.5 md:py-2 rounded text-[10px] sm:text-xs md:text-sm font-medium shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 hover:from-discovery-gold hover:to-discovery-forest whitespace-nowrap"
+               >
+                 For Landowners
                </a>
              </div>
             

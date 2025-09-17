@@ -62,7 +62,7 @@ export function NewsletterSection() {
 
   if (isSubmitted) {
     return (
-      <section className="py-16 bg-[#2D2D2D] text-white">
+      <section className="py-6 sm:py-8 bg-[#2D2D2D] text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="max-w-2xl mx-auto">
             <div className="w-16 h-16 bg-[#D4AF37] rounded-full flex items-center justify-center mx-auto mb-6">
@@ -89,7 +89,7 @@ export function NewsletterSection() {
   }
 
   return (
-    <section className="py-16 bg-[#2D2D2D] text-white">
+    <section className="py-6 sm:py-8 bg-[#2D2D2D] text-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
           Sign Up for Monthly Insights & Opportunities
