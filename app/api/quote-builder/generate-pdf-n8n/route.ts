@@ -146,6 +146,7 @@ export async function POST(request: NextRequest) {
         'Content-Type': 'application/octet-stream',
         'X-Quote-Number': quoteNumber,
         'X-Customer-Name': name || 'Customer',
+        'X-Filename': `${quoteNumber}.docx`,
       },
       body: new Uint8Array(wordBuffer)
     })
