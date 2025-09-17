@@ -182,14 +182,7 @@ export default function QuoteBuilderPage() {
       case 'pine1': return 183000
       case 'pine2': return 188000
       case 'pine3': return 104000
-      case 'custom': {
-        const sqftNumber = parseInt(formData.sqft.replace(/\D/g, '')) || 800
-        if (sqftNumber <= 800) return 200000
-        if (sqftNumber <= 1200) return 280000
-        if (sqftNumber <= 1800) return 380000
-        if (sqftNumber <= 2400) return 480000
-        return 580000
-      }
+      case 'custom': return 0 // Custom builds show "Contact for pricing"
       default: return 0
     }
   }
@@ -200,6 +193,7 @@ export default function QuoteBuilderPage() {
       case 'pine1': base = 183000; break
       case 'pine2': base = 188000; break
       case 'pine3': base = 104000; break
+      case 'custom': return clampRange(0, 0) // Custom builds show "Contact for pricing"
       default: base = 0
     }
     return clampRange(base * 0.95, base * 1.1)
@@ -249,81 +243,13 @@ export default function QuoteBuilderPage() {
   }
 
   const getFinishesRange = () => {
-    let min = 0
-    let max = 0
-
-    // Siding
-    if (formData.siding === 'wood-grain' && isWoodGrainEligible()) {
-      const sqftNumber = parseInt((formData.sqft || '').replace(/\D/g, ''))
-      if (sqftNumber <= 240) { 
-        min += 4000; max += 4400 
-      } else { 
-        min += 6000; max += 6600 
-      }
-    }
-
-    // Faucets
-    if (formData.faucets === 'bronze') { min += 450; max += 600 }
-
-    // Walls upgrade
-    if (formData.wallsFinish === 'woodboard-stained') { min += 4050; max += 4950 }
-    
-
-
-    // Bedroom counts for lighting
-    const bedroomCount = (() => {
-      if (formData.bedrooms === '4+') return 4
-      const n = parseInt(formData.bedrooms.replace(/\D/g, ''))
-      return isNaN(n) ? 0 : n
-    })()
-
-    // Bathroom counts for ceiling fans
-    const bathroomCount = (() => {
-      if (formData.bathrooms === '4+') return 4
-      const n = parseInt(formData.bathrooms.replace(/\D/g, ''))
-      return isNaN(n) ? 0 : n
-    })()
-
-    if (formData.addCeilingFans) { min += 540 * bathroomCount; max += 660 * bathroomCount }
-    if (formData.addBedroomFixtures) { min += 450; max += 550 }
-    if (formData.featureSurfaces) { min += 800; max += 1200 }
-
-    // Items with pricing pending remain 0
-    return clampRange(min, max)
+    // Finishes & options removed - no longer used in frontend
+    return clampRange(0, 0)
   }
 
   const getFinishItemsRange = () => {
-    const items: { label: string; min?: number; max?: number; tbd?: boolean }[] = []
-    // Siding
-    if (formData.siding === 'wood-grain' && isWoodGrainEligible()) {
-      const sqftNumber = parseInt((formData.sqft || '').replace(/\D/g, ''))
-      if (sqftNumber <= 240) {
-        items.push({ label: 'Siding: Wood Grain', min: 4000, max: 4400 })
-      } else {
-        items.push({ label: 'Siding: Wood Grain', min: 6000, max: 6600 })
-      }
-    }
-    // Faucets
-    if (formData.faucets === 'bronze') items.push({ label: 'Faucets: Bronze', min: 450, max: 600 })
-    // Walls upgrade
-    if (formData.wallsFinish === 'woodboard-stained') items.push({ label: 'Walls: Woodboard or Stained', min: 4050, max: 4950 })
-    
-
-    // Bedroom-dependent items
-    const brCount = (() => { if (formData.bedrooms === '4+') return 4; const n = parseInt(formData.bedrooms.replace(/\D/g, '')); return isNaN(n) ? 0 : n })()
-    // Bathroom-dependent items
-    const bathCount = (() => { if (formData.bathrooms === '4+') return 4; const n = parseInt(formData.bathrooms.replace(/\D/g, '')); return isNaN(n) ? 0 : n })()
-    if (formData.addCeilingFans && bathCount > 0) items.push({ label: `Ceiling Fans (${bathCount} Bath)`, min: 540 * bathCount, max: 660 * bathCount })
-    if (formData.addBedroomFixtures) items.push({ label: 'Enhanced Kitchen Tile', min: 450, max: 550 })
-    if (formData.featureSurfaces) items.push({ label: 'Feature Surfaces', min: 800, max: 1200 })
-    // Items with pending pricing
-    if (formData.countertops === 'upgrade-quartz') items.push({ label: 'Countertops: Premium Quartz', tbd: true })
-    if (formData.cabinets === 'painted-thermo') items.push({ label: 'Cabinets: Painted / Thermo', tbd: true })
-    if (formData.cabinets === 'melamine') items.push({ label: 'Cabinets: Melamine (Downgrade)', tbd: true })
-    if (formData.headboard === 'maple-paint-thermo') items.push({ label: 'Headboard: Maple / Paint / Thermo', tbd: true })
-    if (formData.flooring === 'vinyl-upgrade') items.push({ label: 'Flooring: Better Vinyl', tbd: true })
-    if (formData.blinds) items.push({ label: 'Blinds', tbd: true })
-    return items
+    // Finishes & options removed - no longer used in frontend
+    return []
   }
 
   const calculatePriceRange = () => {
@@ -332,8 +258,22 @@ export default function QuoteBuilderPage() {
     const addons = getAddOnsRange()
     const finishes = getFinishesRange()
     
-    // Only add buffer for removed finishes step when user has selected model and area
-    const finishesBuffer = (selectedBedrooms && selectedArea) ? { min: 15000, max: 25000 } : { min: 0, max: 0 }
+    // Model-specific finishes buffer when user has selected model and area
+    const finishesBuffer = (() => {
+      if (!selectedBedrooms || !selectedArea) return { min: 0, max: 0 }
+      
+      switch (formData.model) {
+        case 'pine1': // Pine
+        case 'pine2': // Spruce
+          return { min: 15000, max: 25000 }
+        case 'pine3': // Willow
+          return { min: 10000, max: 15000 }
+        case 'custom':
+          return { min: 0, max: 0 } // Custom builds don't get buffer
+        default:
+          return { min: 0, max: 0 }
+      }
+    })()
     
     const homes = (() => {
       if (formData.numberOfHomes === '4+') {
@@ -364,19 +304,8 @@ export default function QuoteBuilderPage() {
         basePrice = 104000
         break
       case 'custom':
-        // Custom build pricing based on square footage
-        const sqftNumber = parseInt(formData.sqft.replace(/\D/g, '')) || 800
-        if (sqftNumber <= 800) {
-          basePrice = 200000
-        } else if (sqftNumber <= 1200) {
-          basePrice = 280000
-        } else if (sqftNumber <= 1800) {
-          basePrice = 380000
-        } else if (sqftNumber <= 2400) {
-          basePrice = 480000
-        } else {
-          basePrice = 580000 // 3000+ sq ft
-        }
+        // Custom builds show "Contact for pricing" - no base price
+        basePrice = 0
         break
     }
     
@@ -435,28 +364,8 @@ export default function QuoteBuilderPage() {
     if (formData.packageType === 'net-zero') packageCost += 35000
     if (formData.packageType === 'off-grid') packageCost += 40000
     
-    // Finishes & options pricing
+    // Finishes & options pricing - removed from frontend
     let finishesCost = 0
-    if (formData.siding === 'wood-grain') {
-      finishesCost += (formData.model === 'pine3') ? 4000 : 6000
-    }
-    if (formData.faucets === 'bronze') finishesCost += 500
-    if (formData.wallsFinish === 'woodboard-stained') finishesCost += 4500
-
-
-    const bedroomCount = (() => {
-      if (formData.bedrooms === '4+') return 4
-      const n = parseInt(formData.bedrooms.replace(/\D/g, ''))
-      return isNaN(n) ? 0 : n
-    })()
-    const bathroomCount = (() => {
-      if (formData.bathrooms === '4+') return 4
-      const n = parseInt(formData.bathrooms.replace(/\D/g, ''))
-      return isNaN(n) ? 0 : n
-    })()
-    if (formData.addCeilingFans) finishesCost += 600 * bathroomCount
-    if (formData.addBedroomFixtures) finishesCost += 500
-    if (formData.featureSurfaces) finishesCost += 1000
     
     // Midpoint for operations that require a single figure (e.g., PDF)
     const range = calculatePriceRange()
@@ -573,8 +482,8 @@ export default function QuoteBuilderPage() {
     setSubmitError(null)
     
     try {
-      // Generate PDF quote
-      const response = await fetch('/api/quote-builder/generate-pdf', {
+      // Generate PDF quote using n8n workflow
+      const response = await fetch('/api/quote-builder/generate-pdf-n8n', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -774,14 +683,18 @@ export default function QuoteBuilderPage() {
               <div className="bg-[#68a71d]/10 border border-[#68a71d] rounded-lg p-6 mb-6">
                 <h2 className="text-xl font-bold text-[#2D2D2D] mb-2">Your Quote is Ready</h2>
                 <div className="text-2xl font-bold text-[#68a71d] mb-2">
-                  {(() => { const r = calculatePriceRange(); return `$${formatCurrency(r.min)} - $${formatCurrency(r.max)} CAD` })()}
+                  {(() => { 
+                    if (formData.model === 'custom') return 'Contact for pricing'
+                    const r = calculatePriceRange(); 
+                    return `$${formatCurrency(r.min)} - $${formatCurrency(r.max)} CAD` 
+                  })()}
                 </div>
                 <p className="text-gray-600 mb-4">Estimated total range for your {(() => {
                   switch(formData.model) {
                     case 'pine1': return 'Pine'
                     case 'pine2': return 'Spruce'
                     case 'pine3': return 'Willow'
-                    case 'custom': return 'Custom Build'
+                    case 'custom': return 'Custom Build (Contact for pricing)'
                     default: return formData.model
                   }
                 })()} build</p>
@@ -978,9 +891,9 @@ export default function QuoteBuilderPage() {
                     // Check if it's a custom build
                     if (formData.model === 'custom') {
                       if (formData.addons.length > 0) {
-                        return `Custom Quote + ${formData.addons.length} upgrade${formData.addons.length > 1 ? 's' : ''}`
+                        return `Contact for pricing + ${formData.addons.length} upgrade${formData.addons.length > 1 ? 's' : ''}`
                       }
-                      return 'Custom Quote'
+                      return 'Contact for pricing'
                     }
                     
                     // For standard models, show price range
@@ -993,7 +906,7 @@ export default function QuoteBuilderPage() {
                   </div>
                 <div className="text-xs text-gray-500 mt-1">
                   {formData.model === 'custom' 
-                    ? (formData.addons.length > 0 ? 'Contact for pricing' : 'Contact for pricing')
+                    ? 'Contact for pricing'
                     : (formData.addons.length > 0 ? `${formData.addons.length} upgrade(s)` : 'Base price')
                   }
                 </div>
@@ -1591,7 +1504,11 @@ export default function QuoteBuilderPage() {
                    <div className="space-y-3 mb-4">
                      <div className="flex justify-between items-center">
                        <span className="text-gray-600">Base Model ({formData.model})</span>
-                        <span className="font-semibold">{(() => { const r = getModelRange(); return `$${formatCurrency(r.min)} - $${formatCurrency(r.max)} CAD` })()}</span>
+                        <span className="font-semibold">{(() => { 
+                          if (formData.model === 'custom') return 'Contact for pricing'
+                          const r = getModelRange(); 
+                          return `$${formatCurrency(r.min)} - $${formatCurrency(r.max)} CAD` 
+                        })()}</span>
                      </div>
                       {formData.packageType && formData.packageType !== 'base' && (
                         <div className="flex justify-between items-center">
@@ -1626,33 +1543,41 @@ export default function QuoteBuilderPage() {
                        </>
                      )}
 
-                      {/* Finishes & Options */}
+                      {/* Finishes Buffer */}
                       {(() => {
-                        const items = getFinishItemsRange()
-                        if (items.length === 0) return null
+                        if (formData.model === 'custom') return null
+                        
+                        let bufferMin = 0, bufferMax = 0
+                        switch (formData.model) {
+                          case 'pine1': // Pine
+                          case 'pine2': // Spruce
+                            bufferMin = 15000
+                            bufferMax = 25000
+                            break
+                          case 'pine3': // Willow
+                            bufferMin = 10000
+                            bufferMax = 15000
+                            break
+                          default:
+                            return null
+                        }
+                        
                         return (
-                          <>
-                            <div className="border-t border-gray-300 pt-2">
-                              <span className="text-gray-600">Finishes & Options:</span>
-                            </div>
-                            {items.map((it, idx) => (
-                              <div key={idx} className="flex justify-between items-center text-sm">
-                                <span className="text-gray-600">• {it.label}</span>
-                                {it.tbd ? (
-                                  <span className="font-semibold text-gray-500">TBD</span>
-                                ) : (
-                                  <span className="font-semibold">{it.min! < 0 ? '-' : '+'}${formatCurrency(Math.abs(it.min!))} - {it.max! < 0 ? '-' : '+'}${formatCurrency(Math.abs(it.max!))} CAD</span>
-                                )}
-                              </div>
-                            ))}
-                          </>
+                          <div className="flex justify-between items-center">
+                            <span className="text-gray-600">Finishes Buffer</span>
+                            <span className="font-semibold">+${formatCurrency(bufferMin)} - $${formatCurrency(bufferMax)} CAD</span>
+                          </div>
                         )
                       })()}
                      
                      <div className="border-t border-gray-300 pt-3">
                        <div className="flex justify-between items-center">
                          <span className="text-lg font-bold text-[#2D2D2D]">Total Estimated Cost</span>
-                          <span className="text-2xl font-bold text-[#D4AF37]">{(() => { const r = calculatePriceRange(); return `$${formatCurrency(r.min)} - $${formatCurrency(r.max)} CAD` })()}</span>
+                          <span className="text-2xl font-bold text-[#D4AF37]">{(() => { 
+                            if (formData.model === 'custom') return 'Contact for pricing'
+                            const r = calculatePriceRange(); 
+                            return `$${formatCurrency(r.min)} - $${formatCurrency(r.max)} CAD` 
+                          })()}</span>
                        </div>
                      </div>
                    </div>
