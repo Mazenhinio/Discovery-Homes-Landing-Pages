@@ -482,7 +482,30 @@ export default function QuoteBuilderPage() {
     setSubmitError(null)
     
     try {
-      // Generate PDF quote using n8n workflow
+      // Send complete form data to GHL webhook FIRST
+      try {
+        const webhookResponse = await fetch('/api/forms/quote-builder-webhook', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ...formData,
+            estimatedPrice: finalPrice
+          })
+        })
+
+        if (webhookResponse.ok) {
+          console.log('✅ Complete form data sent to GHL webhook successfully')
+        } else {
+          console.error('❌ Failed to send complete form data to GHL webhook')
+        }
+      } catch (webhookError) {
+        console.error('❌ Error sending complete form data to GHL webhook:', webhookError)
+        // Continue with PDF generation even if webhook fails
+      }
+
+      // THEN generate PDF quote using n8n workflow
       const response = await fetch('/api/quote-builder/generate-pdf-n8n', {
         method: 'POST',
         headers: {
