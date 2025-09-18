@@ -353,6 +353,13 @@ export default function LandOwnersLandingPage() {
                   alt={`${activeTab} model`}
                   fill
                   className="object-cover"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'center',
+                    display: 'block'
+                  }}
                 />
               </div>
 
@@ -370,6 +377,13 @@ export default function LandOwnersLandingPage() {
                       alt={`Pine interior ${index + 1}`}
                       fill
                       className="object-cover"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: 'center',
+                        display: 'block'
+                      }}
                     />
                   </div>
                 ))}
@@ -386,6 +400,13 @@ export default function LandOwnersLandingPage() {
                       alt={`Spruce interior ${index + 1}`}
                       fill
                       className="object-cover"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: 'center',
+                        display: 'block'
+                      }}
                     />
                   </div>
                 ))}
@@ -402,6 +423,13 @@ export default function LandOwnersLandingPage() {
                       alt={`Willow interior ${index + 1}`}
                       fill
                       className="object-cover"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: 'center',
+                        display: 'block'
+                      }}
                     />
                   </div>
                 ))}
@@ -418,6 +446,13 @@ export default function LandOwnersLandingPage() {
                       alt={`Custom build ${index + 1}`}
                       fill
                       className="object-cover"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: 'center',
+                        display: 'block'
+                      }}
                     />
                   </div>
                 ))}

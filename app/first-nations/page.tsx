@@ -383,6 +383,13 @@ export default function FirstNationsLandingPage() {
                   alt={`${activeTab} model`}
                   fill
                   className="object-cover"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'center',
+                    display: 'block'
+                  }}
                 />
               </div>
 
@@ -400,6 +407,13 @@ export default function FirstNationsLandingPage() {
                       alt={`Pine interior ${index + 1}`}
                       fill
                       className="object-cover"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: 'center',
+                        display: 'block'
+                      }}
                     />
                   </div>
                 ))}
@@ -416,6 +430,13 @@ export default function FirstNationsLandingPage() {
                       alt={`Spruce interior ${index + 1}`}
                       fill
                       className="object-cover"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: 'center',
+                        display: 'block'
+                      }}
                     />
                   </div>
                 ))}
@@ -432,6 +453,13 @@ export default function FirstNationsLandingPage() {
                       alt={`Willow interior ${index + 1}`}
                       fill
                       className="object-cover"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: 'center',
+                        display: 'block'
+                      }}
                     />
                   </div>
                 ))}
@@ -448,6 +476,13 @@ export default function FirstNationsLandingPage() {
                       alt={`Custom build ${index + 1}`}
                       fill
                       className="object-cover"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: 'center',
+                        display: 'block'
+                      }}
                     />
                   </div>
                 ))}

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { ChevronLeft, ChevronRight, X, ZoomIn } from 'lucide-react'
 
 interface CarouselImage {
@@ -85,10 +86,18 @@ export function ImageCarousel({ images, title = "Gallery" }: ImageCarouselProps)
         {/* Large Featured Image */}
         <div className="relative group">
           <div className="aspect-video overflow-hidden rounded-2xl shadow-luxury bg-neutral-100">
-            <img 
+            <Image 
               src={images[currentIndex]?.src}
               alt={images[currentIndex]?.alt}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center',
+                display: 'block'
+              }}
             />
             
             {/* Overlay with Zoom Icon */}
@@ -127,16 +136,24 @@ export function ImageCarousel({ images, title = "Gallery" }: ImageCarouselProps)
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
-              className={`aspect-video overflow-hidden rounded-lg transition-all duration-300 hover:scale-105 micro-interaction ${
+              className={`aspect-video overflow-hidden rounded-lg transition-all duration-300 hover:scale-105 micro-interaction relative ${
                 index === currentIndex 
                   ? 'ring-3 ring-discovery-gold shadow-gold' 
                   : 'hover:shadow-luxury'
               }`}
             >
-              <img 
+              <Image 
                 src={image.src}
                 alt={image.alt}
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  objectPosition: 'center',
+                  display: 'block'
+                }}
               />
             </button>
           ))}
@@ -192,10 +209,21 @@ export function ImageCarousel({ images, title = "Gallery" }: ImageCarouselProps)
               className="relative max-w-full max-h-full"
               onClick={(e) => e.stopPropagation()}
             >
-              <img 
+              <Image 
                 src={images[modalIndex]?.src}
                 alt={images[modalIndex]?.alt}
+                width={1200}
+                height={800}
                 className="max-w-full max-h-[90vh] object-contain rounded-xl shadow-luxury-lg animate-in fade-in zoom-in duration-300"
+                style={{
+                  width: 'auto',
+                  height: 'auto',
+                  maxWidth: '100%',
+                  maxHeight: '90vh',
+                  objectFit: 'contain',
+                  objectPosition: 'center',
+                  display: 'block'
+                }}
               />
               
               {/* Image Info */}

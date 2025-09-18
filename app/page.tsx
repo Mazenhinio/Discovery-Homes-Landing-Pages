@@ -6,7 +6,6 @@ import { WhoWeServeSection } from '@/components/sections/WhoWeServeSection'
 import { PartnershipLogos } from '@/components/sections/PartnershipLogos'
 import { CTABanner } from '@/components/CTABanner'
 import { TrustSignals } from '@/components/TrustSignals'
-import { PathSelectionCTA } from '@/components/sections/PathSelectionCTA'
 import { useOurHomes } from '@/components/providers/OurHomesProvider'
 import { ArrowRight, Home as HomeIcon, MessageCircle, Award, Users, Leaf, Shield, Heart, Zap, DollarSign, ChevronLeft, ChevronRight, Star } from 'lucide-react'
 import { useState } from 'react'
@@ -70,10 +69,6 @@ export default function Home() {
       </div>
       
       <div className="animate-section">
-        <PathSelectionCTA />
-      </div>
-      
-      <div className="animate-section section-luxury">
         <WhoWeServeSection />
       </div>
 
@@ -82,15 +77,16 @@ export default function Home() {
       </div>
 
       {/* Success Stories Section */}
-      <section id="success-stories" className="py-12 bg-discovery-charcoal">
+      <section id="success-stories" className="py-16 sm:py-20 bg-gradient-to-b from-discovery-charcoal to-gray-900">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-8">
-            <h2 className="text-xl md:text-2xl font-serif font-bold text-discovery-white mb-3">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-discovery-white mb-4 sm:mb-6 leading-tight">
               Success Stories
             </h2>
-            <p className="text-sm md:text-base text-discovery-sage max-w-2xl mx-auto">
+            <div className="w-24 h-1 bg-gradient-to-r from-discovery-gold to-discovery-lime mx-auto rounded-full mb-6"></div>
+            <p className="text-lg md:text-xl text-discovery-sage max-w-3xl mx-auto leading-relaxed">
               See how we&apos;ve helped communities, resort owners, and land developers across Canada 
-              create sustainable, profitable solutions.
+              create sustainable, profitable solutions that transform lives and landscapes.
             </p>
           </div>
 
@@ -316,12 +312,16 @@ export default function Home() {
       
       {/* Five Pillars Section */}
       <div className="animate-section">
-        <section className="py-6 bg-discovery-white">
+        <section className="py-16 sm:py-20 bg-gradient-to-b from-discovery-lime/20 to-discovery-sage/20">
           <div className="max-w-6xl mx-auto px-4">
-            <div className="text-center mb-6">
-              <h2 className="text-xl md:text-2xl font-serif font-bold text-discovery-charcoal mb-2">
+            <div className="text-center mb-12 sm:mb-16">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-discovery-charcoal mb-4 sm:mb-6 leading-tight">
                 Our Five Pillars
               </h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-discovery-gold to-discovery-sage mx-auto rounded-full mb-6"></div>
+              <p className="text-lg md:text-xl text-discovery-charcoal-light max-w-3xl mx-auto leading-relaxed">
+                The core values that drive everything we do, ensuring sustainable, quality, and community-focused solutions.
+              </p>
             </div>
             
             {/* Desktop Grid View */}
@@ -406,13 +406,14 @@ export default function Home() {
       
       {/* How It Works Section */}
       <div className="animate-section">
-        <section id="how-it-works" className="py-8 bg-discovery-white">
+        <section id="how-it-works" className="py-16 sm:py-20 bg-gradient-to-b from-discovery-charcoal to-gray-900">
           <div className="max-w-7xl mx-auto px-4">
-            <div className="text-center mb-8">
-              <h2 className="text-xl md:text-2xl font-serif font-bold text-discovery-charcoal mb-3">
+            <div className="text-center mb-12 sm:mb-16">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-discovery-white mb-4 sm:mb-6 leading-tight">
                 How It Works
               </h2>
-              <p className="text-sm md:text-base text-discovery-charcoal-light max-w-2xl mx-auto">
+              <div className="w-24 h-1 bg-gradient-to-r from-discovery-gold to-discovery-lime mx-auto rounded-full mb-6"></div>
+              <p className="text-lg md:text-xl text-discovery-sage max-w-3xl mx-auto leading-relaxed">
                 Our streamlined process ensures your land development project is delivered 
                 with quality craftsmanship, sustainable practices, and maximum value creation.
               </p>
@@ -429,11 +430,11 @@ export default function Home() {
                   <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-4 relative z-10">
                     <Users className="w-6 h-6 text-discovery-charcoal" />
                   </div>
-                  <div className="bg-discovery-white rounded-xl p-4 shadow-md border border-discovery-gold/20">
-                    <h3 className="text-base font-serif font-bold text-discovery-charcoal mb-2">
+                  <div className="bg-discovery-charcoal-light rounded-xl p-4 shadow-md border border-discovery-gold/20">
+                    <h3 className="text-base font-serif font-bold text-discovery-white mb-2">
                       Choose Your Path
                     </h3>
-                    <p className="text-sm text-discovery-charcoal-light leading-relaxed">
+                    <p className="text-sm text-discovery-sage leading-relaxed">
                       Select First Nations Communities, Resort Owners, or Landowners for tailored solutions.
                     </p>
                   </div>
@@ -444,11 +445,11 @@ export default function Home() {
                   <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-4 relative z-10">
                     <HomeIcon className="w-6 h-6 text-discovery-charcoal" />
                   </div>
-                  <div className="bg-discovery-white rounded-xl p-4 shadow-md border border-discovery-gold/20">
-                    <h3 className="text-base font-serif font-bold text-discovery-charcoal mb-2">
+                  <div className="bg-discovery-charcoal-light rounded-xl p-4 shadow-md border border-discovery-gold/20">
+                    <h3 className="text-base font-serif font-bold text-discovery-white mb-2">
                       Build Your Dream Development
                     </h3>
-                    <p className="text-sm text-discovery-charcoal-light leading-relaxed">
+                    <p className="text-sm text-discovery-sage leading-relaxed">
                       Design your perfect modular development with Pine, Spruce, Willow, or custom builds.
                     </p>
                   </div>
@@ -459,11 +460,11 @@ export default function Home() {
                   <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-4 relative z-10">
                     <MessageCircle className="w-6 h-6 text-discovery-charcoal" />
                   </div>
-                  <div className="bg-discovery-white rounded-xl p-4 shadow-md border border-discovery-gold/20">
-                    <h3 className="text-base font-serif font-bold text-discovery-charcoal mb-2">
+                  <div className="bg-discovery-charcoal-light rounded-xl p-4 shadow-md border border-discovery-gold/20">
+                    <h3 className="text-base font-serif font-bold text-discovery-white mb-2">
                       Discovery Call
                     </h3>
-                    <p className="text-sm text-discovery-charcoal-light leading-relaxed">
+                    <p className="text-sm text-discovery-sage leading-relaxed">
                       Our specialists understand your property, zoning, and investment goals.
                     </p>
                   </div>
@@ -474,11 +475,11 @@ export default function Home() {
                   <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-4 relative z-10">
                     <Award className="w-6 h-6 text-discovery-charcoal" />
                   </div>
-                  <div className="bg-discovery-white rounded-xl p-4 shadow-md border border-discovery-gold/20">
-                    <h3 className="text-base font-serif font-bold text-discovery-charcoal mb-2">
+                  <div className="bg-discovery-charcoal-light rounded-xl p-4 shadow-md border border-discovery-gold/20">
+                    <h3 className="text-base font-serif font-bold text-discovery-white mb-2">
                       Procure & Manufacture
                     </h3>
-                    <p className="text-sm text-discovery-charcoal-light leading-relaxed">
+                    <p className="text-sm text-discovery-sage leading-relaxed">
                       We source sustainable materials and manufacture in our climate-controlled facility.
                     </p>
                   </div>
@@ -489,11 +490,11 @@ export default function Home() {
                   <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-4 relative z-10">
                     <ArrowRight className="w-6 h-6 text-discovery-charcoal" />
                   </div>
-                  <div className="bg-discovery-white rounded-xl p-4 shadow-md border border-discovery-gold/20">
-                    <h3 className="text-base font-serif font-bold text-discovery-charcoal mb-2">
+                  <div className="bg-discovery-charcoal-light rounded-xl p-4 shadow-md border border-discovery-gold/20">
+                    <h3 className="text-base font-serif font-bold text-discovery-white mb-2">
                       Deliver & Install
                     </h3>
-                    <p className="text-sm text-discovery-charcoal-light leading-relaxed">
+                    <p className="text-sm text-discovery-sage leading-relaxed">
                       Your modular development is delivered and professionally installed, ready for occupancy.
                     </p>
                   </div>
@@ -506,11 +507,15 @@ export default function Home() {
       
       {/* Secondary CTA Section */}
       <div className="animate-section">
-        <section className="py-8 bg-discovery-white">
+        <section className="py-16 sm:py-20 bg-gradient-to-b from-discovery-sage/20 to-discovery-lime/20">
           <div className="max-w-4xl mx-auto px-4 text-center">
-            <h2 className="text-xl md:text-2xl font-bold text-discovery-charcoal mb-4">
-              Ready to Start? Select Your Path Below.
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-discovery-charcoal mb-6 sm:mb-8 leading-tight">
+              Ready to Start?
             </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-discovery-gold to-discovery-sage mx-auto rounded-full mb-8"></div>
+            <p className="text-lg md:text-xl text-discovery-charcoal-light mb-8 max-w-2xl mx-auto leading-relaxed">
+              Select your path below and begin your journey toward sustainable, profitable land development.
+            </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a 

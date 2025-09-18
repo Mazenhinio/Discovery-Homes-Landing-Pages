@@ -34,13 +34,14 @@ export function PartnershipLogos() {
   ]
 
   return (
-    <section className="py-8 bg-discovery-white animate-section">
+    <section className="py-16 sm:py-20 bg-gradient-to-b from-discovery-white to-gray-50 animate-section">
       <div className="container-custom">
-        <div className="text-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-serif font-bold text-discovery-charcoal mb-4">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-discovery-charcoal mb-4 sm:mb-6 leading-tight">
             Trusted Partnership Network
           </h2>
-          <p className="text-base text-neutral-600 max-w-2xl mx-auto">
+          <div className="w-24 h-1 bg-gradient-to-r from-discovery-sage to-discovery-lime mx-auto rounded-full mb-6"></div>
+          <p className="text-lg md:text-xl text-discovery-charcoal-light max-w-3xl mx-auto leading-relaxed">
             We work with industry-leading partners who share our commitment to quality, 
             sustainability, and exceptional craftsmanship in every project.
           </p>
@@ -91,26 +92,6 @@ export function PartnershipLogos() {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Partnership Statement */}
-        <div className="glass rounded-xl p-6 lg:p-8 text-center scale-on-scroll">
-          <div className="max-w-3xl mx-auto">
-            <h3 className="text-xl md:text-2xl font-bold text-discovery-charcoal mb-3">
-              Quality Through Collaboration
-            </h3>
-            <p className="text-base text-neutral-600 mb-4">
-              Our carefully selected partners bring decades of combined experience and specialized expertise 
-              to every Discovery Homes project. Together, we ensure the highest standards of craftsmanship, 
-              sustainability, and customer satisfaction.
-            </p>
-            <div className="flex flex-wrap justify-center gap-3 text-xs text-neutral-500">
-              <span className="bg-discovery-gold/10 px-2 py-1 rounded-full">Licensed & Insured</span>
-              <span className="bg-discovery-gold/10 px-2 py-1 rounded-full">Quality Guaranteed</span>
-              <span className="bg-discovery-gold/10 px-2 py-1 rounded-full">Sustainable Practices</span>
-              <span className="bg-discovery-gold/10 px-2 py-1 rounded-full">Local Expertise</span>
-            </div>
-          </div>
         </div>
       </div>
     </section>

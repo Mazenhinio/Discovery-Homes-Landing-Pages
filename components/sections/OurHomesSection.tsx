@@ -27,35 +27,39 @@ export const OurHomesSection = forwardRef<OurHomesSectionRef, OurHomesSectionPro
   }, [initialTab])
 
   return (
-    <section id="our-homes" className="pb-4 sm:pb-6 bg-discovery-white">
+    <section id="our-homes" className="py-16 sm:py-20 bg-gradient-to-b from-discovery-white to-gray-50">
       <div className="max-w-7xl mx-auto px-4">
         {/* Section Header */}
-        <div className="text-center mb-0.5 sm:mb-1">
-          <h2 className="text-xl md:text-2xl font-serif font-bold text-discovery-charcoal mb-0">
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-discovery-charcoal mb-4 sm:mb-6 leading-tight">
             Our Homes
           </h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-discovery-gold to-discovery-sage mx-auto rounded-full mb-6"></div>
+          <p className="text-lg md:text-xl text-discovery-charcoal-light max-w-3xl mx-auto leading-relaxed">
+            Discover our carefully crafted modular home designs, each built with sustainability, quality, and your unique needs in mind.
+          </p>
+        </div>
           
-          {/* Tab Navigation */}
-          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-4">
-            {[
-              { id: 'pine', label: 'Pine' },
-              { id: 'spruce', label: 'Spruce' },
-              { id: 'willow', label: 'Willow' },
-              { id: 'custom', label: 'Custom Build' }
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`px-3 sm:px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
-                  activeTab === tab.id
-                    ? 'bg-discovery-gold text-discovery-charcoal'
-                    : 'text-discovery-charcoal-light hover:text-discovery-charcoal hover:bg-discovery-gold/20'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
+        {/* Tab Navigation */}
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8">
+          {[
+            { id: 'pine', label: 'Pine' },
+            { id: 'spruce', label: 'Spruce' },
+            { id: 'willow', label: 'Willow' },
+            { id: 'custom', label: 'Custom Build' }
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`px-3 sm:px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
+                activeTab === tab.id
+                  ? 'bg-discovery-gold text-discovery-charcoal'
+                  : 'text-discovery-charcoal-light hover:text-discovery-charcoal hover:bg-discovery-gold/20'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
 
         {/* Tab Content */}
@@ -74,6 +78,13 @@ export const OurHomesSection = forwardRef<OurHomesSectionRef, OurHomesSectionPro
                 alt={`${activeTab} model`}
                 fill
                 className="object-cover"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  objectPosition: 'center',
+                  display: 'block'
+                }}
               />
             </div>
 
@@ -91,6 +102,13 @@ export const OurHomesSection = forwardRef<OurHomesSectionRef, OurHomesSectionPro
                     alt={`Pine interior ${index + 1}`}
                     fill
                     className="object-cover"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      objectPosition: 'center',
+                      display: 'block'
+                    }}
                   />
                 </div>
               ))}
@@ -107,6 +125,13 @@ export const OurHomesSection = forwardRef<OurHomesSectionRef, OurHomesSectionPro
                     alt={`Spruce interior ${index + 1}`}
                     fill
                     className="object-cover"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      objectPosition: 'center',
+                      display: 'block'
+                    }}
                   />
                 </div>
               ))}
@@ -123,6 +148,13 @@ export const OurHomesSection = forwardRef<OurHomesSectionRef, OurHomesSectionPro
                     alt={`Willow interior ${index + 1}`}
                     fill
                     className="object-cover"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      objectPosition: 'center',
+                      display: 'block'
+                    }}
                   />
                 </div>
               ))}
@@ -139,6 +171,13 @@ export const OurHomesSection = forwardRef<OurHomesSectionRef, OurHomesSectionPro
                     alt={`Custom build ${index + 1}`}
                     fill
                     className="object-cover"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      objectPosition: 'center',
+                      display: 'block'
+                    }}
                   />
                 </div>
               ))}

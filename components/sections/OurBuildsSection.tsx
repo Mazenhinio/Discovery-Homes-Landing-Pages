@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 export function OurBuildsSection() {
   const builds = [
@@ -50,11 +51,19 @@ export function OurBuildsSection() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
           {builds.map((build) => (
             <div key={build.name} className="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:transform hover:scale-105 border border-gray-100">
-              <div className="relative overflow-hidden">
-                <img
+              <div className="relative overflow-hidden h-64">
+                <Image
                   src={build.image}
                   alt={`${build.name} - ${build.subtitle}`}
-                  className="w-full h-64 object-cover transition-transform duration-300 hover:scale-110"
+                  fill
+                  className="object-cover transition-transform duration-300 hover:scale-110"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'center',
+                    display: 'block'
+                  }}
                 />
                 <div className="absolute top-4 left-4 bg-[#D4AF37] text-white px-3 py-1 rounded-full text-sm font-semibold">
                   {build.name}

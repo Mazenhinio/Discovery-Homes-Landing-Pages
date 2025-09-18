@@ -48,7 +48,7 @@ export function TrustSignals() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden" style={{ backgroundColor: 'rgba(45, 45, 45, 0.9)', backdropFilter: 'blur(20px) saturate(180%)', boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}>
+    <section ref={sectionRef} className="relative overflow-hidden py-16 sm:py-20" style={{ backgroundColor: 'rgba(45, 45, 45, 0.95)', backdropFilter: 'blur(20px) saturate(180%)', boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}>
       {/* Background pattern */}
       <div className="absolute inset-0 bg-pattern opacity-10"></div>
       
@@ -60,10 +60,14 @@ export function TrustSignals() {
 
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-6 relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-4 sm:mb-6">
-          <h2 className="text-xl md:text-2xl font-bold text-discovery-white mb-1 sm:mb-2">
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-discovery-white mb-4 sm:mb-6 leading-tight">
             Why Discovery Homes
           </h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-discovery-gold to-discovery-lime mx-auto rounded-full mb-6"></div>
+          <p className="text-lg md:text-xl text-discovery-sage max-w-3xl mx-auto leading-relaxed">
+            Trusted by communities across Western Canada for sustainable, quality modular housing solutions.
+          </p>
         </div>
 
         <div className="animate-cards grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 text-center">

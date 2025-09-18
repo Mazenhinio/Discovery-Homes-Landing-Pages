@@ -27,12 +27,16 @@ export function WhoWeServeSection() {
   ]
 
   return (
-    <section className="pt-4 pb-1 sm:pt-6 sm:pb-1.5 bg-gray-50">
+    <section className="py-16 sm:py-20 bg-gradient-to-b from-discovery-sage/20 to-discovery-lime/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-4 sm:mb-6">
-          <h2 className="text-xl md:text-2xl font-bold text-[#2D2D2D] mb-2">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-discovery-charcoal mb-4 sm:mb-6 leading-tight">
             Who We Serve
           </h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-discovery-sage to-discovery-lime mx-auto rounded-full mb-6"></div>
+          <p className="text-lg md:text-xl text-discovery-charcoal-light max-w-3xl mx-auto leading-relaxed">
+            We partner with diverse communities and organizations across Western Canada, providing tailored modular housing solutions for every unique need.
+          </p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
