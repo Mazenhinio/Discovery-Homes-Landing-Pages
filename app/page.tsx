@@ -570,7 +570,7 @@ export default function Home() {
               Ready to Start?
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-discovery-gold to-discovery-sage mx-auto rounded-full mb-8"></div>
-            <p className="text-lg md:text-xl text-discovery-charcoal-light mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-[15px] text-discovery-charcoal-light mb-8 max-w-2xl mx-auto leading-relaxed">
               Select your path below and begin your journey toward sustainable, profitable land development.
             </p>
             
@@ -615,7 +615,8 @@ export default function Home() {
       
       <div className="animate-section">
         <CTABanner 
-          title="Build Your Custom Dream Home — Net Zero & Off‑Grid Options Available"
+          title="Build Your Custom Dream Home"
+          subtitle="Net Zero & Off‑Grid Options Available"
           description="Ready to turn your land into your legacy? Our team is here to make it happen."
           primaryAction={{
             text: "Start Your Quote",

@@ -538,6 +538,12 @@ export default function QuoteBuilderPage() {
       setIsSubmitted(true)
       setIsSubmitting(false)
       
+      // Track Meta Pixel "Submit Application" event
+      trackBusinessEvent.submitApplication({
+        ...formData,
+        estimatedPrice: finalPrice
+      })
+      
     } catch (error) {
       console.error('Submission error:', error)
       setSubmitError('Failed to generate PDF quote. Please try again or contact us directly.')

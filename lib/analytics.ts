@@ -108,12 +108,43 @@ export const trackDeviceInfo = () => {
   }
 }
 
+// Meta Pixel tracking functions
+export const trackMetaPixelEvent = (eventName: string, parameters?: Record<string, any>) => {
+  if (typeof window !== 'undefined' && window.fbq) {
+    window.fbq('track', eventName, parameters)
+  }
+  
+  // Console log for development
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Meta Pixel Event:', eventName, parameters)
+  }
+}
+
 // Custom event tracking for business metrics
 export const trackBusinessEvent = {
   // Quote builder events
   quoteStarted: () => trackEvent('quote_started'),
   quoteCompleted: (value?: number) => trackEvent('quote_completed', { value }),
   quoteDownloaded: (type: string) => trackEvent('quote_downloaded', { type }),
+  submitApplication: (formData?: any) => {
+    // Track in Google Analytics
+    trackEvent('submit_application', { 
+      source: 'quote_builder',
+      model: formData?.model,
+      estimated_price: formData?.estimatedPrice,
+      timeline: formData?.timeline
+    })
+    
+    // Track in Meta Pixel
+    trackMetaPixelEvent('SubmitApplication', {
+      content_name: 'Quote Builder Application',
+      content_category: 'Home Building',
+      value: formData?.estimatedPrice || 0,
+      currency: 'CAD',
+      model: formData?.model || 'unknown',
+      timeline: formData?.timeline || 'unknown'
+    })
+  },
   
   // Contact events
   contactFormSubmitted: (source: string) => trackEvent('contact_form_submitted', { source }),

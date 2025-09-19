@@ -2,6 +2,7 @@ import Link from 'next/link'
 
 interface CTABannerProps {
   title: string
+  subtitle?: string
   description: string
   primaryAction: {
     text: string
@@ -13,7 +14,7 @@ interface CTABannerProps {
   }
 }
 
-export function CTABanner({ title, description, primaryAction, secondaryAction }: CTABannerProps) {
+export function CTABanner({ title, subtitle, description, primaryAction, secondaryAction }: CTABannerProps) {
   return (
     <section className="section bg-nature-gradient relative overflow-hidden">
       {/* Floating background elements */}
@@ -25,17 +26,22 @@ export function CTABanner({ title, description, primaryAction, secondaryAction }
 
       {/* Main content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <h2 className="text-xl md:text-2xl font-bold text-discovery-white mb-4 text-shadow-luxury scale-on-scroll">
+        <h2 className="text-xl md:text-2xl font-bold text-discovery-white mb-2 text-shadow-luxury scale-on-scroll">
           {title}
         </h2>
-        <p className="text-base md:text-lg text-discovery-white mb-8 opacity-95 max-w-3xl mx-auto leading-relaxed scale-on-scroll">
+        {subtitle && (
+          <h3 className="text-xl md:text-2xl font-bold text-discovery-white mb-4 text-shadow-luxury scale-on-scroll">
+            {subtitle}
+          </h3>
+        )}
+        <p className="text-[15px] text-discovery-white mb-8 opacity-95 max-w-3xl mx-auto leading-relaxed scale-on-scroll">
           {description}
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center animate-cards">
           <Link
             href={primaryAction.href}
-            className="card-item btn-eco text-base px-8 py-4 shadow-lime glow-lime micro-interaction group hover:scale-105 overflow-hidden growth-pulse"
+            className="card-item bg-discovery-gold border-2 border-discovery-gold text-discovery-charcoal text-base px-8 py-4 shadow-lime glow-lime micro-interaction group hover:scale-105 overflow-hidden growth-pulse"
           >
             <span className="relative z-10 group-hover:translate-x-1 transition-transform duration-300 inline-block font-semibold">
               {primaryAction.text} →
