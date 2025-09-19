@@ -1,11 +1,9 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
-import { ChevronLeft, ChevronRight, Play, Pause, ChevronUp, ChevronDown } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
 
 export function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [isPlaying, setIsPlaying] = useState(true)
   const [showText, setShowText] = useState(true)
   const intervalRef = useRef<NodeJS.Timeout>()
   
@@ -57,47 +55,21 @@ export function HeroSection() {
     }
   ]
 
-  const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length)
-  }, [slides.length])
-
-  const prevSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
-  }, [slides.length])
-
-  const togglePlayPause = useCallback(() => {
-    setIsPlaying(prev => !prev)
-  }, [])
-
-  const hideText = useCallback(() => {
-    setShowText(false)
-  }, [])
-
-  const showTextOverlay = useCallback(() => {
-    setShowText(true)
-  }, [])
-
-
   // Auto-advance carousel
   useEffect(() => {
-    if (!isPlaying) {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current)
-      }
-      return
-    }
-
-    intervalRef.current = setInterval(nextSlide, 5000)
+    intervalRef.current = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length)
+    }, 5000)
 
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current)
       }
     }
-  }, [nextSlide, isPlaying])
+  }, [slides.length])
 
   return (
-    <section className="relative min-h-screen h-screen pt-16 overflow-hidden">
+    <section className="relative min-h-[80vh] h-[80vh] pt-16 overflow-hidden">
       {/* Carousel Background */}
       <div className="absolute inset-0">
         {slides.map((slide, index) => (
@@ -120,45 +92,13 @@ export function HeroSection() {
                   display: 'block'
                 }}
               />
+              {/* Transparent black overlay */}
+              <div className="absolute inset-0 bg-black/40"></div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Navigation Controls */}
-      <button
-        onClick={prevSlide}
-        className="absolute left-4 sm:left-8 top-1/2 transform -translate-y-1/2 glass-nature text-discovery-lime p-4 sm:p-5 rounded-full hover:glow-green transition-all duration-300 z-10 micro-interaction shadow-lg hover:shadow-xl"
-      >
-        <ChevronLeft size={24} className="sm:w-8 sm:h-8" />
-      </button>
-
-      <button
-        onClick={nextSlide}
-        className="absolute right-4 sm:right-8 top-1/2 transform -translate-y-1/2 glass-nature text-discovery-lime p-4 sm:p-5 rounded-full hover:glow-green transition-all duration-300 z-10 micro-interaction shadow-lg hover:shadow-xl"
-      >
-        <ChevronRight size={24} className="sm:w-8 sm:h-8" />
-      </button>
-
-      {/* Play/Pause Control */}
-      <button
-        onClick={togglePlayPause}
-        className="absolute top-6 sm:top-8 right-6 sm:right-8 glass-nature text-discovery-lime p-3 sm:p-4 rounded-full hover:glow-green transition-all duration-300 z-10 micro-interaction shadow-lg hover:shadow-xl"
-      >
-        {isPlaying ? <Pause size={20} className="sm:w-6 sm:h-6" /> : <Play size={20} className="sm:w-6 sm:h-6" />}
-      </button>
-
-      {/* Show Text Arrow Button - Smooth animation */}
-      <button
-        onClick={showTextOverlay}
-        className={`absolute bottom-20 sm:bottom-24 left-1/2 transform -translate-x-1/2 glass-eco text-discovery-lime p-4 sm:p-5 rounded-full hover:glow-lime transition-all duration-500 ease-out z-20 growth-pulse shadow-lg hover:shadow-xl ${
-          !showText 
-            ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto' 
-            : 'opacity-0 translate-y-4 scale-75 pointer-events-none'
-        }`}
-      >
-        <ChevronUp size={24} className="sm:w-8 sm:h-8" />
-      </button>
 
       {/* Text Content */}
       <div className={`absolute inset-0 flex items-center justify-center z-10 transition-all duration-700 ease-out overflow-hidden ${
@@ -174,48 +114,54 @@ export function HeroSection() {
              style={{ maxWidth: '1024px' }}
            >
             
-             <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-2 sm:mb-3 md:mb-4 leading-tight transition-all duration-600 ease-out drop-shadow-2xl text-discovery-lime nature-shimmer ${
+             <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-2 sm:mb-3 md:mb-4 leading-tight transition-all duration-600 ease-out drop-shadow-2xl ${
                showText ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
-             }`}>
-               {slides[currentSlide].title}
+             }`} style={{ color: '#77A42A' }}>
+               Modern Modular Homes
              </h1>
-             <p className={`text-sm sm:text-base md:text-lg lg:text-xl mb-4 sm:mb-5 md:mb-6 font-bold transition-all duration-600 ease-out delay-100 text-discovery-lime ${
+             <p className={`text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl mb-8 sm:mb-10 md:mb-12 font-bold transition-all duration-600 ease-out delay-100 text-discovery-lime ${
                showText ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
              }`}>
-               {slides[currentSlide].subtitle}
+               Faster. Affordable. Sustainable
              </p>
-             <div className={`flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 justify-center mb-4 sm:mb-6 md:mb-8 transition-all duration-600 ease-out delay-200 ${
+             <div className={`flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8 justify-center mb-2 sm:mb-4 md:mb-6 transition-all duration-600 ease-out delay-200 ${
                showText ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
              }`}>
                <a 
                  href="/first-nations"
-                 className="bg-gradient-to-r from-discovery-forest to-discovery-sage text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 rounded-lg text-sm sm:text-base md:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:from-discovery-sage hover:to-discovery-lime whitespace-nowrap border-2 border-transparent hover:border-discovery-lime/30"
+                 className="bg-[#D4AF37] text-white px-1 sm:px-2 md:px-3 py-3 sm:py-4 md:py-5 rounded-lg text-sm sm:text-base md:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:bg-[#B8941F] whitespace-nowrap flex items-center justify-center gap-2"
                >
                  For First Nations Communities
+                 <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                   </svg>
+                 </div>
                </a>
                <a 
                  href="/resort-owners"
-                 className="bg-gradient-to-r from-discovery-sage to-discovery-lime text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 rounded-lg text-sm sm:text-base md:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:from-discovery-lime hover:to-discovery-gold whitespace-nowrap border-2 border-transparent hover:border-discovery-gold/30"
+                 className="bg-[#D4AF37] text-white px-1 sm:px-2 md:px-3 py-3 sm:py-4 md:py-5 rounded-lg text-sm sm:text-base md:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:bg-[#B8941F] whitespace-nowrap flex items-center justify-center gap-2"
                >
-                 For Resort Owners
+                 For Resort & Airbnb Owners
+                 <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                   </svg>
+                 </div>
                </a>
                <a 
                  href="/land-owners"
-                 className="bg-gradient-to-r from-discovery-lime to-discovery-gold text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 rounded-lg text-sm sm:text-base md:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:from-discovery-gold hover:to-discovery-forest whitespace-nowrap border-2 border-transparent hover:border-discovery-forest/30"
+                 className="bg-[#D4AF37] text-white px-1 sm:px-2 md:px-3 py-3 sm:py-4 md:py-5 rounded-lg text-sm sm:text-base md:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:bg-[#B8941F] whitespace-nowrap flex items-center justify-center gap-2"
                >
-                 For Landowners
+                 For Land Owners & Developers
+                 <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                   </svg>
+                 </div>
                </a>
              </div>
             
-            {/* Hide Text Button - Smooth animation */}
-            <button
-              onClick={hideText}
-              className={`glass-eco text-discovery-lime p-3 sm:p-4 rounded-full hover:glow-lime transition-all duration-600 ease-out delay-300 hover:scale-105 shadow-lg hover:shadow-xl ${
-                showText ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-              }`}
-            >
-              <ChevronDown size={20} className="sm:w-6 sm:h-6" />
-            </button>
           </div>
         </div>
       </div>

@@ -44,8 +44,13 @@ export function FundingSupport() {
           ))}
         </div>
         <div className="text-center mt-12">
-          <button className="bg-[#D4AF37] text-[#2D2D2D] font-bold py-3 px-8 rounded-lg hover:bg-[#C4A027] transition-colors">
+          <button className="bg-[#D4AF37] text-[#2D2D2D] font-bold py-3 px-8 rounded-lg hover:bg-[#C4A027] transition-colors inline-flex items-center gap-2">
             Learn More About Funding
+            <div className="w-5 h-5 rounded-full bg-[#2D2D2D]/20 flex items-center justify-center">
+              <svg className="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
           </button>
         </div>
       </div>

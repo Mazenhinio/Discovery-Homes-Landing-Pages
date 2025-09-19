@@ -10,7 +10,7 @@ export function TrustSignals() {
   const stats = [
     { 
       number: "Faster Move-In", 
-      label: "30-50% quicker than traditional builds", 
+      label: "Delivered in 90 days", 
       icon: <Home className="w-8 h-8 text-discovery-gold" />
     },
     { 
@@ -20,12 +20,12 @@ export function TrustSignals() {
     },
     { 
       number: "Affordable Quality", 
-      label: "Predictable costs, premium finishes included", 
+      label: "Affordable Premium Quality", 
       icon: <DollarSign className="w-8 h-8 text-discovery-gold" />
     },
     { 
       number: "Built for Canada", 
-      label: "CSA-certified, engineered for harsh climates", 
+      label: "Built for harsh climates", 
       icon: <Wrench className="w-8 h-8 text-discovery-gold" />
     }
   ]
@@ -61,7 +61,7 @@ export function TrustSignals() {
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-6 relative z-10">
         {/* Section Header */}
         <div className="text-center mb-8 sm:mb-12">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-discovery-white mb-4 sm:mb-6 leading-tight">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-discovery-white mb-4 sm:mb-6 leading-tight">
             Why Discovery Homes
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-discovery-gold to-discovery-lime mx-auto rounded-full mb-6"></div>

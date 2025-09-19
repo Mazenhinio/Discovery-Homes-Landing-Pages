@@ -91,7 +91,9 @@ export function PathSelectionCTA() {
                 {/* CTA Arrow */}
                 <div className="flex items-center justify-center text-discovery-gold group-hover:translate-x-1 transition-transform duration-300">
                   <span className="text-xs font-semibold mr-1">Learn More</span>
-                  <ArrowRight className="w-3 h-3" />
+                  <div className="w-6 h-6 rounded-full bg-discovery-gold/20 flex items-center justify-center">
+                    <ArrowRight className="w-3 h-3" />
+                  </div>
                 </div>
               </div>
             </Link>

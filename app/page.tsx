@@ -277,7 +277,7 @@ export default function Home() {
 
           {/* Success Stories CTA */}
           <div className="text-center mt-8">
-            <h3 className="text-lg md:text-xl font-serif font-bold text-discovery-white mb-4">
+            <h3 className="text-xl md:text-2xl font-serif font-bold text-discovery-white mb-4">
               Ready to Create Your Success Story?
             </h3>
             <p className="text-sm text-discovery-sage mb-6 max-w-xl mx-auto">
@@ -286,24 +286,30 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
               <a 
                 href="/first-nations"
-                className="bg-gradient-to-r from-discovery-forest to-discovery-sage text-white px-6 py-3 rounded-lg font-semibold text-sm transition-all duration-300 flex items-center gap-2 group hover:scale-105 hover:from-discovery-sage hover:to-discovery-lime"
+                className="bg-[#D4AF37] text-white px-6 py-3 rounded-lg font-semibold text-sm transition-all duration-300 flex items-center gap-2 group hover:scale-105 hover:bg-[#B8941F]"
               >
                 For First Nations Communities
-                <ArrowRight className="group-hover:translate-x-1 transition-transform w-4 h-4" />
+                <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                  <ArrowRight className="group-hover:translate-x-1 transition-transform w-3 h-3" />
+                </div>
               </a>
               <a 
                 href="/resort-owners"
-                className="bg-gradient-to-r from-discovery-sage to-discovery-lime text-white px-6 py-3 rounded-lg font-semibold text-sm transition-all duration-300 flex items-center gap-2 group hover:scale-105 hover:from-discovery-lime hover:to-discovery-gold"
+                className="bg-[#D4AF37] text-white px-6 py-3 rounded-lg font-semibold text-sm transition-all duration-300 flex items-center gap-2 group hover:scale-105 hover:bg-[#B8941F]"
               >
-                For Resort Owners
-                <ArrowRight className="group-hover:translate-x-1 transition-transform w-4 h-4" />
+                For Resort & Airbnb Owners
+                <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                  <ArrowRight className="group-hover:translate-x-1 transition-transform w-3 h-3" />
+                </div>
               </a>
               <a 
                 href="/land-owners"
-                className="bg-gradient-to-r from-discovery-lime to-discovery-gold text-white px-6 py-3 rounded-lg font-semibold text-sm transition-all duration-300 flex items-center gap-2 group hover:scale-105 hover:from-discovery-gold hover:to-discovery-forest"
+                className="bg-[#D4AF37] text-white px-6 py-3 rounded-lg font-semibold text-sm transition-all duration-300 flex items-center gap-2 group hover:scale-105 hover:bg-[#B8941F]"
               >
-                For Landowners
-                <ArrowRight className="group-hover:translate-x-1 transition-transform w-4 h-4" />
+                For Land Owners & Developers
+                <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                  <ArrowRight className="group-hover:translate-x-1 transition-transform w-3 h-3" />
+                </div>
               </a>
             </div>
           </div>
@@ -431,7 +437,7 @@ export default function Home() {
                     <Users className="w-6 h-6 text-discovery-charcoal" />
                   </div>
                   <div className="bg-discovery-charcoal-light rounded-xl p-4 shadow-md border border-discovery-gold/20">
-                    <h3 className="text-base font-serif font-bold text-discovery-white mb-2">
+                    <h3 className="text-xl md:text-2xl font-serif font-bold text-discovery-white mb-2">
                       Choose Your Path
                     </h3>
                     <p className="text-sm text-discovery-sage leading-relaxed">
@@ -446,7 +452,7 @@ export default function Home() {
                     <HomeIcon className="w-6 h-6 text-discovery-charcoal" />
                   </div>
                   <div className="bg-discovery-charcoal-light rounded-xl p-4 shadow-md border border-discovery-gold/20">
-                    <h3 className="text-base font-serif font-bold text-discovery-white mb-2">
+                    <h3 className="text-xl md:text-2xl font-serif font-bold text-discovery-white mb-2">
                       Build Your Dream Development
                     </h3>
                     <p className="text-sm text-discovery-sage leading-relaxed">
@@ -461,7 +467,7 @@ export default function Home() {
                     <MessageCircle className="w-6 h-6 text-discovery-charcoal" />
                   </div>
                   <div className="bg-discovery-charcoal-light rounded-xl p-4 shadow-md border border-discovery-gold/20">
-                    <h3 className="text-base font-serif font-bold text-discovery-white mb-2">
+                    <h3 className="text-xl md:text-2xl font-serif font-bold text-discovery-white mb-2">
                       Discovery Call
                     </h3>
                     <p className="text-sm text-discovery-sage leading-relaxed">
@@ -476,7 +482,7 @@ export default function Home() {
                     <Award className="w-6 h-6 text-discovery-charcoal" />
                   </div>
                   <div className="bg-discovery-charcoal-light rounded-xl p-4 shadow-md border border-discovery-gold/20">
-                    <h3 className="text-base font-serif font-bold text-discovery-white mb-2">
+                    <h3 className="text-xl md:text-2xl font-serif font-bold text-discovery-white mb-2">
                       Procure & Manufacture
                     </h3>
                     <p className="text-sm text-discovery-sage leading-relaxed">
@@ -491,7 +497,7 @@ export default function Home() {
                     <ArrowRight className="w-6 h-6 text-discovery-charcoal" />
                   </div>
                   <div className="bg-discovery-charcoal-light rounded-xl p-4 shadow-md border border-discovery-gold/20">
-                    <h3 className="text-base font-serif font-bold text-discovery-white mb-2">
+                    <h3 className="text-xl md:text-2xl font-serif font-bold text-discovery-white mb-2">
                       Deliver & Install
                     </h3>
                     <p className="text-sm text-discovery-sage leading-relaxed">
@@ -520,21 +526,36 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a 
                 href="/first-nations"
-                className="bg-gradient-to-r from-discovery-forest to-discovery-sage text-white px-6 py-4 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:from-discovery-sage hover:to-discovery-lime"
+                className="bg-[#D4AF37] text-white px-6 py-4 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-[#B8941F] flex items-center gap-2"
               >
                 For First Nations Communities
+                <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
+                  <svg className="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
               </a>
               <a 
                 href="/resort-owners"
-                className="bg-gradient-to-r from-discovery-sage to-discovery-lime text-white px-6 py-4 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:from-discovery-lime hover:to-discovery-gold"
+                className="bg-[#D4AF37] text-white px-6 py-4 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-[#B8941F] flex items-center gap-2"
               >
-                For Resort Owners
+                For Resort & Airbnb Owners
+                <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
+                  <svg className="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
               </a>
               <a 
                 href="/land-owners"
-                className="bg-gradient-to-r from-discovery-lime to-discovery-gold text-white px-6 py-4 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:from-discovery-gold hover:to-discovery-forest"
+                className="bg-[#D4AF37] text-white px-6 py-4 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-[#B8941F] flex items-center gap-2"
               >
-                For Landowners
+                For Land Owners & Developers
+                <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
+                  <svg className="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
               </a>
             </div>
           </div>

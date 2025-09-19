@@ -854,6 +854,14 @@ video {
   }
 }
 
+.animate-scroll {
+  animation: conveyor 10s linear infinite;
+}
+
+.animate-scroll:hover {
+  animation-play-state: paused;
+}
+
 .animate-conveyor {
   animation: conveyor 30s linear infinite;
 }
