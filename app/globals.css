@@ -863,7 +863,14 @@ video {
 }
 
 .animate-conveyor {
-  animation: conveyor 30s linear infinite;
+  animation: conveyor 15s linear infinite;
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.animate-conveyor::-webkit-scrollbar {
+  display: none; /* WebKit */
 }
 
 .animate-conveyor:hover {

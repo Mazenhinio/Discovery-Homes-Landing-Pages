@@ -84,15 +84,47 @@ export default function Home() {
               Success Stories
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-discovery-gold to-discovery-lime mx-auto rounded-full mb-6"></div>
-            <p className="text-lg md:text-xl text-discovery-sage max-w-3xl mx-auto leading-relaxed">
+            <p className="text-[15px] text-discovery-sage max-w-3xl mx-auto leading-relaxed">
               See how we&apos;ve helped communities, resort owners, and land developers across Canada 
               create sustainable, profitable solutions that transform lives and landscapes.
             </p>
           </div>
 
           {/* Conveyor Belt Animation Container */}
-          <div className="relative overflow-hidden">
-            <div className="flex animate-conveyor">
+          <div className="relative w-screen -mx-4 overflow-hidden">
+            <div 
+              className="flex animate-conveyor cursor-grab active:cursor-grabbing px-4"
+              onWheel={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const container = e.currentTarget;
+                const scrollAmount = e.deltaY * 0.5;
+                container.scrollLeft += scrollAmount;
+              }}
+              onTouchStart={(e) => {
+                e.preventDefault();
+                const container = e.currentTarget;
+                const startX = e.touches[0].clientX;
+                const startScrollLeft = container.scrollLeft;
+                
+                const handleTouchMove = (moveEvent: TouchEvent) => {
+                  moveEvent.preventDefault();
+                  moveEvent.stopPropagation();
+                  const currentX = moveEvent.touches[0].clientX;
+                  const diff = startX - currentX;
+                  container.scrollLeft = startScrollLeft + diff;
+                };
+                
+                const handleTouchEnd = () => {
+                  document.removeEventListener('touchmove', handleTouchMove);
+                  document.removeEventListener('touchend', handleTouchEnd);
+                };
+                
+                document.addEventListener('touchmove', handleTouchMove, { passive: false });
+                document.addEventListener('touchend', handleTouchEnd);
+              }}
+              style={{ scrollBehavior: 'smooth' }}
+            >
               {/* First set of stories */}
               {[
                 {
@@ -283,10 +315,10 @@ export default function Home() {
             <p className="text-sm text-discovery-sage mb-6 max-w-xl mx-auto">
               Join these communities, resort owners, and land developers in transforming your vision into reality.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8 justify-center items-center">
               <a 
                 href="/first-nations"
-                className="bg-[#D4AF37] text-white px-6 py-3 rounded-lg font-semibold text-sm transition-all duration-300 flex items-center gap-2 group hover:scale-105 hover:bg-[#B8941F]"
+                className="bg-[#D4AF37] text-white px-1 sm:px-2 md:px-3 py-3 sm:py-4 md:py-5 rounded-lg text-sm sm:text-base md:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:bg-[#B8941F] whitespace-nowrap flex items-center justify-center gap-2"
               >
                 For First Nations Communities
                 <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
@@ -295,7 +327,7 @@ export default function Home() {
               </a>
               <a 
                 href="/resort-owners"
-                className="bg-[#D4AF37] text-white px-6 py-3 rounded-lg font-semibold text-sm transition-all duration-300 flex items-center gap-2 group hover:scale-105 hover:bg-[#B8941F]"
+                className="bg-[#D4AF37] text-white px-1 sm:px-2 md:px-3 py-3 sm:py-4 md:py-5 rounded-lg text-sm sm:text-base md:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:bg-[#B8941F] whitespace-nowrap flex items-center justify-center gap-2"
               >
                 For Resort & Airbnb Owners
                 <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
@@ -304,7 +336,7 @@ export default function Home() {
               </a>
               <a 
                 href="/land-owners"
-                className="bg-[#D4AF37] text-white px-6 py-3 rounded-lg font-semibold text-sm transition-all duration-300 flex items-center gap-2 group hover:scale-105 hover:bg-[#B8941F]"
+                className="bg-[#D4AF37] text-white px-1 sm:px-2 md:px-3 py-3 sm:py-4 md:py-5 rounded-lg text-sm sm:text-base md:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:bg-[#B8941F] whitespace-nowrap flex items-center justify-center gap-2"
               >
                 For Land Owners & Developers
                 <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
@@ -325,7 +357,7 @@ export default function Home() {
                 Our Five Pillars
               </h2>
               <div className="w-24 h-1 bg-gradient-to-r from-discovery-gold to-discovery-sage mx-auto rounded-full mb-6"></div>
-              <p className="text-lg md:text-xl text-discovery-charcoal-light max-w-3xl mx-auto leading-relaxed">
+              <p className="text-[15px] text-discovery-charcoal-light max-w-3xl mx-auto leading-relaxed">
                 The core values that drive everything we do, ensuring sustainable, quality, and community-focused solutions.
               </p>
             </div>
@@ -419,9 +451,8 @@ export default function Home() {
                 How It Works
               </h2>
               <div className="w-24 h-1 bg-gradient-to-r from-discovery-gold to-discovery-lime mx-auto rounded-full mb-6"></div>
-              <p className="text-lg md:text-xl text-discovery-sage max-w-3xl mx-auto leading-relaxed">
-                Our streamlined process ensures your land development project is delivered 
-                with quality craftsmanship, sustainable practices, and maximum value creation.
+              <p className="text-[15px] text-discovery-sage max-w-3xl mx-auto leading-relaxed">
+                Our streamlined process delivers quality craftsmanship, sustainable practices, and maximum value for your land development project.
               </p>
             </div>
 
@@ -433,76 +464,96 @@ export default function Home() {
               <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
                 {/* Step 1: Choose Your Path */}
                 <div className="text-center relative">
-                  <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-4 relative z-10">
-                    <Users className="w-6 h-6 text-discovery-charcoal" />
-                  </div>
-                  <div className="bg-discovery-charcoal-light rounded-xl p-4 shadow-md border border-discovery-gold/20">
-                    <h3 className="text-xl md:text-2xl font-serif font-bold text-discovery-white mb-2">
-                      Choose Your Path
-                    </h3>
-                    <p className="text-sm text-discovery-sage leading-relaxed">
-                      Select First Nations Communities, Resort Owners, or Landowners for tailored solutions.
-                    </p>
+                  <div className="bg-discovery-charcoal-light rounded-xl p-2 shadow-md border border-discovery-gold/20">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-lg font-bold text-discovery-charcoal">1</span>
+                      </div>
+                      <div className="text-left">
+                        <h3 className="text-lg font-serif font-bold text-discovery-white mb-1">
+                          Choose Your Path
+                        </h3>
+                        <p className="text-[12px] text-discovery-sage leading-relaxed">
+                          Select First Nations Communities, Resort Owners, or Landowners for tailored solutions.
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 {/* Step 2: Build Your Dream Development */}
                 <div className="text-center relative">
-                  <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-4 relative z-10">
-                    <HomeIcon className="w-6 h-6 text-discovery-charcoal" />
-                  </div>
-                  <div className="bg-discovery-charcoal-light rounded-xl p-4 shadow-md border border-discovery-gold/20">
-                    <h3 className="text-xl md:text-2xl font-serif font-bold text-discovery-white mb-2">
-                      Build Your Dream Development
-                    </h3>
-                    <p className="text-sm text-discovery-sage leading-relaxed">
-                      Design your perfect modular development with Pine, Spruce, Willow, or custom builds.
-                    </p>
+                  <div className="bg-discovery-charcoal-light rounded-xl p-2 shadow-md border border-discovery-gold/20">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-lg font-bold text-discovery-charcoal">2</span>
+                      </div>
+                      <div className="text-left">
+                        <h3 className="text-lg font-serif font-bold text-discovery-white mb-1">
+                          Build Your Dream Development
+                        </h3>
+                        <p className="text-sm text-discovery-sage leading-relaxed">
+                          Design your perfect modular development with Pine, Spruce, Willow, or custom builds.
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 {/* Step 3: Discovery Call */}
                 <div className="text-center relative">
-                  <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-4 relative z-10">
-                    <MessageCircle className="w-6 h-6 text-discovery-charcoal" />
-                  </div>
-                  <div className="bg-discovery-charcoal-light rounded-xl p-4 shadow-md border border-discovery-gold/20">
-                    <h3 className="text-xl md:text-2xl font-serif font-bold text-discovery-white mb-2">
-                      Discovery Call
-                    </h3>
-                    <p className="text-sm text-discovery-sage leading-relaxed">
-                      Our specialists understand your property, zoning, and investment goals.
-                    </p>
+                  <div className="bg-discovery-charcoal-light rounded-xl p-2 shadow-md border border-discovery-gold/20">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-lg font-bold text-discovery-charcoal">3</span>
+                      </div>
+                      <div className="text-left">
+                        <h3 className="text-lg font-serif font-bold text-discovery-white mb-1">
+                          Discovery Call
+                        </h3>
+                        <p className="text-sm text-discovery-sage leading-relaxed">
+                          Our specialists understand your property, zoning, and investment goals.
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 {/* Step 4: Procure & Manufacture */}
                 <div className="text-center relative">
-                  <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-4 relative z-10">
-                    <Award className="w-6 h-6 text-discovery-charcoal" />
-                  </div>
-                  <div className="bg-discovery-charcoal-light rounded-xl p-4 shadow-md border border-discovery-gold/20">
-                    <h3 className="text-xl md:text-2xl font-serif font-bold text-discovery-white mb-2">
-                      Procure & Manufacture
-                    </h3>
-                    <p className="text-sm text-discovery-sage leading-relaxed">
-                      We source sustainable materials and manufacture in our climate-controlled facility.
-                    </p>
+                  <div className="bg-discovery-charcoal-light rounded-xl p-2 shadow-md border border-discovery-gold/20">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-lg font-bold text-discovery-charcoal">4</span>
+                      </div>
+                      <div className="text-left">
+                        <h3 className="text-lg font-serif font-bold text-discovery-white mb-1">
+                          Procure & Manufacture
+                        </h3>
+                        <p className="text-sm text-discovery-sage leading-relaxed">
+                          We source sustainable materials and manufacture in our climate-controlled facility.
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 {/* Step 5: Deliver & Install */}
                 <div className="text-center relative">
-                  <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-4 relative z-10">
-                    <ArrowRight className="w-6 h-6 text-discovery-charcoal" />
-                  </div>
-                  <div className="bg-discovery-charcoal-light rounded-xl p-4 shadow-md border border-discovery-gold/20">
-                    <h3 className="text-xl md:text-2xl font-serif font-bold text-discovery-white mb-2">
-                      Deliver & Install
-                    </h3>
-                    <p className="text-sm text-discovery-sage leading-relaxed">
-                      Your modular development is delivered and professionally installed, ready for occupancy.
-                    </p>
+                  <div className="bg-discovery-charcoal-light rounded-xl p-2 shadow-md border border-discovery-gold/20">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-lg font-bold text-discovery-charcoal">5</span>
+                      </div>
+                      <div className="text-left">
+                        <h3 className="text-lg font-serif font-bold text-discovery-white mb-1">
+                          Deliver & Install
+                        </h3>
+                        <p className="text-sm text-discovery-sage leading-relaxed">
+                          Your modular development is delivered and professionally installed, ready for occupancy.
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

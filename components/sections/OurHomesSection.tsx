@@ -35,7 +35,7 @@ export const OurHomesSection = forwardRef<OurHomesSectionRef, OurHomesSectionPro
             Our Homes
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-discovery-gold to-discovery-sage mx-auto rounded-full mb-6"></div>
-          <p className="text-lg md:text-xl text-discovery-charcoal-light max-w-3xl mx-auto leading-relaxed">
+          <p className="text-[15px] text-discovery-charcoal-light max-w-3xl mx-auto leading-relaxed">
             Discover our carefully crafted modular home designs, each built with sustainability, quality, and your unique needs in mind.
           </p>
         </div>
