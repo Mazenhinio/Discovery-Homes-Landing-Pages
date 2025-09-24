@@ -10,7 +10,7 @@ export function TrustSignals() {
   const stats = [
     { 
       number: "Faster Move-In", 
-      label: "Delivered in 90 days", 
+      label: "Completed in 90 days", 
       icon: <Home className="w-8 h-8 text-discovery-gold" />
     },
     { 

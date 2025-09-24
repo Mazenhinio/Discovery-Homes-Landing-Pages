@@ -47,7 +47,7 @@ export function CommunityImpact() {
     {
       icon: <Calendar size={32} />,
       number: "60 Days",
-      label: "Average Delivery",
+      label: "Average Completion",
       description: "From order to move-in ready"
     },
     {

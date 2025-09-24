@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { ArrowRight, Download, Calendar, MessageCircle, Star, Users, Home, Heart, Shield, Award, DollarSign, TrendingUp, Building, Calculator, MapPin, Leaf, Globe, Zap, Clock } from 'lucide-react'
 import { LeadCaptureForm } from '@/components/LeadCaptureForm'
+import { PartnershipLogos } from '@/components/sections/PartnershipLogos'
+import { WhyDiscoveryHomesSection } from '@/components/sections/WhyDiscoveryHomesSection'
 
 
 import { CTABanner } from '@/components/CTABanner'
@@ -32,17 +34,14 @@ export default function FirstNationsLandingPage() {
   useEffect(() => {
     setIsClient(true)
     
-    // Set countdown to end of September
+    // Set countdown to 30 days from now
     const calculateTimeLeft = () => {
       const now = new Date()
-      const endOfSeptember = new Date(now.getFullYear(), 8, 30, 23, 59, 59) // September 30th, 11:59:59 PM
+      const endDate = new Date()
+      endDate.setDate(endDate.getDate() + 30) // 30 days from now
+      endDate.setHours(23, 59, 59, 999) // End of day
       
-      if (now > endOfSeptember) {
-        // If past September 30th, set to next year
-        endOfSeptember.setFullYear(now.getFullYear() + 1)
-      }
-      
-      const difference = endOfSeptember.getTime() - now.getTime()
+      const difference = endDate.getTime() - now.getTime()
       
       if (difference > 0) {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24))
@@ -181,15 +180,15 @@ export default function FirstNationsLandingPage() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div className="text-discovery-white">
-              <div className="text-4xl font-bold text-discovery-gold mb-2">15+</div>
+              <div className="text-4xl font-bold text-discovery-gold mb-2">25+</div>
               <div className="text-sm">Years Experience</div>
             </div>
             <div className="text-discovery-white">
-              <div className="text-4xl font-bold text-discovery-gold mb-2">50+</div>
+              <div className="text-4xl font-bold text-discovery-gold mb-2">10+</div>
               <div className="text-sm">First Nations Projects</div>
             </div>
             <div className="text-discovery-white">
-              <div className="text-4xl font-bold text-discovery-gold mb-2">100%</div>
+              <div className="text-4xl font-bold text-discovery-gold mb-2">99%</div>
               <div className="text-sm">Community Satisfaction</div>
             </div>
             <div className="text-discovery-white">
@@ -248,6 +247,10 @@ export default function FirstNationsLandingPage() {
               <h3 className="text-2xl font-serif font-bold text-discovery-charcoal mb-4">
                 Community Partnership
               </h3>
+              <p className="text-discovery-charcoal-light">
+                We work directly with First Nations leadership and community members to ensure 
+                our housing solutions meet specific needs and respect local governance structures.
+              </p>
             </div>
           </div>
         </div>
@@ -256,7 +259,7 @@ export default function FirstNationsLandingPage() {
       {/* Fall Sale Section */}
       <section className="py-20 bg-gradient-to-br from-discovery-charcoal to-discovery-charcoal-light">
         <div className="max-w-6xl mx-auto px-4 text-center">
-          <div className="bg-discovery-white rounded-3xl p-12 shadow-2xl">
+          <div className="bg-discovery-white rounded-3xl p-12 shadow-2xl border-2 border-discovery-gold shadow-[0_0_20px_rgba(212,175,55,0.3)]">
             {/* Sale Header */}
             <div className="mb-8">
               <div className="text-lg font-semibold text-discovery-charcoal-light mb-2">FALL SALE</div>
@@ -279,7 +282,7 @@ export default function FirstNationsLandingPage() {
             <div className="mb-12">
               <a 
                 href="/quote-builder"
-                className="inline-block bg-discovery-charcoal text-discovery-white px-12 py-4 rounded-lg font-bold text-xl border-2 border-discovery-charcoal hover:bg-discovery-white hover:text-discovery-charcoal transition-all duration-300"
+                className="inline-block bg-discovery-charcoal text-discovery-white px-12 py-4 rounded-lg font-bold text-xl border-2 border-discovery-gold hover:bg-discovery-white hover:text-discovery-charcoal transition-all duration-300 shadow-[0_0_15px_rgba(212,175,55,0.4)] hover:shadow-[0_0_25px_rgba(212,175,55,0.6)]"
               >
                 CLAIM YOUR DISCOUNT
               </a>
@@ -676,176 +679,7 @@ export default function FirstNationsLandingPage() {
         </div>
       </section>
 
-      {/* Success Stories */}
-      <section id="success-stories" className="py-20 bg-discovery-charcoal">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-white mb-6">
-              Success Stories
-            </h2>
-            <p className="text-xl text-discovery-sage max-w-3xl mx-auto">
-              See how we&apos;ve helped First Nations communities across Canada create sustainable, 
-              beautiful homes that strengthen their communities.
-            </p>
-          </div>
-
-          {/* Conveyor Belt Animation Container */}
-          <div className="relative overflow-hidden">
-            <div className="flex animate-conveyor">
-              {/* First set of stories */}
-              {[
-                {
-                  title: "Nak'azdli Whut'en First Nation",
-                  description: "20 sustainable modular homes built with cultural consultation and community input",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/LP-IND-4__Cultural touch – mural__Indigenous Communities__v01.webp"
-                },
-                {
-                  title: "Tla'amin Nation",
-                  description: "Community center and residential complex with traditional design elements",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/LP-IND-6__Interior lifestyle—Grandmother baking bannock__Indigenous Communities__v01.webp"
-                },
-                {
-                  title: "Ktunaxa Nation",
-                  description: "Energy-efficient homes incorporating local materials and cultural motifs",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/CB indegen.webp"
-                },
-                {
-                  title: "Squamish Nation",
-                  description: "Multi-generational housing complex preserving cultural heritage",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/CB indegen1_bloom_low_6x.webp"
-                },
-                {
-                  title: "Musqueam Nation",
-                  description: "Eco-friendly community development with traditional architecture",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/LP-IND-4__Cultural touch – mural__Indigenous Communities__v01.webp"
-                },
-                {
-                  title: "Tsleil-Waututh Nation",
-                  description: "Sustainable housing project with renewable energy integration",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/LP-IND-6__Interior lifestyle—Grandmother baking bannock__Indigenous Communities__v01.webp"
-                },
-                {
-                  title: "Stó:lō Nation",
-                  description: "Cultural preservation through modern modular housing solutions",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/CB indegen.webp"
-                },
-                {
-                  title: "Nisga'a Nation",
-                  description: "Community-driven development with traditional building techniques",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/CB indegen1_bloom_low_6x.webp"
-                }
-              ].map((story, index) => (
-                <div key={`first-${index}`} className="flex-shrink-0 w-80 mx-4 bg-discovery-charcoal-light rounded-2xl overflow-hidden shadow-2xl">
-                  <div className="relative h-48">
-                    <Image
-                      src={story.image}
-                      alt={story.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-serif font-bold text-discovery-white mb-3">
-                      {story.title}
-                    </h3>
-                    <p className="text-discovery-sage text-sm leading-relaxed mb-4">
-                      {story.description}
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-4 h-4 fill-discovery-gold text-discovery-gold" />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-              
-              {/* Duplicate set for seamless loop */}
-            {[
-              {
-                title: "Nak'azdli Whut'en First Nation",
-                  description: "20 sustainable modular homes built with cultural consultation and community input",
-                image: "/assets/images/new-content/Landing Page - Indigenous/LP-IND-4__Cultural touch – mural__Indigenous Communities__v01.webp"
-              },
-              {
-                title: "Tla'amin Nation",
-                description: "Community center and residential complex with traditional design elements",
-                image: "/assets/images/new-content/Landing Page - Indigenous/LP-IND-6__Interior lifestyle—Grandmother baking bannock__Indigenous Communities__v01.webp"
-              },
-              {
-                title: "Ktunaxa Nation",
-                description: "Energy-efficient homes incorporating local materials and cultural motifs",
-                image: "/assets/images/new-content/Landing Page - Indigenous/CB indegen.webp"
-                },
-                {
-                  title: "Squamish Nation",
-                  description: "Multi-generational housing complex preserving cultural heritage",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/CB indegen1_bloom_low_6x.webp"
-                },
-                {
-                  title: "Musqueam Nation",
-                  description: "Eco-friendly community development with traditional architecture",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/LP-IND-4__Cultural touch – mural__Indigenous Communities__v01.webp"
-                },
-                {
-                  title: "Tsleil-Waututh Nation",
-                  description: "Sustainable housing project with renewable energy integration",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/LP-IND-6__Interior lifestyle—Grandmother baking bannock__Indigenous Communities__v01.webp"
-                },
-                {
-                  title: "Stó:lō Nation",
-                  description: "Cultural preservation through modern modular housing solutions",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/CB indegen.webp"
-                },
-                {
-                  title: "Nisga'a Nation",
-                  description: "Community-driven development with traditional building techniques",
-                  image: "/assets/images/new-content/Landing Page - Indigenous/CB indegen1_bloom_low_6x.webp"
-              }
-            ].map((story, index) => (
-                <div key={`second-${index}`} className="flex-shrink-0 w-80 mx-4 bg-discovery-charcoal-light rounded-2xl overflow-hidden shadow-2xl">
-                <div className="relative h-48">
-                  <Image
-                    src={story.image}
-                    alt={story.title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="p-6">
-                    <h3 className="text-xl font-serif font-bold text-discovery-white mb-3">
-                    {story.title}
-                  </h3>
-                    <p className="text-discovery-sage text-sm leading-relaxed mb-4">
-                    {story.description}
-                  </p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-discovery-gold text-discovery-gold" />
-                    ))}
-                      </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-            </div>
-          </div>
-
-          {/* Success Stories CTA */}
-          <div className="text-center mt-16">
-            <a 
-              href="/quote-builder"
-              className="inline-block bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center gap-2 group mx-auto"
-            >
-              Get Instant Quote
-              <ArrowRight className="group-hover:translate-x-1 transition-transform" />
-            </a>
-          </div>
-        </div>
-      </section>
+<WhyDiscoveryHomesSection />
 
       {/* How It Works Section */}
       <section id="how-it-works" className="py-20 bg-discovery-white">
@@ -924,7 +758,7 @@ export default function FirstNationsLandingPage() {
                     Deliver & Install
                   </h3>
                   <p className="text-discovery-charcoal-light leading-relaxed">
-                    Our expert team delivers and installs your modular homes with minimal 
+                    Our expert team completes and finishes your housing project with minimal 
                     site disruption, respecting your land and community protocols.
                   </p>
                 </div>
@@ -1009,49 +843,8 @@ export default function FirstNationsLandingPage() {
         </div>
       </section>
 
-      {/* Certifications & Partnerships */}
-      <section className="py-20 bg-discovery-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-6">
-              Certifications & Partnerships
-            </h2>
-            <p className="text-xl text-discovery-charcoal-light max-w-3xl mx-auto">
-              We maintain the highest standards and work with trusted partners to ensure 
-              the best outcomes for First Nations communities.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { title: "Indigenous Business Certification", icon: Award },
-              { title: "Sustainable Building Certified", icon: Shield },
-              { title: "First Nations Housing Authority Partner", icon: Home },
-              { title: "Cultural Consultation Certified", icon: Heart }
-            ].map((cert, index) => (
-              <div key={index} className="text-center p-6 rounded-2xl bg-gradient-to-br from-discovery-gold/10 to-discovery-sage/10">
-                <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-4">
-                  <cert.icon className="w-6 h-6 text-discovery-charcoal" />
-                </div>
-                <h3 className="font-semibold text-discovery-charcoal">
-                  {cert.title}
-                </h3>
-              </div>
-            ))}
-          </div>
-
-          {/* CTA Button */}
-          <div className="text-center mt-16">
-            <a 
-              href="/quote-builder"
-              className="inline-block bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center gap-2 group mx-auto"
-            >
-              Get Instant Quote
-              <ArrowRight className="group-hover:translate-x-1 transition-transform" />
-            </a>
-          </div>
-        </div>
-      </section>
+      {/* Partnerships */}
+      <PartnershipLogos />
 
       {/* Download Our Guide Section */}
       <section className="py-20 bg-gradient-to-br from-discovery-sage/20 to-discovery-gold/20">

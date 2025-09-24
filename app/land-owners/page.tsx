@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { ArrowRight, Download, Calendar, MessageCircle, Star, Users, Home, Heart, Shield, Award, DollarSign, TrendingUp, Building, Calculator, MapPin, Leaf, Globe, Zap, Clock } from 'lucide-react'
 import { LeadCaptureForm } from '@/components/LeadCaptureForm'
+import { PartnershipLogos } from '@/components/sections/PartnershipLogos'
+import { WhyDiscoveryHomesSection } from '@/components/sections/WhyDiscoveryHomesSection'
 import { CTABanner } from '@/components/CTABanner'
 
 export default function LandOwnersLandingPage() {
@@ -27,17 +29,14 @@ export default function LandOwnersLandingPage() {
   useEffect(() => {
     setIsClient(true)
     
-    // Set countdown to end of September
+    // Set countdown to 30 days from now
     const calculateTimeLeft = () => {
       const now = new Date()
-      const endOfSeptember = new Date(now.getFullYear(), 8, 30, 23, 59, 59) // September 30th, 11:59:59 PM
+      const endDate = new Date()
+      endDate.setDate(endDate.getDate() + 30) // 30 days from now
+      endDate.setHours(23, 59, 59, 999) // End of day
       
-      if (now > endOfSeptember) {
-        // If past September 30th, set to next year
-        endOfSeptember.setFullYear(now.getFullYear() + 1)
-      }
-      
-      const difference = endOfSeptember.getTime() - now.getTime()
+      const difference = endDate.getTime() - now.getTime()
       
       if (difference > 0) {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24))
@@ -245,7 +244,7 @@ export default function LandOwnersLandingPage() {
       {/* Fall Sale Section */}
       <section className="py-20 bg-gradient-to-br from-discovery-charcoal to-discovery-charcoal-light">
         <div className="max-w-6xl mx-auto px-4 text-center">
-          <div className="bg-discovery-white rounded-3xl p-12 shadow-2xl">
+          <div className="bg-discovery-white rounded-3xl p-12 shadow-2xl border-2 border-discovery-gold shadow-[0_0_20px_rgba(212,175,55,0.3)]">
             {/* Sale Header */}
             <div className="mb-8">
               <div className="text-lg font-semibold text-discovery-charcoal-light mb-2">FALL SALE</div>
@@ -268,7 +267,7 @@ export default function LandOwnersLandingPage() {
             <div className="mb-12">
               <a 
                 href="/quote-builder"
-                className="inline-block bg-discovery-charcoal text-discovery-white px-12 py-4 rounded-lg font-bold text-xl border-2 border-discovery-charcoal hover:bg-discovery-white hover:text-discovery-charcoal transition-all duration-300"
+                className="inline-block bg-discovery-charcoal text-discovery-white px-12 py-4 rounded-lg font-bold text-xl border-2 border-discovery-gold hover:bg-discovery-white hover:text-discovery-charcoal transition-all duration-300 shadow-[0_0_15px_rgba(212,175,55,0.4)] hover:shadow-[0_0_25px_rgba(212,175,55,0.6)]"
               >
                 CLAIM YOUR DISCOUNT
               </a>
@@ -647,178 +646,7 @@ export default function LandOwnersLandingPage() {
         </div>
       </section>
 
-      {/* Success Stories */}
-      <section id="success-stories" className="py-20 bg-discovery-charcoal">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-white mb-6">
-              Success Stories
-            </h2>
-            <p className="text-xl text-discovery-sage max-w-3xl mx-auto">
-              See how we&apos;ve helped land owners across Canada transform their properties into 
-              sustainable, profitable communities.
-            </p>
-          </div>
-
-          {/* Conveyor Belt Animation Container */}
-          <div className="relative overflow-hidden">
-            <div className="flex animate-conveyor">
-              {/* First set of stories */}
-              {[
-                {
-                  title: "Prairie Farm Development",
-                  description: "Transformed 50 acres into sustainable community with 3x land value increase",
-                  image: "/assets/images/new-content/Landing Page- Land Owners/cb phariri farm.webp"
-                },
-                {
-                  title: "Mountain Retreat Project",
-                  description: "Converted family land into premium rental community with 90-day deployment",
-                  image: "/assets/images/new-content/Landing Page- Land Owners/LP-CAB-3__Cabin Living — Seasonal appeal – winter__Pine 2__v01.webp"
-                },
-                {
-                  title: "Lakeside Community",
-                  description: "Developed waterfront property into mixed-use community with 40% cost savings",
-                  image: "/assets/images/new-content/Landing Page- Land Owners/CB-PrairieFarm-Rear__Prairie-Farm–Rear__No-Model__v01.webp"
-                },
-                {
-                  title: "Forest Development",
-                  description: "Created eco-friendly community preserving natural features with 100% sustainable design",
-                  image: "/assets/images/new-content/Landing Page- Land Owners/LP-CAB-5__Interior_Comfort__Cabin_Living__v01.webp"
-                },
-                {
-                  title: "Rural Expansion",
-                  description: "Expanded agricultural land into residential community achieving 5x ROI",
-                  image: "/assets/images/new-content/Landing Page- Land Owners/LP delivery.webp"
-                },
-                {
-                  title: "Off-Grid Project",
-                  description: "Built self-sufficient community in remote location with renewable energy",
-                  image: "/assets/images/new-content/Landing Page- Land Owners/LP offgrid.webp"
-                },
-                {
-                  title: "Coastal Development",
-                  description: "Developed premium waterfront community with luxury amenities and premium pricing",
-                  image: "/assets/images/new-content/Landing Page- Land Owners/CB-PrairieFarm-Hero__Prairie Farm – Hero__Custom-Build__v01.webp"
-                },
-                {
-                  title: "Agricultural Hub",
-                  description: "Created multi-use development combining residential and agricultural uses",
-                  image: "/assets/images/new-content/Landing Page- Land Owners/cb phariri farm.webp"
-              }
-            ].map((story, index) => (
-                <div key={`first-${index}`} className="flex-shrink-0 w-80 mx-4 bg-discovery-charcoal-light rounded-2xl overflow-hidden shadow-2xl">
-                <div className="relative h-48">
-                  <Image
-                    src={story.image}
-                    alt={story.title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-serif font-bold text-discovery-white mb-2">
-                    {story.title}
-                  </h3>
-                  <p className="text-discovery-sage mb-4">
-                    {story.description}
-                  </p>
-                  <div className="flex items-center gap-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-discovery-gold text-discovery-gold" />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
-              
-              {/* Duplicate set for seamless loop */}
-              {[
-                {
-                  title: "Prairie Farm Development",
-                  description: "Transformed 50 acres into sustainable community with 3x land value increase",
-                  image: "/assets/images/new-content/Landing Page- Land Owners/cb phariri farm.webp"
-                },
-                {
-                  title: "Mountain Retreat Project",
-                  description: "Converted family land into premium rental community with 90-day deployment",
-                  image: "/assets/images/new-content/Landing Page- Land Owners/LP-CAB-3__Cabin Living — Seasonal appeal – winter__Pine 2__v01.webp"
-                },
-                {
-                  title: "Lakeside Community",
-                  description: "Developed waterfront property into mixed-use community with 40% cost savings",
-                  image: "/assets/images/new-content/Landing Page- Land Owners/CB-PrairieFarm-Rear__Prairie-Farm–Rear__No-Model__v01.webp"
-                },
-                {
-                  title: "Forest Development",
-                  description: "Created eco-friendly community preserving natural features with 100% sustainable design",
-                  image: "/assets/images/new-content/Landing Page- Land Owners/LP-CAB-5__Interior_Comfort__Cabin_Living__v01.webp"
-                },
-                {
-                  title: "Rural Expansion",
-                  description: "Expanded agricultural land into residential community achieving 5x ROI",
-                  image: "/assets/images/new-content/Landing Page- Land Owners/LP delivery.webp"
-                },
-                {
-                  title: "Off-Grid Project",
-                  description: "Built self-sufficient community in remote location with renewable energy",
-                  image: "/assets/images/new-content/Landing Page- Land Owners/LP offgrid.webp"
-                },
-                {
-                  title: "Coastal Development",
-                  description: "Developed premium waterfront community with luxury amenities and premium pricing",
-                  image: "/assets/images/new-content/Landing Page- Land Owners/CB-PrairieFarm-Hero__Prairie Farm – Hero__Custom-Build__v01.webp"
-                },
-                {
-                  title: "Agricultural Hub",
-                  description: "Created multi-use development combining residential and agricultural uses",
-                  image: "/assets/images/new-content/Landing Page- Land Owners/cb phariri farm.webp"
-              }
-            ].map((story, index) => (
-                <div key={`second-${index}`} className="flex-shrink-0 w-80 mx-4 bg-discovery-charcoal-light rounded-2xl overflow-hidden shadow-2xl">
-                <div className="relative h-48">
-                  <Image
-                    src={story.image}
-                    alt={story.title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-serif font-bold text-discovery-white mb-2">
-                    {story.title}
-                  </h3>
-                  <p className="text-discovery-sage mb-4">
-                    {story.description}
-                  </p>
-                  <div className="flex items-center gap-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-discovery-gold text-discovery-gold" />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
-            </div>
-          </div>
-          
-          {/* Success Stories CTA */}
-          <div className="text-center mt-16">
-            <h3 className="text-2xl md:text-3xl font-serif font-bold text-discovery-white mb-6">
-              Ready to Create Your Success Story?
-            </h3>
-            <p className="text-xl text-discovery-sage mb-8 max-w-2xl mx-auto">
-              Join these land owners in transforming your property into a sustainable, profitable community.
-            </p>
-            <a 
-              href="/quote-builder"
-              className="inline-block bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-10 py-4 rounded-lg font-semibold text-xl transition-all duration-300 flex items-center gap-2 group mx-auto"
-            >
-              Start Your Project Today
-              <ArrowRight className="group-hover:translate-x-1 transition-transform" />
-            </a>
-          </div>
-        </div>
-      </section>
+<WhyDiscoveryHomesSection />
 
       {/* How It Works Section */}
       <section id="how-it-works" className="py-20 bg-discovery-white">
@@ -897,7 +725,7 @@ export default function LandOwnersLandingPage() {
                     Deliver & Install
                   </h3>
                   <p className="text-discovery-charcoal-light leading-relaxed">
-                    Your completed modular development is delivered to your site and professionally installed by 
+                    Your completed development project is finished on your site by 
                     our experienced team, ready for occupancy and revenue generation.
                   </p>
                 </div>
@@ -911,6 +739,9 @@ export default function LandOwnersLandingPage() {
 
 
 
+
+      {/* Partnerships */}
+      <PartnershipLogos />
 
       {/* Start Your Land Development Journey */}
       <section className="py-20 bg-gradient-to-br from-discovery-sage/20 to-discovery-gold/20">
