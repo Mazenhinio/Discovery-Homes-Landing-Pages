@@ -1158,7 +1158,7 @@ export default function QuoteBuilderPage() {
                           src={
                             selectedModel.name === 'Willow' ? '/assets/images/new-content/Pine 3- Willow/XF pine 3 scandanavian front right .webp' :
                             selectedModel.name === 'Pine' ? '/assets/images/new-content/PIne 1 - Pine/xf pine 1 front right scandanavian.webp' :
-                            selectedModel.name === 'Spruce' ? '/assets/images/new-content/Pine 2- Spruce/XF pien 1 and 2 charcoal.webp' :
+                            selectedModel.name === 'Spruce' ? '/assets/images/new-content/Landing Page - Real Estate Rental/LP-TYL-4__Interior–rental-ready__Pine-2__v01.webp' :
                             '/assets/images/new-content/Custom Builds/cb coastal.webp'
                           }
                           alt={`${selectedModel.name} model`}
@@ -1204,7 +1204,7 @@ export default function QuoteBuilderPage() {
                         src={
                           selectedModel.name === 'Willow' ? '/assets/images/new-content/Pine 3- Willow/XF pine 3 scandanavian front right .webp' :
                           selectedModel.name === 'Pine' ? '/assets/images/new-content/PIne 1 - Pine/xf pine 1 front right scandanavian.webp' :
-                          selectedModel.name === 'Spruce' ? '/assets/images/new-content/Pine 2- Spruce/XF pien 1 and 2 charcoal.webp' :
+                          selectedModel.name === 'Spruce' ? '/assets/images/new-content/Landing Page - Real Estate Rental/LP-TYL-4__Interior–rental-ready__Pine-2__v01.webp' :
                           '/assets/images/new-content/Custom Builds/cb coastal.webp'
                         }
                         alt={`${selectedModel.name} model`}

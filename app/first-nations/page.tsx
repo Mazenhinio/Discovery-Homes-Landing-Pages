@@ -379,7 +379,7 @@ export default function FirstNationsLandingPage() {
                 <Image
                   src={
                     activeTab === 'pine' ? '/assets/images/new-content/PIne 1 - Pine/xf pine 1 front right scandanavian.webp' :
-                    activeTab === 'spruce' ? '/assets/images/new-content/Pine 2- Spruce/XF pien 1 and 2 charcoal.webp' :
+                    activeTab === 'spruce' ? '/assets/images/new-content/Landing Page - Real Estate Rental/LP-TYL-4__Interior–rental-ready__Pine-2__v01.webp' :
                     activeTab === 'willow' ? '/assets/images/new-content/Pine 3- Willow/XF pine 3 scandanavian front right .webp' :
                     '/assets/images/new-content/Custom Builds/CB-LakesideRetreat-Front__Lakeside-Retreat__CustomBuild__v01.webp'
                   }
@@ -423,7 +423,7 @@ export default function FirstNationsLandingPage() {
 
                 {activeTab === 'spruce' && [
                   '/assets/images/new-content/Pine 2- Spruce/IF pine1-kitchen-E&S.webp',
-                  '/assets/images/new-content/Pine 2- Spruce/IF pine1-living-E&S.webp',
+                  '/assets/images/new-content/Pine 2- Spruce/IFpine1-living-E&S.webp',
                   '/assets/images/new-content/Pine 2- Spruce/IF pine1-bedroom-E&S.webp',
                   '/assets/images/new-content/Pine 2- Spruce/IF pine1-bedroom-IC.webp'
                 ].map((src, index) => (
@@ -445,7 +445,7 @@ export default function FirstNationsLandingPage() {
                 ))}
 
                 {activeTab === 'willow' && [
-                  '/assets/images/new-content/Pine 3- Willow/IF pine 3 Nordic Whitw.png',
+                  '/assets/images/new-content/Pine 3- Willow/IF pine 3 Nordic Whitw.webp',
                   '/assets/images/new-content/Pine 3- Willow/IF Pine3-kitchen-NW.webp',
                   '/assets/images/new-content/Pine 3- Willow/IF Pine3-kitchen-E&S.webp',
                   '/assets/images/new-content/Pine 3- Willow/IF Pine3-room-E&S.webp'

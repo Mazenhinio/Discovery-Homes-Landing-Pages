@@ -19,7 +19,7 @@ export function OurBuildsSection() {
       description: "Perfect for families or rental markets, with extra space and a flexible layout.",
       specs: "504 sq ft • 2 Bedroom with Loft",
       price: "Starting at $188,000 CAD",
-      image: "/assets/images/new-content/Pine 2- Spruce/XF pien 1 and 2 charcoal.webp",
+      image: "/assets/images/new-content/Landing Page - Real Estate Rental/LP-TYL-4__Interior–rental-ready__Pine-2__v01.webp",
       href: "/our-builds/pine-2",
       features: ["Flexible layout", "Family friendly", "Loft space"]
     },
