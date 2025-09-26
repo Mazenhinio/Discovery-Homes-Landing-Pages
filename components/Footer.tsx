@@ -36,6 +36,24 @@ export function Footer() {
                   info@discoveryhomes.ca
                 </a>
               </div>
+              <div className="flex gap-4 justify-center md:justify-end mt-4">
+                <a 
+                  href="https://app.gohighlevel.com/v2/preview/c0BIvl4xjKStFMrCsqHY?notrack=true" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-gray-300 hover:text-[#D4AF37] transition-colors text-sm"
+                >
+                  Terms and Conditions
+                </a>
+                <a 
+                  href="https://app.gohighlevel.com/v2/preview/jryFzO5ua2DdePIov9hr?notrack=true" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-gray-300 hover:text-[#D4AF37] transition-colors text-sm"
+                >
+                  Privacy Policy
+                </a>
+              </div>
             </div>
           </div>
         </div>

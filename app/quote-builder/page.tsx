@@ -981,7 +981,7 @@ export default function QuoteBuilderPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-2">Phone Number *</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Phone Number</label>
                   <input
                     type="tel"
                     value={formData.phone}
