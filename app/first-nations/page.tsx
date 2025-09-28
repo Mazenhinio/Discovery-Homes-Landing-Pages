@@ -58,7 +58,7 @@ export default function FirstNationsLandingPage() {
     const handleTabChange = (event: CustomEvent) => {
       const { tab } = event.detail
       console.log('Received tab change event:', tab)
-      setActiveTab(tab)
+      // Tab change handling can be implemented here if needed
     }
     
     window.addEventListener('setActiveTab', handleTabChange as EventListener)
