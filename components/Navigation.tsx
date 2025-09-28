@@ -182,12 +182,6 @@ export function Navigation() {
             </div>
 
             <button 
-              onClick={() => smoothScrollTo('success-stories')}
-              className="nav-link nav-item nav-link-smooth"
-            >
-              <span className="font-medium">Success Stories</span>
-            </button>
-            <button 
               onClick={() => smoothScrollTo('how-it-works')}
               className="nav-link nav-item nav-link-smooth"
             >
@@ -307,15 +301,6 @@ export function Navigation() {
                 </div>
               </div>
 
-              <button 
-                onClick={() => {
-                  smoothScrollTo('success-stories');
-                  setIsOpen(false);
-                }}
-                className="block w-full text-left px-4 py-3 text-discovery-white hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/10 nav-link-smooth"
-              >
-                Success Stories
-              </button>
               <button 
                 onClick={() => {
                   smoothScrollTo('how-it-works');

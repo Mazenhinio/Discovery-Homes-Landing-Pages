@@ -5,7 +5,6 @@ import Image from 'next/image'
 import { ArrowRight, Download, Calendar, MessageCircle, Star, Users, Home, Heart, Shield, Award, DollarSign, TrendingUp, Building, Calculator, MapPin, Leaf, Globe, Zap, Clock } from 'lucide-react'
 import { LeadCaptureForm } from '@/components/LeadCaptureForm'
 import { PartnershipLogos } from '@/components/sections/PartnershipLogos'
-import { WhyDiscoveryHomesSection } from '@/components/sections/WhyDiscoveryHomesSection'
 import { OurHomesSection } from '@/components/sections/OurHomesSection'
 import { CTABanner } from '@/components/CTABanner'
 import { FirstNationsScheduler } from '@/components/FirstNationsScheduler'
@@ -145,8 +144,7 @@ export default function FirstNationsLandingPage() {
             <span className="block text-discovery-gold">Building Communities</span>
           </h1>
           <p className="text-xl md:text-2xl mb-8 max-w-4xl mx-auto leading-relaxed">
-            Discovery Homes proudly partners with First Nations communities to create sustainable, 
-            culturally-appropriate housing solutions that honor tradition while embracing modern innovation.
+            Sustainable, culturally-appropriate housing solutions that honor tradition while embracing modern innovation.
           </p>
           
           {/* CTA Buttons */}
@@ -161,7 +159,7 @@ export default function FirstNationsLandingPage() {
             </a>
             <button 
               onClick={() => setShowDownloadForm(true)}
-              className="border-2 border-discovery-white text-discovery-white hover:bg-discovery-white hover:text-discovery-charcoal px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center gap-2"
+              className="border-2 border-discovery-white text-discovery-white hover:bg-discovery-white hover:text-discovery-charcoal px-4 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center gap-2"
             >
               <Download className="w-5 h-5" />
               Download Guide
@@ -285,27 +283,27 @@ export default function FirstNationsLandingPage() {
             </div>
 
             {/* Countdown Timer */}
-            <div className="flex justify-center gap-2 sm:gap-4 md:gap-6">
-              <div className="bg-discovery-charcoal-light rounded-xl p-3 sm:p-4 md:p-6 min-w-[80px] sm:min-w-[100px] md:min-w-[120px] flex flex-col items-center justify-center">
-                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-discovery-white mb-1 sm:mb-2 leading-tight">
+            <div className="flex justify-center gap-1 sm:gap-2 md:gap-4 lg:gap-6 flex-wrap">
+              <div className="bg-discovery-charcoal-light rounded-xl p-2 sm:p-3 md:p-4 lg:p-6 w-16 sm:w-20 md:w-24 lg:w-28 flex flex-col items-center justify-center">
+                <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-discovery-white mb-1 sm:mb-2 leading-tight">
                   {timeLeft.days.toString().padStart(2, '0')}
                 </div>
                 <div className="text-xs sm:text-sm text-discovery-white text-center">Days</div>
               </div>
-              <div className="bg-discovery-charcoal-light rounded-xl p-3 sm:p-4 md:p-6 min-w-[80px] sm:min-w-[100px] md:min-w-[120px] flex flex-col items-center justify-center">
-                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-discovery-white mb-1 sm:mb-2 leading-tight">
+              <div className="bg-discovery-charcoal-light rounded-xl p-2 sm:p-3 md:p-4 lg:p-6 w-16 sm:w-20 md:w-24 lg:w-28 flex flex-col items-center justify-center">
+                <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-discovery-white mb-1 sm:mb-2 leading-tight">
                   {timeLeft.hours.toString().padStart(2, '0')}
                 </div>
                 <div className="text-xs sm:text-sm text-discovery-white text-center">Hours</div>
               </div>
-              <div className="bg-discovery-charcoal-light rounded-xl p-3 sm:p-4 md:p-6 min-w-[80px] sm:min-w-[100px] md:min-w-[120px] flex flex-col items-center justify-center">
-                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-discovery-white mb-1 sm:mb-2 leading-tight">
+              <div className="bg-discovery-charcoal-light rounded-xl p-2 sm:p-3 md:p-4 lg:p-6 w-16 sm:w-20 md:w-24 lg:w-28 flex flex-col items-center justify-center">
+                <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-discovery-white mb-1 sm:mb-2 leading-tight">
                   {timeLeft.minutes.toString().padStart(2, '0')}
                 </div>
                 <div className="text-xs sm:text-sm text-discovery-white text-center">Minutes</div>
               </div>
-              <div className="bg-discovery-charcoal-light rounded-xl p-3 sm:p-4 md:p-6 min-w-[80px] sm:min-w-[100px] md:min-w-[120px] flex flex-col items-center justify-center">
-                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-discovery-white mb-1 sm:mb-2 leading-tight">
+              <div className="bg-discovery-charcoal-light rounded-xl p-2 sm:p-3 md:p-4 lg:p-6 w-16 sm:w-20 md:w-24 lg:w-28 flex flex-col items-center justify-center">
+                <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-discovery-white mb-1 sm:mb-2 leading-tight">
                   {timeLeft.seconds.toString().padStart(2, '0')}
                 </div>
                 <div className="text-xs sm:text-sm text-discovery-white text-center">Seconds</div>
@@ -341,7 +339,6 @@ export default function FirstNationsLandingPage() {
       {/* Our Homes Section */}
       <OurHomesSection />
 
-<WhyDiscoveryHomesSection />
 
       {/* How It Works Section */}
       <section id="how-it-works" className="py-16 sm:py-20 bg-gradient-to-b from-discovery-charcoal to-gray-900">
