@@ -4,7 +4,6 @@ import { HeroSection } from '@/components/sections/HeroSection'
 import { OurHomesSection } from '@/components/sections/OurHomesSection'
 import { WhoWeServeSection } from '@/components/sections/WhoWeServeSection'
 import { PartnershipLogos } from '@/components/sections/PartnershipLogos'
-import { WhyDiscoveryHomesSection } from '@/components/sections/WhyDiscoveryHomesSection'
 import { CTABanner } from '@/components/CTABanner'
 import { TrustSignals } from '@/components/TrustSignals'
 import { useOurHomes } from '@/components/providers/OurHomesProvider'
@@ -77,8 +76,6 @@ export default function Home() {
         <PartnershipLogos />
       </div>
 
-      {/* Why Discovery Homes Section */}
-      <WhyDiscoveryHomesSection />
       {/* Five Pillars Section */}
       <div className="animate-section">
         <section className="py-16 sm:py-20 bg-gradient-to-b from-discovery-lime/20 to-discovery-sage/20">
