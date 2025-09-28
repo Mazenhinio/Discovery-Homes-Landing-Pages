@@ -125,7 +125,7 @@ export default function FirstNationsLandingPage() {
   return (
     <div className="min-h-screen bg-discovery-white">
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[80vh] h-[80vh] pt-16 flex items-center justify-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
@@ -151,9 +151,13 @@ export default function FirstNationsLandingPage() {
           
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <a href="/quote-builder" className="bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center gap-2 group">
+            <a href="/quote-builder" className="inline-block w-full bg-[#D4AF37] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#B8941F] transition-colors flex items-center justify-center gap-2">
               Get Instant Quote
-              <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+              <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
+                <svg className="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
             </a>
             <button 
               onClick={() => setShowDownloadForm(true)}
@@ -165,33 +169,27 @@ export default function FirstNationsLandingPage() {
           </div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-discovery-white rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-discovery-white rounded-full mt-2 animate-pulse"></div>
-          </div>
-        </div>
       </section>
 
       {/* Trust Signals */}
-      <section className="py-16 bg-discovery-charcoal">
+      <section className="py-8 bg-discovery-charcoal">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div className="flex justify-center items-center gap-3 md:gap-6 text-center">
             <div className="text-discovery-white">
-              <div className="text-4xl font-bold text-discovery-gold mb-2">25+</div>
-              <div className="text-sm">Years Experience</div>
+              <div className="text-xl md:text-2xl font-bold text-discovery-gold mb-0.5">25+</div>
+              <div className="text-xs">Years Experience</div>
             </div>
             <div className="text-discovery-white">
-              <div className="text-4xl font-bold text-discovery-gold mb-2">10+</div>
-              <div className="text-sm">First Nations Projects</div>
+              <div className="text-xl md:text-2xl font-bold text-discovery-gold mb-0.5">10+</div>
+              <div className="text-xs">First Nations Projects</div>
             </div>
             <div className="text-discovery-white">
-              <div className="text-4xl font-bold text-discovery-gold mb-2">99%</div>
-              <div className="text-sm">Community Satisfaction</div>
+              <div className="text-xl md:text-2xl font-bold text-discovery-gold mb-0.5">99%</div>
+              <div className="text-xs">Community Satisfaction</div>
             </div>
             <div className="text-discovery-white">
-              <div className="text-4xl font-bold text-discovery-gold mb-2">24/7</div>
-              <div className="text-sm">Support Available</div>
+              <div className="text-xl md:text-2xl font-bold text-discovery-gold mb-0.5">24/7</div>
+              <div className="text-xs">Support Available</div>
             </div>
           </div>
         </div>
@@ -204,7 +202,7 @@ export default function FirstNationsLandingPage() {
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-6">
               Our Commitment to First Nations Communities
             </h2>
-            <p className="text-xl text-discovery-charcoal-light max-w-3xl mx-auto">
+            <p className="text-[15px] text-discovery-charcoal-light max-w-3xl mx-auto">
               We understand the unique cultural, environmental, and economic considerations that shape 
               housing needs in First Nations communities. Our approach is built on respect, collaboration, 
               and sustainable development.
@@ -323,15 +321,19 @@ export default function FirstNationsLandingPage() {
           <h2 className="text-3xl md:text-4xl font-serif font-bold text-discovery-charcoal mb-6">
             Ready to Get Started?
           </h2>
-          <p className="text-xl text-discovery-charcoal-light mb-8">
+          <p className="text-[15px] text-discovery-charcoal-light mb-8">
             Join the First Nations communities already building their future with Discovery Homes.
           </p>
           <a 
             href="/quote-builder"
-            className="inline-block bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center gap-2 group mx-auto"
+            className="inline-block bg-[#D4AF37] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#B8941F] transition-colors flex items-center justify-center gap-2 mx-auto"
           >
             Get Instant Quote
-            <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+            <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
+              <svg className="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
           </a>
         </div>
       </section>
@@ -342,85 +344,97 @@ export default function FirstNationsLandingPage() {
 <WhyDiscoveryHomesSection />
 
       {/* How It Works Section */}
-      <section id="how-it-works" className="py-20 bg-discovery-white">
+      <section id="how-it-works" className="py-16 sm:py-20 bg-gradient-to-b from-discovery-charcoal to-gray-900">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-6">
-              HOW IT WORKS
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-discovery-white mb-4 sm:mb-6 leading-tight">
+              How It Works
             </h2>
-            <p className="text-xl text-discovery-charcoal-light max-w-3xl mx-auto">
-              Our streamlined process ensures your community housing project is delivered 
-              with quality craftsmanship, sustainable practices, and cultural sensitivity.
+            <div className="w-24 h-1 bg-gradient-to-r from-discovery-gold to-discovery-lime mx-auto rounded-full mb-6"></div>
+            <p className="text-[15px] text-discovery-sage max-w-3xl mx-auto leading-relaxed">
+              Our streamlined process delivers quality craftsmanship, sustainable practices, and maximum value for your community housing project.
             </p>
           </div>
 
           {/* Process Steps */}
           <div className="relative">
             {/* Connection Line */}
-            <div className="hidden lg:block absolute top-16 left-0 right-0 h-0.5 bg-gradient-to-r from-discovery-gold via-discovery-sage to-discovery-gold"></div>
+            <div className="hidden lg:block absolute top-12 left-0 right-0 h-0.5 bg-gradient-to-r from-discovery-gold via-discovery-sage to-discovery-gold"></div>
             
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {/* Step 1: Build Your Dream House */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* Step 1: Build Your Dream Development */}
               <div className="text-center relative">
-                <div className="w-16 h-16 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
-                  <Home className="w-8 h-8 text-discovery-charcoal" />
-                </div>
-                <div className="bg-discovery-white rounded-2xl p-6 shadow-lg border border-discovery-gold/20">
-                  <h3 className="text-xl font-serif font-bold text-discovery-charcoal mb-4">
-                    Build Your Dream House
-                  </h3>
-                  <p className="text-discovery-charcoal-light leading-relaxed">
-                    Start with our quote builder to design your perfect modular home. 
-                    Choose from Pine, Spruce, Willow, or create a custom build tailored to your community's needs.
-                  </p>
+                <div className="bg-discovery-charcoal-light rounded-xl p-2 shadow-md border border-discovery-gold/20">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-lg font-bold text-discovery-charcoal">1</span>
+                    </div>
+                    <div className="text-left">
+                      <h3 className="text-lg font-serif font-bold text-discovery-white mb-1">
+                        Build Your Dream Development
+                      </h3>
+                      <p className="text-sm text-discovery-sage leading-relaxed">
+                        Design your perfect modular development with Pine, Spruce, Willow, or custom builds.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               {/* Step 2: Discovery Call */}
               <div className="text-center relative">
-                <div className="w-16 h-16 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
-                  <MessageCircle className="w-8 h-8 text-discovery-charcoal" />
-                </div>
-                <div className="bg-discovery-white rounded-2xl p-6 shadow-lg border border-discovery-gold/20">
-                  <h3 className="text-xl font-serif font-bold text-discovery-charcoal mb-4">
-                    Discovery Call
-                  </h3>
-                  <p className="text-discovery-charcoal-light leading-relaxed">
-                    Connect with our First Nations housing specialists for a personalized consultation 
-                    about your community's specific needs and cultural requirements.
-                  </p>
+                <div className="bg-discovery-charcoal-light rounded-xl p-2 shadow-md border border-discovery-gold/20">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-lg font-bold text-discovery-charcoal">2</span>
+                    </div>
+                    <div className="text-left">
+                      <h3 className="text-lg font-serif font-bold text-discovery-white mb-1">
+                        Discovery Call
+                      </h3>
+                      <p className="text-sm text-discovery-sage leading-relaxed">
+                        Our specialists understand your community's needs, cultural requirements, and housing goals.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               {/* Step 3: Procure & Manufacture */}
               <div className="text-center relative">
-                <div className="w-16 h-16 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
-                  <Building className="w-8 h-8 text-discovery-charcoal" />
-                </div>
-                <div className="bg-discovery-white rounded-2xl p-6 shadow-lg border border-discovery-gold/20">
-                  <h3 className="text-xl font-serif font-bold text-discovery-charcoal mb-4">
-                    Procure & Manufacture
-                  </h3>
-                  <p className="text-discovery-charcoal-light leading-relaxed">
-                    We source sustainable materials and manufacture your modular homes in our 
-                    controlled facility, ensuring quality and cultural design integration.
-                  </p>
+                <div className="bg-discovery-charcoal-light rounded-xl p-2 shadow-md border border-discovery-gold/20">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-lg font-bold text-discovery-charcoal">3</span>
+                    </div>
+                    <div className="text-left">
+                      <h3 className="text-lg font-serif font-bold text-discovery-white mb-1">
+                        Procure & Manufacture
+                      </h3>
+                      <p className="text-sm text-discovery-sage leading-relaxed">
+                        We source sustainable materials and manufacture in our climate-controlled facility.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               {/* Step 4: Deliver & Install */}
               <div className="text-center relative">
-                <div className="w-16 h-16 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
-                  <Zap className="w-8 h-8 text-discovery-charcoal" />
-                </div>
-                <div className="bg-discovery-white rounded-2xl p-6 shadow-lg border border-discovery-gold/20">
-                  <h3 className="text-xl font-serif font-bold text-discovery-charcoal mb-4">
-                    Deliver & Install
-                  </h3>
-                  <p className="text-discovery-charcoal-light leading-relaxed">
-                    Our expert team completes and finishes your housing project with minimal 
-                    site disruption, respecting your land and community protocols.
-                  </p>
+                <div className="bg-discovery-charcoal-light rounded-xl p-2 shadow-md border border-discovery-gold/20">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-lg font-bold text-discovery-charcoal">4</span>
+                    </div>
+                    <div className="text-left">
+                      <h3 className="text-lg font-serif font-bold text-discovery-white mb-1">
+                        Deliver & Install
+                      </h3>
+                      <p className="text-sm text-discovery-sage leading-relaxed">
+                        Your community housing project is completed and professionally finished, ready for occupancy.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -436,7 +450,7 @@ export default function FirstNationsLandingPage() {
               <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-6">
                 Start Your Community&apos;s Housing Journey
               </h2>
-              <p className="text-xl text-discovery-charcoal-light mb-8">
+              <p className="text-[15px] text-discovery-charcoal-light mb-8">
                 Ready to explore how Discovery Homes can help your First Nations community? 
                 Download our comprehensive guide and schedule a consultation with our experts.
               </p>

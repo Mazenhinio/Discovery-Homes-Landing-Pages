@@ -114,7 +114,7 @@ export default function ResortOwnersLandingPage() {
   return (
     <div className="min-h-screen bg-discovery-white">
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[80vh] h-[80vh] pt-16 flex items-center justify-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
@@ -140,9 +140,13 @@ export default function ResortOwnersLandingPage() {
           
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <a href="/quote-builder" className="bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center gap-2 group">
+            <a href="/quote-builder" className="inline-block w-full bg-[#D4AF37] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#B8941F] transition-colors flex items-center justify-center gap-2">
               Get Instant Quote
-              <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+              <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
+                <svg className="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
             </a>
             <button 
               onClick={() => setShowDownloadForm(true)}
@@ -154,33 +158,27 @@ export default function ResortOwnersLandingPage() {
           </div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-discovery-white rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-discovery-white rounded-full mt-2 animate-pulse"></div>
-          </div>
-        </div>
       </section>
 
       {/* Resort Revenue Statistics */}
-      <section className="py-16 bg-discovery-charcoal">
+      <section className="py-8 bg-discovery-charcoal">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8 text-center">
+          <div className="flex justify-center items-center gap-3 md:gap-6 text-center">
             <div className="text-discovery-white">
-              <div className="text-4xl font-bold text-discovery-gold mb-2">300%</div>
-              <div className="text-sm">Capacity Increase</div>
+              <div className="text-xl md:text-2xl font-bold text-discovery-gold mb-0.5">300%</div>
+              <div className="text-xs">Capacity Increase</div>
             </div>
             <div className="text-discovery-white">
-              <div className="text-4xl font-bold text-discovery-gold mb-2">90 Days</div>
-              <div className="text-sm">From Planning to Revenue</div>
+              <div className="text-xl md:text-2xl font-bold text-discovery-gold mb-0.5">90 Days</div>
+              <div className="text-xs">From Planning to Revenue</div>
             </div>
             <div className="text-discovery-white">
-              <div className="text-4xl font-bold text-discovery-gold mb-2">150%</div>
-              <div className="text-sm">Higher Nightly Rates</div>
+              <div className="text-xl md:text-2xl font-bold text-discovery-gold mb-0.5">150%</div>
+              <div className="text-xs">Higher Nightly Rates</div>
             </div>
             <div className="text-discovery-white">
-              <div className="text-4xl font-bold text-discovery-gold mb-2">85%</div>
-              <div className="text-sm">Occupancy Rate</div>
+              <div className="text-xl md:text-2xl font-bold text-discovery-gold mb-0.5">85%</div>
+              <div className="text-xs">Occupancy Rate</div>
             </div>
           </div>
         </div>
@@ -194,16 +192,20 @@ export default function ResortOwnersLandingPage() {
             <h3 className="text-3xl md:text-4xl font-serif font-bold text-discovery-charcoal mb-6">
               Ready to Start Your Project?
             </h3>
-            <p className="text-xl text-discovery-charcoal-light mb-8 max-w-2xl mx-auto">
+            <p className="text-[15px] text-discovery-charcoal-light mb-8 max-w-2xl mx-auto">
               Get an instant quote for your land development project. 
               Our team is ready to help you unlock your property's potential.
             </p>
             <a 
               href="/quote-builder"
-              className="inline-block bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-12 py-4 rounded-lg font-semibold text-xl transition-all duration-300 flex items-center gap-2 group mx-auto"
+              className="inline-block bg-[#D4AF37] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#B8941F] transition-colors flex items-center justify-center gap-2 mx-auto"
             >
               Get Instant Quote
-              <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+              <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
+                <svg className="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
             </a>
           </div>
         </div>
@@ -216,7 +218,7 @@ export default function ResortOwnersLandingPage() {
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-6">
               Why Resort Owners Choose Discovery Homes
             </h2>
-            <p className="text-xl text-discovery-charcoal-light max-w-3xl mx-auto">
+            <p className="text-discovery-charcoal-light max-w-3xl mx-auto">
               Our modular accommodation solutions help resort owners maximize revenue potential 
               while enhancing guest experience with premium, sustainable lodging options.
             </p>
@@ -334,85 +336,97 @@ export default function ResortOwnersLandingPage() {
 <WhyDiscoveryHomesSection />
 
       {/* How It Works Section */}
-      <section id="how-it-works" className="py-20 bg-discovery-white">
+      <section id="how-it-works" className="py-16 sm:py-20 bg-gradient-to-b from-discovery-charcoal to-gray-900">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-6">
-              HOW IT WORKS
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-discovery-white mb-4 sm:mb-6 leading-tight">
+              How It Works
             </h2>
-            <p className="text-xl text-discovery-charcoal-light max-w-3xl mx-auto">
-              Our streamlined process ensures your resort expansion project is delivered 
-              with quality craftsmanship, sustainable practices, and maximum revenue potential.
+            <div className="w-24 h-1 bg-gradient-to-r from-discovery-gold to-discovery-lime mx-auto rounded-full mb-6"></div>
+            <p className="text-[15px] text-discovery-sage max-w-3xl mx-auto leading-relaxed">
+              Our streamlined process delivers quality craftsmanship, sustainable practices, and maximum value for your resort expansion project.
             </p>
           </div>
 
           {/* Process Steps */}
           <div className="relative">
             {/* Connection Line */}
-            <div className="hidden lg:block absolute top-16 left-0 right-0 h-0.5 bg-gradient-to-r from-discovery-gold via-discovery-sage to-discovery-gold"></div>
+            <div className="hidden lg:block absolute top-12 left-0 right-0 h-0.5 bg-gradient-to-r from-discovery-gold via-discovery-sage to-discovery-gold"></div>
             
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Step 1: Build Your Dream Development */}
               <div className="text-center relative">
-                <div className="w-16 h-16 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
-                  <Home className="w-8 h-8 text-discovery-charcoal" />
-                </div>
-                <div className="bg-discovery-white rounded-2xl p-6 shadow-lg border border-discovery-gold/20">
-                  <h3 className="text-xl font-serif font-bold text-discovery-charcoal mb-4">
-                    Build Your Dream Resort
-                  </h3>
-                  <p className="text-discovery-charcoal-light leading-relaxed">
-                    Start with our quote builder to design your perfect resort expansion. 
-                    Choose from Pine, Spruce, Willow, or create a custom build tailored to your property's revenue potential.
-                  </p>
+                <div className="bg-discovery-charcoal-light rounded-xl p-2 shadow-md border border-discovery-gold/20">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-lg font-bold text-discovery-charcoal">1</span>
+                    </div>
+                    <div className="text-left">
+                      <h3 className="text-lg font-serif font-bold text-discovery-white mb-1">
+                        Build Your Dream Development
+                      </h3>
+                      <p className="text-sm text-discovery-sage leading-relaxed">
+                        Design your perfect modular development with Pine, Spruce, Willow, or custom builds.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               {/* Step 2: Discovery Call */}
               <div className="text-center relative">
-                <div className="w-16 h-16 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
-                  <MessageCircle className="w-8 h-8 text-discovery-charcoal" />
-                </div>
-                <div className="bg-discovery-white rounded-2xl p-6 shadow-lg border border-discovery-gold/20">
-                  <h3 className="text-xl font-serif font-bold text-discovery-charcoal mb-4">
-                    Discovery Call
-                  </h3>
-                  <p className="text-discovery-charcoal-light leading-relaxed">
-                    Our land development specialists connect with you to understand 
-                    your property characteristics, zoning requirements, and investment goals.
-                  </p>
+                <div className="bg-discovery-charcoal-light rounded-xl p-2 shadow-md border border-discovery-gold/20">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-lg font-bold text-discovery-charcoal">2</span>
+                    </div>
+                    <div className="text-left">
+                      <h3 className="text-lg font-serif font-bold text-discovery-white mb-1">
+                        Discovery Call
+                      </h3>
+                      <p className="text-sm text-discovery-sage leading-relaxed">
+                        Our specialists understand your property, zoning, and investment goals.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               {/* Step 3: Procure & Manufacture */}
               <div className="text-center relative">
-                <div className="w-16 h-16 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
-                  <Award className="w-8 h-8 text-discovery-charcoal" />
+                <div className="bg-discovery-charcoal-light rounded-xl p-2 shadow-md border border-discovery-gold/20">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-lg font-bold text-discovery-charcoal">3</span>
+                    </div>
+                    <div className="text-left">
+                      <h3 className="text-lg font-serif font-bold text-discovery-white mb-1">
+                        Procure & Manufacture
+                      </h3>
+                      <p className="text-sm text-discovery-sage leading-relaxed">
+                        We source sustainable materials and manufacture in our climate-controlled facility.
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <div className="bg-discovery-white rounded-2xl p-6 shadow-lg border border-discovery-gold/20">
-                  <h3 className="text-xl font-serif font-bold text-discovery-charcoal mb-4">
-                    Procure & Manufacture
-                  </h3>
-                  <p className="text-discovery-charcoal-light leading-relaxed">
-                    We source sustainable materials and manufacture your modular homes in our climate-controlled 
-                    facility, ensuring quality construction and efficient production timelines.
-                  </p>
               </div>
-            </div>
-            
+
               {/* Step 4: Deliver & Install */}
               <div className="text-center relative">
-                <div className="w-16 h-16 bg-discovery-gold rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
-                  <ArrowRight className="w-8 h-8 text-discovery-charcoal" />
-                </div>
-                <div className="bg-discovery-white rounded-2xl p-6 shadow-lg border border-discovery-gold/20">
-                  <h3 className="text-xl font-serif font-bold text-discovery-charcoal mb-4">
-                    Deliver & Install
-                </h3>
-                  <p className="text-discovery-charcoal-light leading-relaxed">
-                    Your completed development project is finished on your site and professionally completed by 
-                    our experienced team, ready for occupancy and revenue generation.
-                  </p>
+                <div className="bg-discovery-charcoal-light rounded-xl p-2 shadow-md border border-discovery-gold/20">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-lg font-bold text-discovery-charcoal">4</span>
+                    </div>
+                    <div className="text-left">
+                      <h3 className="text-lg font-serif font-bold text-discovery-white mb-1">
+                        Deliver & Install
+                      </h3>
+                      <p className="text-sm text-discovery-sage leading-relaxed">
+                        Your development project is completed and professionally finished, ready for occupancy.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -436,7 +450,7 @@ export default function ResortOwnersLandingPage() {
                <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-6">
                  Start Your Resort Expansion Journey
              </h2>
-               <p className="text-xl text-discovery-charcoal-light mb-8">
+               <p className="text-[15px] text-discovery-charcoal-light mb-8">
                  Ready to maximize your resort's revenue potential? Download our comprehensive guide and schedule a consultation with our resort expansion experts.
                </p>
                <div className="space-y-4">
@@ -462,10 +476,14 @@ export default function ResortOwnersLandingPage() {
                <div className="pt-6">
                  <a 
                    href="/quote-builder"
-                   className="inline-block bg-discovery-gold hover:bg-discovery-gold-dark text-discovery-charcoal px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center gap-2 group"
+                   className="inline-block bg-[#D4AF37] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#B8941F] transition-colors flex items-center justify-center gap-2"
                  >
                    Get Instant Quote
-                   <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+                   <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
+                     <svg className="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                     </svg>
+                   </div>
                  </a>
                </div>
            </div>

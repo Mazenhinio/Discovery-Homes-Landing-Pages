@@ -878,7 +878,7 @@ export default function QuoteBuilderPage() {
         </div>
 
         {/* Sticky Progress Bar */}
-        <div className="sticky top-4 z-50 bg-white rounded-lg p-4 md:p-6 mb-8 shadow-lg border border-gray-200">
+        <div className="sticky top-4 z-40 bg-white rounded-lg p-4 md:p-6 mb-8 shadow-lg border border-gray-200">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             {/* Progress Info */}
             <div className="flex-1">

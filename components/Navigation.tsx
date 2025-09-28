@@ -194,6 +194,24 @@ export function Navigation() {
               <span className="font-medium">How It Works</span>
             </button>
             <Link 
+              href="/first-nations" 
+              className="nav-link nav-item"
+            >
+              <span className="font-medium">First Nations</span>
+            </Link>
+            <Link 
+              href="/resort-owners" 
+              className="nav-link nav-item"
+            >
+              <span className="font-medium">Resort Owners</span>
+            </Link>
+            <Link 
+              href="/land-owners" 
+              className="nav-link nav-item"
+            >
+              <span className="font-medium">Land Owners</span>
+            </Link>
+            <Link 
               href="/quote-builder" 
               className="btn-nature nav-item shadow-sage micro-interaction glow-green"
             >
@@ -307,6 +325,28 @@ export function Navigation() {
               >
                 How It Works
               </button>
+              
+              <Link 
+                href="/first-nations" 
+                className="block w-full text-left px-4 py-3 text-discovery-white hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/10"
+                onClick={() => setIsOpen(false)}
+              >
+                First Nations Communities
+              </Link>
+              <Link 
+                href="/resort-owners" 
+                className="block w-full text-left px-4 py-3 text-discovery-white hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/10"
+                onClick={() => setIsOpen(false)}
+              >
+                Resort & Airbnb Owners
+              </Link>
+              <Link 
+                href="/land-owners" 
+                className="block w-full text-left px-4 py-3 text-discovery-white hover:text-discovery-gold transition-colors duration-300 rounded-lg hover:bg-white/10"
+                onClick={() => setIsOpen(false)}
+              >
+                Landowners & Developers
+              </Link>
               
               <div className="pt-4 border-t border-white/20">
                 <Link 
