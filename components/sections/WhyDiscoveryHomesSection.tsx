@@ -32,13 +32,13 @@ export function WhyDiscoveryHomesSection() {
   }, [])
 
   return (
-    <section className="py-16 bg-gradient-to-br from-gray-50 to-white">
+    <section className="py-16 bg-gradient-to-br from-discovery-charcoal to-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gradient-nature mb-4 nature-shimmer">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gradient-nature mb-4 nature-shimmer">
             Solving Your Housing Challenges
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-[15px] text-gray-300 max-w-3xl mx-auto leading-relaxed">
             See how we're transforming communities across Western Canada with innovative
             modular housing solutions that deliver exceptional value and quality.
           </p>
@@ -94,18 +94,18 @@ export function WhyDiscoveryHomesSection() {
           {/* Content */}
           <div className="space-y-8">
             <div className="space-y-6">
-              <h3 className="text-2xl font-bold text-discovery-forest">
+              <h3 className="text-2xl font-bold text-white">
                 Proven Results Across Western Canada
               </h3>
 
-              <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4 md:gap-6">
                 <div className="flex items-start space-x-4">
                   <div className="w-8 h-8 bg-gradient-to-br from-discovery-forest to-discovery-sage rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                     <span className="text-white font-bold text-sm">✓</span>
                   </div>
                   <div>
                     <h4 className="font-semibold text-discovery-forest mb-1">Faster Delivery</h4>
-                    <p className="text-gray-600">Complete homes delivered and installed in 60-90 days vs 12+ months for traditional construction.</p>
+                    <p className="text-gray-300">60-90 days vs 12+ months for traditional construction.</p>
                   </div>
                 </div>
 
@@ -115,7 +115,7 @@ export function WhyDiscoveryHomesSection() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-discovery-sage mb-1">Cost Efficiency</h4>
-                    <p className="text-gray-600">Up to 30% savings compared to traditional builds with predictable pricing and no surprise costs.</p>
+                    <p className="text-gray-300">Up to 30% savings with predictable pricing.</p>
                   </div>
                 </div>
 
@@ -125,7 +125,7 @@ export function WhyDiscoveryHomesSection() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-discovery-lime-dark mb-1">Quality Assurance</h4>
-                    <p className="text-gray-600">Factory-controlled construction ensures consistent quality and energy efficiency in every home.</p>
+                    <p className="text-gray-300">Factory-controlled construction ensures consistent quality.</p>
                   </div>
                 </div>
 
@@ -135,7 +135,7 @@ export function WhyDiscoveryHomesSection() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-discovery-forest mb-1">Community Impact</h4>
-                    <p className="text-gray-600">Supporting local employment, respecting cultural values, and building sustainable communities.</p>
+                    <p className="text-gray-300">Supporting local employment and sustainable communities.</p>
                   </div>
                 </div>
               </div>

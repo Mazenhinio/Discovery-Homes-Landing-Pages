@@ -25,7 +25,6 @@ export default function ResortOwnersLandingPage() {
     minutes: 0,
     seconds: 0
   })
-  const [activeTab, setActiveTab] = useState('pine')
   const [showThankYou, setShowThankYou] = useState(false)
   const { ourHomesRef } = useOurHomes()
 
