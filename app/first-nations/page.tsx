@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { ArrowRight, Download, Calendar, MessageCircle, Star, Users, Home, Heart, Shield, Award, DollarSign, TrendingUp, Building, Calculator, MapPin, Leaf, Globe, Zap, Clock } from 'lucide-react'
+import { ArrowRight, Download, Calendar, MessageCircle, Star, Users, Home, Heart, Shield, Award, DollarSign, TrendingUp, Building, Calculator, MapPin, Leaf, Globe, Zap, Clock, ChevronLeft, ChevronRight } from 'lucide-react'
 import { LeadCaptureForm } from '@/components/LeadCaptureForm'
 import { PartnershipLogos } from '@/components/sections/PartnershipLogos'
 import { OurHomesSection } from '@/components/sections/OurHomesSection'
@@ -27,6 +27,14 @@ export default function FirstNationsLandingPage() {
     minutes: 0,
     seconds: 0
   })
+  const [carouselImages, setCarouselImages] = useState<Array<{src: string, alt: string}>>([])
+  const [selectedImage, setSelectedImage] = useState(0)
+  const [touchStart, setTouchStart] = useState<number | null>(null)
+  const [touchEnd, setTouchEnd] = useState<number | null>(null)
+  const [benefitsCarouselImages, setBenefitsCarouselImages] = useState<Array<{src: string, alt: string}>>([])
+  const [selectedBenefitsImage, setSelectedBenefitsImage] = useState(0)
+  const [benefitsTouchStart, setBenefitsTouchStart] = useState<number | null>(null)
+  const [benefitsTouchEnd, setBenefitsTouchEnd] = useState<number | null>(null)
 
   useEffect(() => {
     setIsClient(true)
@@ -52,6 +60,62 @@ export default function FirstNationsLandingPage() {
     
     calculateTimeLeft()
     const timer = setInterval(calculateTimeLeft, 1000)
+    
+    // Initialize carousel with more images
+    const availableImages = [
+      { src: '/assets/images/new-content/Landing Page - Indigenous/CB indegen.webp', alt: 'First Nations Community Housing' },
+      { src: '/assets/images/new-content/Landing Page - Indigenous/CB indegen1_bloom_low_6x.webp', alt: 'Indigenous Community Development' },
+      { src: '/assets/images/new-content/Landing Page - Indigenous/LP-IND-4__Cultural touch – mural__Indigenous Communities__v01.webp', alt: 'Cultural Mural in Indigenous Community' },
+      { src: '/assets/images/new-content/Landing Page - Indigenous/LP-IND-6__Interior lifestyle—Grandmother baking bannock__Indigenous Communities__v01.webp', alt: 'Traditional Interior Lifestyle' },
+      { src: '/assets/images/new-content/Custom Builds/cb coastal.webp', alt: 'Coastal Custom Build' },
+      { src: '/assets/images/new-content/Custom Builds/cb lakeside.webp', alt: 'Lakeside Custom Build' },
+      { src: '/assets/images/new-content/Custom Builds/CB-LakesideRetreat-Front__Lakeside-Retreat__CustomBuild__v01.webp', alt: 'Lakeside Retreat Front View' },
+      { src: '/assets/images/new-content/Custom Builds/CB-LakesideRetreat-Hero__Lakeside-Retreat–Hero__CustomBuild__v01.webp', alt: 'Lakeside Retreat Hero View' },
+      { src: '/assets/images/new-content/Custom Builds/CB-ResortCluster-Hero__Resort Cluster – Hero__Resort Cluster__v01.webp', alt: 'Resort Cluster Development' },
+      { src: '/assets/images/new-content/PIne 1 - Pine/IF Pine 1 - nordic white - living room.webp', alt: 'Pine 1 Living Room' },
+      { src: '/assets/images/new-content/PIne 1 - Pine/IF Pine1-bathroom-NW.webp', alt: 'Pine 1 Bathroom' },
+      { src: '/assets/images/new-content/PIne 1 - Pine/IF pine1-bedroom-NW.webp', alt: 'Pine 1 Bedroom' },
+      { src: '/assets/images/new-content/PIne 1 - Pine/IF pine1-kitchen-NW.webp', alt: 'Pine 1 Kitchen' },
+      { src: '/assets/images/new-content/PIne 1 - Pine/xf pine 1 front right scandanavian.webp', alt: 'Pine 1 Exterior' },
+      { src: '/assets/images/new-content/PIne 1 - Pine/XF pien 1 and 2 charcoal.webp', alt: 'Pine 1 & 2 Charcoal Exterior' },
+      { src: '/assets/images/new-content/Pine 2- Spruce/IF pine1-bedroom-E&S.webp', alt: 'Spruce Bedroom' },
+      { src: '/assets/images/new-content/Pine 2- Spruce/IF pine1-kitchen-E&S.webp', alt: 'Spruce Kitchen' },
+      { src: '/assets/images/new-content/Pine 2- Spruce/IFpine1-living-E&S.webp', alt: 'Spruce Living Room' },
+      { src: '/assets/images/new-content/Pine 2- Spruce/IF pine1-bedroom-IC.webp', alt: 'Spruce Bedroom Interior' },
+      { src: '/assets/images/new-content/Pine 2- Spruce/IF Pine1-bathrrom-IC.webp', alt: 'Spruce Bathroom Interior' },
+      { src: '/assets/images/new-content/Pine 2- Spruce/XF pien 1 and 2 charcoal.webp', alt: 'Spruce Charcoal Exterior' },
+      { src: '/assets/images/new-content/Pine 3- Willow/IF pine 3 Nordic Whitw.webp', alt: 'Willow Nordic White' },
+      { src: '/assets/images/new-content/Pine 3- Willow/IF Pine3-kitchen-E&S.webp', alt: 'Willow Kitchen' },
+      { src: '/assets/images/new-content/Pine 3- Willow/IF Pine3-kitchen-NW.webp', alt: 'Willow Kitchen Nordic' },
+      { src: '/assets/images/new-content/Pine 3- Willow/IF Pine3-room-E&S.webp', alt: 'Willow Living Room' },
+      { src: '/assets/images/new-content/Pine 3- Willow/XF pine 3 scandanavian front right .webp', alt: 'Willow Exterior' },
+      { src: '/assets/images/new-content/Landing Page- Land Owners/cb phariri farm.webp', alt: 'Prairie Farm Custom Build' },
+      { src: '/assets/images/new-content/Landing Page- Land Owners/CB-PrairieFarm-Hero__Prairie Farm – Hero__Custom-Build__v01.webp', alt: 'Prairie Farm Hero View' },
+      { src: '/assets/images/new-content/Landing Page- Land Owners/CB-PrairieFarm-Rear__Prairie-Farm–Rear__No-Model__v01.webp', alt: 'Prairie Farm Rear View' },
+      { src: '/assets/images/new-content/Landing Page- Land Owners/LP delivery.webp', alt: 'Home Delivery' },
+      { src: '/assets/images/new-content/Landing Page- Land Owners/LP offgrid.webp', alt: 'Off-Grid Living' },
+      { src: '/assets/images/new-content/Landing Page- Land Owners/LP-CAB-3__Cabin Living — Seasonal appeal – winter__Pine 2__v01.webp', alt: 'Cabin Living Winter' },
+      { src: '/assets/images/new-content/Landing Page- Land Owners/LP-CAB-5__Interior_Comfort__Cabin_Living__v01.webp', alt: 'Cabin Interior Comfort' },
+      { src: '/assets/images/new-content/Landing Page - Real Estate Rental/LP-TYL-4__Interior–rental-ready__Pine-2__v01.webp', alt: 'Rental Ready Interior' },
+      { src: '/assets/images/new-content/Landing Page - Real Estate Rental/CB-LakesideRetreat-Front__Lakeside-Retreat__CustomBuild__v01.webp', alt: 'Lakeside Retreat Rental' },
+      { src: '/assets/images/new-content/Landing Page - Real Estate Rental/CB-LakesideRetreat-Hero__Lakeside-Retreat–Hero__CustomBuild__v01.webp', alt: 'Lakeside Retreat Hero Rental' },
+      { src: '/assets/images/new-content/Landing Page - Real Estate Rental/CB-ResortCluster-Hero__Resort Cluster – Hero__Resort Cluster__v01.webp', alt: 'Resort Cluster Rental' },
+      { src: '/assets/images/new-content/case-study-1.webp', alt: 'Case Study 1' },
+      { src: '/assets/images/new-content/case-study-2.webp', alt: 'Case Study 2' },
+      { src: '/assets/images/new-content/case-study-3.webp', alt: 'Case Study 3' },
+      { src: '/assets/images/new-content/case-study-4.webp', alt: 'Case Study 4' },
+      { src: '/assets/images/new-content/case-study-5.webp', alt: 'Case Study 5' },
+      { src: '/assets/images/new-content/Home Page Hero Carousel/H1__Forest Sunrise__Pine 1__v01.webp', alt: 'Forest Sunrise Pine 1' },
+      { src: '/assets/images/new-content/Home Page Hero Carousel/H3.webp', alt: 'Hero Carousel H3' }
+    ]
+    
+    // Randomly select 20 images for the carousel
+    const shuffled = [...availableImages].sort(() => 0.5 - Math.random())
+    setCarouselImages(shuffled.slice(0, 20))
+    
+    // Randomly select 15 images for the benefits carousel
+    const benefitsShuffled = [...availableImages].sort(() => 0.5 - Math.random())
+    setBenefitsCarouselImages(benefitsShuffled.slice(1, 16))
     
     // Listen for custom tab change events from navigation
     const handleTabChange = (event: CustomEvent) => {
@@ -119,6 +183,78 @@ export default function FirstNationsLandingPage() {
       console.error('Error submitting download form:', error)
       alert('There was an error. Please try again.')
     }
+  }
+
+  // Touch handlers for mobile swiping
+  const minSwipeDistance = 50
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null)
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > minSwipeDistance
+    const isRightSwipe = distance < -minSwipeDistance
+
+    if (isLeftSwipe) {
+      // Swipe left - next image
+      setSelectedImage(selectedImage < carouselImages.length - 1 ? selectedImage + 1 : 0)
+    }
+    if (isRightSwipe) {
+      // Swipe right - previous image
+      setSelectedImage(selectedImage > 0 ? selectedImage - 1 : carouselImages.length - 1)
+    }
+  }
+
+  const nextImage = () => {
+    setSelectedImage(selectedImage < carouselImages.length - 1 ? selectedImage + 1 : 0)
+  }
+
+  const prevImage = () => {
+    setSelectedImage(selectedImage > 0 ? selectedImage - 1 : carouselImages.length - 1)
+  }
+
+  // Touch handlers for benefits carousel
+  const onBenefitsTouchStart = (e: React.TouchEvent) => {
+    setBenefitsTouchEnd(null)
+    setBenefitsTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const onBenefitsTouchMove = (e: React.TouchEvent) => {
+    setBenefitsTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const onBenefitsTouchEnd = () => {
+    if (!benefitsTouchStart || !benefitsTouchEnd) return
+    
+    const distance = benefitsTouchStart - benefitsTouchEnd
+    const isLeftSwipe = distance > minSwipeDistance
+    const isRightSwipe = distance < -minSwipeDistance
+
+    if (isLeftSwipe) {
+      // Swipe left - next image
+      setSelectedBenefitsImage(selectedBenefitsImage < benefitsCarouselImages.length - 1 ? selectedBenefitsImage + 1 : 0)
+    }
+    if (isRightSwipe) {
+      // Swipe right - previous image
+      setSelectedBenefitsImage(selectedBenefitsImage > 0 ? selectedBenefitsImage - 1 : benefitsCarouselImages.length - 1)
+    }
+  }
+
+  const nextBenefitsImage = () => {
+    setSelectedBenefitsImage(selectedBenefitsImage < benefitsCarouselImages.length - 1 ? selectedBenefitsImage + 1 : 0)
+  }
+
+  const prevBenefitsImage = () => {
+    setSelectedBenefitsImage(selectedBenefitsImage > 0 ? selectedBenefitsImage - 1 : benefitsCarouselImages.length - 1)
   }
 
   return (
@@ -257,13 +393,13 @@ export default function FirstNationsLandingPage() {
             {/* Sale Header */}
               <div className="mb-8">
                 <div className="text-lg font-semibold text-discovery-charcoal-light mb-2">FALL SALE</div>
-                <div className="text-4xl md:text-5xl font-bold text-discovery-charcoal mb-2 whitespace-nowrap">SAVE 5% UP TO</div>
+                <div className="text-4xl md:text-5xl font-bold text-discovery-charcoal mb-2">SAVE 5% UP TO</div>
                 <div className="text-6xl md:text-7xl font-bold text-discovery-gold mb-4">$25,000</div>
               </div>
 
             {/* Sale Terms */}
             <div className="mb-8">
-              <p className="text-base text-discovery-charcoal-light mb-2 whitespace-nowrap">
+              <p className="text-base text-discovery-charcoal-light mb-2">
                 First 5 orders for the first 30 days - Act FAST!
               </p>
               <p className="text-lg text-discovery-charcoal-light italic">
@@ -275,7 +411,7 @@ export default function FirstNationsLandingPage() {
             <div className="mb-12">
               <a 
                 href="/quote-builder"
-                className="inline-block bg-discovery-charcoal text-discovery-white px-12 py-4 rounded-lg font-bold text-lg border-2 border-discovery-gold hover:bg-discovery-white hover:text-discovery-charcoal transition-all duration-300 shadow-[0_0_15px_rgba(212,175,55,0.4)] hover:shadow-[0_0_25px_rgba(212,175,55,0.6)] whitespace-nowrap"
+                className="inline-block bg-discovery-charcoal text-discovery-white px-12 py-4 rounded-lg font-bold text-lg border-2 border-discovery-gold hover:bg-discovery-white hover:text-discovery-charcoal transition-all duration-300 shadow-[0_0_15px_rgba(212,175,55,0.4)] hover:shadow-[0_0_25px_rgba(212,175,55,0.6)]"
               >
                 CLAIM YOUR DISCOUNT
               </a>
@@ -440,76 +576,239 @@ export default function FirstNationsLandingPage() {
       </section>
 
       {/* Lead Capture Section */}
-      <section className="py-20 bg-gradient-to-br from-discovery-sage/20 to-discovery-gold/20">
+      <section className="py-6 bg-gradient-to-br from-discovery-sage/20 to-discovery-gold/20">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-stretch">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
             <div className="flex flex-col justify-between">
-              <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-6">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-6">
                 Start Your Community&apos;s Housing Journey
               </h2>
-              <p className="text-[15px] text-discovery-charcoal-light mb-8">
+              <p className="text-sm sm:text-[15px] text-discovery-charcoal-light mb-8">
                 Ready to explore how Discovery Homes can help your First Nations community? 
                 Download our comprehensive guide and schedule a consultation with our experts.
               </p>
+              
+              {/* CTA Button */}
+              <div className="mb-8">
+                <a 
+                  href="/quote-builder"
+                  className="bg-[#D4AF37] text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-[#B8941F] flex items-center gap-2 justify-center text-sm sm:text-base"
+                >
+                  Get Instant Quote
+                  <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/20 flex items-center justify-center">
+                    <svg className="w-2 h-2 sm:w-3 sm:h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </a>
+              </div>
               
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <div className="w-6 h-6 bg-discovery-gold rounded-full flex items-center justify-center">
                     <div className="w-2 h-2 bg-discovery-charcoal rounded-full"></div>
                   </div>
-                  <span className="text-discovery-charcoal">Free consultation with our First Nations housing specialists</span>
+                  <span className="text-sm sm:text-base text-discovery-charcoal">Free consultation with our First Nations housing specialists</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="w-6 h-6 bg-discovery-gold rounded-full flex items-center justify-center">
                     <div className="w-2 h-2 bg-discovery-charcoal rounded-full"></div>
                   </div>
-                  <span className="text-discovery-charcoal">Comprehensive guide to First Nations housing solutions</span>
+                  <span className="text-sm sm:text-base text-discovery-charcoal">Comprehensive guide to First Nations housing solutions</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="w-6 h-6 bg-discovery-gold rounded-full flex items-center justify-center">
                     <div className="w-2 h-2 bg-discovery-charcoal rounded-full"></div>
                   </div>
-                  <span className="text-discovery-charcoal">Funding and financing assistance for your project</span>
+                  <span className="text-sm sm:text-base text-discovery-charcoal">Funding and financing assistance for your project</span>
                 </div>
               </div>
             </div>
 
-            {/* Right Column - Product Image */}
+            {/* Right Column - Key Benefits */}
             <div className="h-full">
-               
-              {/* Key Benefits */}
-              <div className="bg-discovery-white rounded-2xl p-8 shadow-xl flex flex-col h-full">
-                <h3 className="text-2xl font-serif font-bold text-discovery-charcoal mb-6 text-center">
+              <div className="bg-discovery-white rounded-2xl p-4 sm:p-6 lg:p-8 shadow-xl h-full flex flex-col">
+                <h3 className="text-xl sm:text-2xl font-serif font-bold text-discovery-charcoal mb-6 text-center">
                   Key Benefits
                 </h3>
-                <div className="space-y-4 flex-1">
+                <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-discovery-gold rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-discovery-gold rounded-full flex items-center justify-center flex-shrink-0">
                       <TrendingUp className="w-4 h-4 text-discovery-charcoal" />
                     </div>
-                    <span className="text-discovery-charcoal font-medium">Sustainable & Durable Construction</span>
+                    <span className="text-discovery-charcoal font-medium text-xs sm:text-sm">Sustainable & Durable</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-discovery-sage rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-discovery-sage rounded-full flex items-center justify-center flex-shrink-0">
                       <Clock className="w-4 h-4 text-discovery-charcoal" />
                     </div>
-                    <span className="text-discovery-charcoal font-medium">Move-In Ready in Weeks</span>
+                    <span className="text-discovery-charcoal font-medium text-xs sm:text-sm">Ready in Weeks</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-discovery-gold rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-discovery-gold rounded-full flex items-center justify-center flex-shrink-0">
                       <DollarSign className="w-4 h-4 text-discovery-charcoal" />
                     </div>
-                    <span className="text-discovery-charcoal font-medium">Cost-Effective Solutions</span>
+                    <span className="text-discovery-charcoal font-medium text-xs sm:text-sm">Cost-Effective</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-discovery-sage rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-discovery-sage rounded-full flex items-center justify-center flex-shrink-0">
                       <Leaf className="w-4 h-4 text-discovery-charcoal" />
                     </div>
-                    <span className="text-discovery-charcoal font-medium">Eco-Friendly Materials</span>
+                    <span className="text-discovery-charcoal font-medium text-xs sm:text-sm">Eco-Friendly Materials</span>
                   </div>
                 </div>
-               </div>
-             </div>
+                
+                {/* Benefits Carousel */}
+                {benefitsCarouselImages.length > 0 && (
+                  <div className="relative flex-1">
+                    <div 
+                      className="relative h-48 sm:h-56 md:h-64 lg:h-80 rounded-xl overflow-hidden shadow-lg group"
+                      onTouchStart={onBenefitsTouchStart}
+                      onTouchMove={onBenefitsTouchMove}
+                      onTouchEnd={onBenefitsTouchEnd}
+                    >
+                      <Image
+                        src={benefitsCarouselImages[selectedBenefitsImage]?.src}
+                        alt={benefitsCarouselImages[selectedBenefitsImage]?.alt}
+                        fill
+                        className="object-cover transition-transform duration-300"
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          objectPosition: 'center',
+                          display: 'block'
+                        }}
+                      />
+                      
+                      {/* Navigation Arrows */}
+                      {benefitsCarouselImages.length > 1 && (
+                        <>
+                          <button
+                            onClick={prevBenefitsImage}
+                            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+                          >
+                            <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
+                          </button>
+                          <button
+                            onClick={nextBenefitsImage}
+                            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+                          >
+                            <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
+                          </button>
+                        </>
+                      )}
+
+                      {/* Image Counter */}
+                      {benefitsCarouselImages.length > 1 && (
+                        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-2 py-1 rounded-full text-xs">
+                          {selectedBenefitsImage + 1} / {benefitsCarouselImages.length}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Image Carousel Section */}
+      <section className="py-16 sm:py-20 bg-gradient-to-b from-discovery-white to-gray-50">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-4 sm:mb-6 leading-tight">
+              Ready to Start Your Modular Home Project?
+            </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-discovery-gold to-discovery-sage mx-auto rounded-full mb-6"></div>
+            <p className="text-sm sm:text-[15px] text-discovery-charcoal-light max-w-3xl mx-auto leading-relaxed">
+              Let us help you! Click the button below to discuss your project!
+            </p>
+            
+            {/* CTA Button */}
+            <div className="text-center mt-6 sm:mt-8">
+              <a 
+                href="/quote-builder"
+                className="bg-[#D4AF37] text-white px-6 sm:px-8 py-4 sm:py-5 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-[#B8941F] flex items-center gap-2 justify-center text-base sm:text-lg mx-auto"
+              >
+                Get Instant Quote
+                <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/20 flex items-center justify-center">
+                  <svg className="w-2 h-2 sm:w-3 sm:h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          {/* Carousel Container */}
+          <div className="max-w-4xl mx-auto mb-8 sm:mb-12">
+            {carouselImages.length > 0 && (
+              <div className="relative">
+                {/* Main Image with Carousel Controls */}
+                <div 
+                  className="relative h-64 sm:h-80 md:h-96 lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl group"
+                  onTouchStart={onTouchStart}
+                  onTouchMove={onTouchMove}
+                  onTouchEnd={onTouchEnd}
+                >
+                  <Image
+                    src={carouselImages[selectedImage]?.src}
+                    alt={carouselImages[selectedImage]?.alt}
+                    fill
+                    className="object-cover transition-transform duration-300"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      objectPosition: 'center',
+                      display: 'block'
+                    }}
+                  />
+                  
+                  {/* Navigation Arrows */}
+                  {carouselImages.length > 1 && (
+                    <>
+                      <button
+                        onClick={prevImage}
+                        className="absolute left-4 sm:left-6 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 sm:p-4 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+                      >
+                        <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+                      </button>
+                      <button
+                        onClick={nextImage}
+                        className="absolute right-4 sm:right-6 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 sm:p-4 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+                      >
+                        <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+                      </button>
+                    </>
+                  )}
+
+                  {/* Image Counter */}
+                  {carouselImages.length > 1 && (
+                    <div className="absolute bottom-4 sm:bottom-6 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-4 py-2 rounded-full text-sm sm:text-base">
+                      {selectedImage + 1} / {carouselImages.length}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* CTA Button */}
+          <div className="text-center">
+            <a 
+              href="/quote-builder"
+              className="bg-[#D4AF37] text-white px-6 sm:px-8 py-4 sm:py-5 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-[#B8941F] flex items-center gap-2 justify-center text-base sm:text-lg mx-auto"
+            >
+              Get Instant Quote
+              <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/20 flex items-center justify-center">
+                <svg className="w-2 h-2 sm:w-3 sm:h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </a>
           </div>
         </div>
       </section>
