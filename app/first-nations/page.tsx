@@ -411,9 +411,9 @@ export default function FirstNationsLandingPage() {
       </section>
 
       {/* Fall Sale Section */}
-      <section className="py-6">
+      <section className="py-[15px]">
         <div className="max-w-6xl mx-auto px-4 text-center">
-          <div className="bg-discovery-white rounded-3xl px-1.5 py-6 shadow-2xl border-2 border-discovery-gold shadow-[0_0_20px_rgba(212,175,55,0.3)]">
+          <div className="bg-discovery-white rounded-3xl px-[15px] py-[15px] shadow-2xl border-2 border-discovery-gold shadow-[0_0_20px_rgba(212,175,55,0.3)]">
             {/* Sale Header */}
               <div className="mb-8">
                 <div className="text-lg font-semibold text-discovery-charcoal-light mb-2">FALL SALE</div>
@@ -504,7 +504,7 @@ export default function FirstNationsLandingPage() {
       </div>
 
       {/* How It Works Section */}
-      <section id="how-it-works" className="py-16 sm:py-20 bg-gradient-to-b from-discovery-charcoal to-gray-900">
+      <section id="how-it-works" className="py-[15px] bg-gradient-to-b from-discovery-charcoal to-gray-900">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-discovery-white mb-4 sm:mb-6 leading-tight">
@@ -603,7 +603,7 @@ export default function FirstNationsLandingPage() {
       </section>
 
       {/* Lead Capture Section */}
-      <section className="py-6 bg-gradient-to-br from-discovery-sage/20 to-discovery-gold/20">
+      <section className="py-[15px] bg-gradient-to-br from-discovery-sage/20 to-discovery-gold/20">
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
             <div className="flex flex-col justify-between">
@@ -742,7 +742,7 @@ export default function FirstNationsLandingPage() {
       </section>
 
       {/* Image Carousel Section */}
-      <section className="py-16 sm:py-20 bg-gradient-to-b from-discovery-white to-gray-50">
+      <section className="py-[15px] bg-gradient-to-b from-discovery-white to-gray-50">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-8 sm:mb-12">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-4 sm:mb-6 leading-tight">
@@ -844,9 +844,9 @@ export default function FirstNationsLandingPage() {
       <PartnershipLogos />
 
       {/* Download Our Guide Section */}
-      <section className="py-20 bg-gradient-to-br from-discovery-sage/20 to-discovery-gold/20">
+      <section className="py-[15px] bg-gradient-to-br from-discovery-sage/20 to-discovery-gold/20">
         <div className="max-w-4xl mx-auto px-4">
-          <div className="bg-discovery-white rounded-2xl px-[9px] py-12 shadow-xl border-2 border-discovery-charcoal">
+          <div className="bg-discovery-white rounded-2xl px-[15px] py-[15px] shadow-xl border-2 border-discovery-charcoal">
             <div className="text-center">
               <h2 className="text-[25px] font-serif font-bold text-discovery-charcoal mb-2">
                 Download Our Modular Homes Guide
