@@ -866,7 +866,7 @@ export default function FirstNationsLandingPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
                   </div>
-                  <span className="text-discovery-charcoal font-medium text-lg">Housing solutions overview</span>
+                  <span className="text-discovery-charcoal font-medium text-[15px]">Housing solutions overview</span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center">
@@ -874,7 +874,7 @@ export default function FirstNationsLandingPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                     </svg>
                   </div>
-                  <span className="text-discovery-charcoal font-medium text-lg">Cultural consultation strategies</span>
+                  <span className="text-discovery-charcoal font-medium text-[15px]">Cultural consultation strategies</span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center">
@@ -882,7 +882,7 @@ export default function FirstNationsLandingPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
                     </svg>
                   </div>
-                  <span className="text-discovery-charcoal font-medium text-lg">Funding resources guide</span>
+                  <span className="text-discovery-charcoal font-medium text-[15px]">Funding resources guide</span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center">
@@ -890,7 +890,7 @@ export default function FirstNationsLandingPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                     </svg>
                   </div>
-                  <span className="text-discovery-charcoal font-medium text-lg">Project planning assistance</span>
+                  <span className="text-discovery-charcoal font-medium text-[15px]">Project planning assistance</span>
                 </div>
               </div>
 
