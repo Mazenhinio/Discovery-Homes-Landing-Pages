@@ -866,88 +866,88 @@ export default function QuoteBuilderPage() {
         {/* Main Form (hidden when submitted) */}
         {!isSubmitted && (
           <>
-            {/* Header */}
-            <div className="text-center mb-12">
-           <h1 className="text-2xl md:text-3xl font-bold text-gradient-nature mb-4 nature-shimmer">
+        {/* Fixed Progress Bar */}
+        <div className="fixed top-16 left-0 right-0 z-40 bg-gray-100 p-2 md:p-3 shadow-lg border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 flex items-center justify-between gap-2">
+            {/* Stage Icon */}
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-[#D4AF37] text-white rounded-full flex items-center justify-center">
+                {(() => {
+                  const currentStepData = steps.find(step => step.number === currentStep)
+                  const Icon = currentStepData?.icon
+                  return Icon ? <Icon size={16} /> : <Check size={16} />
+                })()}
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-gray-800">
+                  {steps.find(step => step.number === currentStep)?.title}
+                </p>
+              </div>
+            </div>
+
+            
+             {/* Total Price */}
+             <div className="bg-gradient-to-r from-[#D4AF37]/10 to-[#68a71d]/10 border border-[#D4AF37] rounded-lg p-2 min-w-[200px]">
+               <div className="text-left">
+                 <div className="text-xs font-medium text-gray-600">
+                   Current Total: <span className="font-bold text-[#D4AF37]">
+                     {(() => { 
+                       // Check if it's a custom build
+                       if (formData.model === 'custom') {
+                         if (formData.addons.length > 0) {
+                           return `Contact for pricing + ${formData.addons.length} upgrade${formData.addons.length > 1 ? 's' : ''}`
+                         }
+                         return 'Contact for pricing'
+                       }
+                       
+                       // For standard models, show price range
+                       const r = calculatePriceRange()
+                       if (r.min === 0 && r.max === 0) {
+                         return '$0 CAD'
+                       }
+                       
+                       // Format with K notation for thousands
+                       const formatPrice = (price: number) => {
+                         if (price >= 1000) {
+                           return (price / 1000).toFixed(0) + 'K'
+                         }
+                         return price.toString()
+                       }
+                       
+                       return `$${formatPrice(r.min)}-$${formatPrice(r.max)} CAD`
+                     })()}
+                   </span>
+                 </div>
+               </div>
+             </div>
+          </div>
+          
+          {/* Progress Bar */}
+          <div className="mt-2">
+            <div className="w-full bg-gray-200 rounded-full h-6 relative">
+              <div 
+                className="bg-gradient-to-r from-discovery-sage to-discovery-lime h-6 rounded-full transition-all duration-300 relative"
+                style={{ width: `${(currentStep / totalSteps) * 100}%` }}
+              >
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-xs font-medium text-black">
+                    {currentStep} of {totalSteps}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Header */}
+        <div className="text-center mb-8 mt-20">
+          <h1 className="text-3xl md:text-4xl font-bold text-[#2D2D2D] mb-4">
             Quote Builder
           </h1>
-           <p className="text-sm md:text-base text-discovery-sage max-w-2xl mx-auto">
+          <p className="text-[#666] text-lg max-w-2xl mx-auto">
             Get your personalized quote in just a few minutes. We'll guide you through each step 
             to create the perfect modular home solution.
           </p>
-        </div>
-
-        {/* Sticky Progress Bar */}
-        <div className="sticky top-4 z-40 bg-white rounded-lg p-4 md:p-6 mb-8 shadow-lg border border-gray-200">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            {/* Progress Info */}
-            <div className="flex-1">
-              <div className="w-full bg-gray-200 rounded-full h-2 mb-3">
-            <div 
-                  className="bg-gradient-to-r from-discovery-sage to-discovery-lime h-2 rounded-full transition-all duration-300"
-              style={{ width: `${(currentStep / totalSteps) * 100}%` }}
-            />
-          </div>
-          
-              {/* Current Step Display */}
-              <div className="flex items-center justify-center">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-[#D4AF37] text-white rounded-full flex items-center justify-center">
-                    {(() => {
-                      const currentStepData = steps.find(step => step.number === currentStep)
-                      const Icon = currentStepData?.icon
-                      return Icon ? <Icon size={16} /> : <Check size={16} />
-                    })()}
-                  </div>
-                  <div className="text-center">
-                    <p className="text-sm font-semibold text-gray-800">
-                      {steps.find(step => step.number === currentStep)?.title}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      Step {currentStep} of {totalSteps} • {Math.round((currentStep / totalSteps) * 100)}% Complete
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            {/* Real-time Price Display */}
-            <div className="bg-gradient-to-r from-[#D4AF37]/10 to-[#68a71d]/10 border border-[#D4AF37] rounded-lg p-2 md:p-3 min-w-0 md:min-w-[180px]">
-              <div className="text-center">
-                <div className="text-xs font-medium text-gray-600 mb-1">Current Total</div>
-                <div className="text-sm md:text-base font-bold text-[#D4AF37]">
-                  {(() => { 
-                    // Check if it's a custom build
-                    if (formData.model === 'custom') {
-                      if (formData.addons.length > 0) {
-                        return `Contact for pricing + ${formData.addons.length} upgrade${formData.addons.length > 1 ? 's' : ''}`
-                      }
-                      return 'Contact for pricing'
-                    }
-                    
-                    // For standard models, show price range
-                    const r = calculatePriceRange()
-                    if (r.min === 0 && r.max === 0) {
-                      return '$0 CAD'
-                    }
-                    return `$${formatCurrency(r.min)} - $${formatCurrency(r.max)} CAD`
-                  })()}
-                  </div>
-                <div className="text-xs text-gray-500 mt-1">
-                  {formData.model === 'custom' 
-                    ? 'Contact for pricing'
-                    : (formData.addons.length > 0 ? `${formData.addons.length} upgrade(s)` : 'Base price')
-                  }
-                </div>
-                <div className="text-xs text-gray-400 mt-1 italic">
-                  {selectedBedrooms && selectedArea 
-                    ? "Prices may vary due to market changes and selected upgrades/finishes"
-                    : "Complete model selection to see pricing"
-                  }
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Form Steps */}

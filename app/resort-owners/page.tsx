@@ -266,32 +266,31 @@ export default function ResortOwnersLandingPage() {
       </section>
 
       {/* Fall Sale Section */}
-      <section className="py-20 bg-gradient-to-br from-discovery-charcoal to-discovery-charcoal-light">
+      <section className="py-6">
         <div className="max-w-6xl mx-auto px-4 text-center">
           <div className="bg-discovery-white rounded-3xl p-12 shadow-2xl border-2 border-discovery-gold shadow-[0_0_20px_rgba(212,175,55,0.3)]">
             {/* Sale Header */}
             <div className="mb-8">
               <div className="text-lg font-semibold text-discovery-charcoal-light mb-2">FALL SALE</div>
-              <div className="text-6xl md:text-7xl font-bold text-discovery-charcoal mb-2">SAVE 5%</div>
-              <div className="text-4xl md:text-5xl font-bold text-discovery-charcoal mb-2">UP TO</div>
+              <div className="text-4xl md:text-5xl font-bold text-discovery-charcoal mb-2 whitespace-nowrap">SAVE 5% UP TO</div>
               <div className="text-6xl md:text-7xl font-bold text-discovery-gold mb-4">$25,000</div>
             </div>
 
             {/* Sale Terms */}
             <div className="mb-8">
-              <p className="text-lg text-discovery-charcoal-light mb-2">
+              <p className="text-base text-discovery-charcoal-light mb-2 whitespace-nowrap">
                 First 5 orders for the first 30 days - Act FAST!
               </p>
               <p className="text-lg text-discovery-charcoal-light italic">
                 "Affordable, Modular Ready when you are."
-            </p>
-          </div>
-          
+              </p>
+            </div>
+
             {/* CTA Button */}
             <div className="mb-12">
               <a 
                 href="/quote-builder"
-                className="inline-block bg-discovery-charcoal text-discovery-white px-12 py-4 rounded-lg font-bold text-xl border-2 border-discovery-gold hover:bg-discovery-white hover:text-discovery-charcoal transition-all duration-300 shadow-[0_0_15px_rgba(212,175,55,0.4)] hover:shadow-[0_0_25px_rgba(212,175,55,0.6)]"
+                className="inline-block bg-discovery-charcoal text-discovery-white px-12 py-4 rounded-lg font-bold text-lg border-2 border-discovery-gold hover:bg-discovery-white hover:text-discovery-charcoal transition-all duration-300 shadow-[0_0_15px_rgba(212,175,55,0.4)] hover:shadow-[0_0_25px_rgba(212,175,55,0.6)] whitespace-nowrap"
               >
                 CLAIM YOUR DISCOUNT
               </a>
@@ -329,8 +328,9 @@ export default function ResortOwnersLandingPage() {
       </section>
 
       {/* Our Homes Section */}
-      <OurHomesSection ref={ourHomesRef} />
-
+      <div className="pb-6">
+        <OurHomesSection ref={ourHomesRef} />
+      </div>
 
       {/* How It Works Section */}
       <section id="how-it-works" className="py-16 sm:py-20 bg-gradient-to-b from-discovery-charcoal to-gray-900">

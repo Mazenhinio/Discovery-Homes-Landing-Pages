@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useImperativeHandle, forwardRef } from 'react'
 import Image from 'next/image'
+import { Plus } from 'lucide-react'
 
 interface OurHomesSectionProps {
   initialTab?: string
@@ -280,19 +281,10 @@ export const OurHomesSection = forwardRef<OurHomesSectionRef, OurHomesSectionPro
                 <div>
                   <button
                     onClick={() => setIsFeaturesExpanded(!isFeaturesExpanded)}
-                    className="flex items-center justify-between w-full text-left mb-3"
+                    className="flex items-center w-full text-left mb-3"
                   >
+                    <Plus className="w-5 h-5 text-discovery-charcoal mr-2" />
                     <h4 className="text-base font-semibold text-discovery-charcoal">Key Features</h4>
-                    <svg
-                      className={`w-5 h-5 text-discovery-charcoal transition-transform duration-200 ${
-                        isFeaturesExpanded ? 'rotate-180' : ''
-                      }`}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
                   </button>
                   <div
                     className={`overflow-hidden transition-all duration-300 ${
@@ -369,19 +361,10 @@ export const OurHomesSection = forwardRef<OurHomesSectionRef, OurHomesSectionPro
                 <div>
                   <button
                     onClick={() => setIsFeaturesExpanded(!isFeaturesExpanded)}
-                    className="flex items-center justify-between w-full text-left mb-3"
+                    className="flex items-center w-full text-left mb-3"
                   >
+                    <Plus className="w-5 h-5 text-discovery-charcoal mr-2" />
                     <h4 className="text-base font-semibold text-discovery-charcoal">Key Features</h4>
-                    <svg
-                      className={`w-5 h-5 text-discovery-charcoal transition-transform duration-200 ${
-                        isFeaturesExpanded ? 'rotate-180' : ''
-                      }`}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
                   </button>
                   <div
                     className={`overflow-hidden transition-all duration-300 ${
@@ -458,19 +441,10 @@ export const OurHomesSection = forwardRef<OurHomesSectionRef, OurHomesSectionPro
                 <div>
                   <button
                     onClick={() => setIsFeaturesExpanded(!isFeaturesExpanded)}
-                    className="flex items-center justify-between w-full text-left mb-3"
+                    className="flex items-center w-full text-left mb-3"
                   >
+                    <Plus className="w-5 h-5 text-discovery-charcoal mr-2" />
                     <h4 className="text-base font-semibold text-discovery-charcoal">Key Features</h4>
-                    <svg
-                      className={`w-5 h-5 text-discovery-charcoal transition-transform duration-200 ${
-                        isFeaturesExpanded ? 'rotate-180' : ''
-                      }`}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
                   </button>
                   <div
                     className={`overflow-hidden transition-all duration-300 ${
