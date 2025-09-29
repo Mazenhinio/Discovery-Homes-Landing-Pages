@@ -35,6 +35,7 @@ export default function FirstNationsLandingPage() {
   const [selectedBenefitsImage, setSelectedBenefitsImage] = useState(0)
   const [benefitsTouchStart, setBenefitsTouchStart] = useState<number | null>(null)
   const [benefitsTouchEnd, setBenefitsTouchEnd] = useState<number | null>(null)
+  const [isFading, setIsFading] = useState(false)
 
   useEffect(() => {
     setIsClient(true)
@@ -109,13 +110,22 @@ export default function FirstNationsLandingPage() {
       { src: '/assets/images/new-content/Home Page Hero Carousel/H3.webp', alt: 'Hero Carousel H3' }
     ]
     
+    // Filter out case study images from both carousels
+    const filteredImages = availableImages.filter(image => 
+      !image.src.includes('case-study-1') && 
+      !image.src.includes('case-study-2') && 
+      !image.src.includes('case-study-3') && 
+      !image.src.includes('case-study-4') && 
+      !image.src.includes('case-study-5')
+    )
+    
     // Randomly select 20 images for the carousel
-    const shuffled = [...availableImages].sort(() => 0.5 - Math.random())
+    const shuffled = [...filteredImages].sort(() => 0.5 - Math.random())
     setCarouselImages(shuffled.slice(0, 20))
     
     // Randomly select 15 images for the benefits carousel
-    const benefitsShuffled = [...availableImages].sort(() => 0.5 - Math.random())
-    setBenefitsCarouselImages(benefitsShuffled.slice(1, 16))
+    const benefitsShuffled = [...filteredImages].sort(() => 0.5 - Math.random())
+    setBenefitsCarouselImages(benefitsShuffled.slice(0, 15))
     
     // Listen for custom tab change events from navigation
     const handleTabChange = (event: CustomEvent) => {
@@ -126,11 +136,25 @@ export default function FirstNationsLandingPage() {
     
     window.addEventListener('setActiveTab', handleTabChange as EventListener)
     
+    // Auto-scroll benefits carousel every 3 seconds
+    const benefitsAutoScroll = setInterval(() => {
+      if (benefitsCarouselImages.length > 1) {
+        setIsFading(true)
+        setTimeout(() => {
+          setSelectedBenefitsImage(prev => 
+            prev < benefitsCarouselImages.length - 1 ? prev + 1 : 0
+          )
+          setIsFading(false)
+        }, 300) // Half of fade duration
+      }
+    }, 3000)
+
     return () => {
       clearInterval(timer)
+      clearInterval(benefitsAutoScroll)
       window.removeEventListener('setActiveTab', handleTabChange as EventListener)
     }
-  }, [])
+  }, [benefitsCarouselImages.length])
 
   const handleFormSubmit = async (formData: any) => {
     try {
@@ -389,7 +413,7 @@ export default function FirstNationsLandingPage() {
       {/* Fall Sale Section */}
       <section className="py-6">
         <div className="max-w-6xl mx-auto px-4 text-center">
-          <div className="bg-discovery-white rounded-3xl p-12 shadow-2xl border-2 border-discovery-gold shadow-[0_0_20px_rgba(212,175,55,0.3)]">
+          <div className="bg-discovery-white rounded-3xl px-1.5 py-6 shadow-2xl border-2 border-discovery-gold shadow-[0_0_20px_rgba(212,175,55,0.3)]">
             {/* Sale Header */}
               <div className="mb-8">
                 <div className="text-lg font-semibold text-discovery-charcoal-light mb-2">FALL SALE</div>
@@ -399,10 +423,13 @@ export default function FirstNationsLandingPage() {
 
             {/* Sale Terms */}
             <div className="mb-8">
-              <p className="text-base text-discovery-charcoal-light mb-2">
-                First 5 orders for the first 30 days - Act FAST!
+              <p className="text-sm text-discovery-charcoal-light mb-1">
+                First 5 orders for the first 30 days
               </p>
-              <p className="text-lg text-discovery-charcoal-light italic">
+              <p className="text-sm text-discovery-charcoal-light mb-2">
+                Act FAST!
+              </p>
+              <p className="text-xs text-discovery-charcoal-light">
                 "Affordable, Modular Ready when you are."
               </p>
             </div>
@@ -411,7 +438,7 @@ export default function FirstNationsLandingPage() {
             <div className="mb-12">
               <a 
                 href="/quote-builder"
-                className="inline-block bg-discovery-charcoal text-discovery-white px-12 py-4 rounded-lg font-bold text-lg border-2 border-discovery-gold hover:bg-discovery-white hover:text-discovery-charcoal transition-all duration-300 shadow-[0_0_15px_rgba(212,175,55,0.4)] hover:shadow-[0_0_25px_rgba(212,175,55,0.6)]"
+                className="inline-block bg-discovery-charcoal text-discovery-white px-12 py-4 rounded-lg font-bold text-sm border-2 border-discovery-gold hover:bg-discovery-white hover:text-discovery-charcoal transition-all duration-300 shadow-[0_0_15px_rgba(212,175,55,0.4)] hover:shadow-[0_0_25px_rgba(212,175,55,0.6)]"
               >
                 CLAIM YOUR DISCOUNT
               </a>
@@ -671,7 +698,7 @@ export default function FirstNationsLandingPage() {
                         src={benefitsCarouselImages[selectedBenefitsImage]?.src}
                         alt={benefitsCarouselImages[selectedBenefitsImage]?.alt}
                         fill
-                        className="object-cover transition-transform duration-300"
+                        className={`object-cover transition-all duration-600 ${isFading ? 'opacity-0' : 'opacity-100'}`}
                         style={{
                           width: '100%',
                           height: '100%',
@@ -819,11 +846,14 @@ export default function FirstNationsLandingPage() {
       {/* Download Our Guide Section */}
       <section className="py-20 bg-gradient-to-br from-discovery-sage/20 to-discovery-gold/20">
         <div className="max-w-4xl mx-auto px-4">
-          <div className="bg-discovery-white rounded-2xl p-12 shadow-xl border-2 border-discovery-charcoal">
+          <div className="bg-discovery-white rounded-2xl px-[9px] py-12 shadow-xl border-2 border-discovery-charcoal">
             <div className="text-center">
-              <h2 className="text-3xl md:text-4xl font-serif font-bold text-discovery-charcoal mb-6">
-                Download Our Guide For Modular Homes For First Nation Communities:
+              <h2 className="text-[25px] font-serif font-bold text-discovery-charcoal mb-2">
+                Download Our Modular Homes Guide
               </h2>
+              <h3 className="text-lg font-medium text-discovery-charcoal-light mb-6">
+                For First Nation Communities
+              </h3>
               
               <h3 className="text-xl font-semibold text-discovery-charcoal mb-8">
                 What it includes:
@@ -836,7 +866,7 @@ export default function FirstNationsLandingPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
                   </div>
-                  <span className="text-discovery-charcoal font-medium text-lg">Comprehensive First Nations housing solutions overview</span>
+                  <span className="text-discovery-charcoal font-medium text-lg">Housing solutions overview</span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center">
@@ -844,7 +874,7 @@ export default function FirstNationsLandingPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                     </svg>
                   </div>
-                  <span className="text-discovery-charcoal font-medium text-lg">Cultural consultation and community engagement strategies</span>
+                  <span className="text-discovery-charcoal font-medium text-lg">Cultural consultation strategies</span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center">
@@ -852,7 +882,7 @@ export default function FirstNationsLandingPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
                     </svg>
                   </div>
-                  <span className="text-discovery-charcoal font-medium text-lg">Funding and financing resources guide</span>
+                  <span className="text-discovery-charcoal font-medium text-lg">Funding resources guide</span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center">
@@ -860,7 +890,7 @@ export default function FirstNationsLandingPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                     </svg>
                   </div>
-                  <span className="text-discovery-charcoal font-medium text-lg">Project planning and timeline assistance</span>
+                  <span className="text-discovery-charcoal font-medium text-lg">Project planning assistance</span>
                 </div>
               </div>
 
