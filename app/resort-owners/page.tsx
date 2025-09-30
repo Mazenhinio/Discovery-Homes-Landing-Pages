@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { ArrowRight, Download, Calendar, MessageCircle, Star, Users, Home, Heart, Shield, Award, DollarSign, TrendingUp, Building, Calculator, MapPin, Leaf, Globe, Zap, Clock } from 'lucide-react'
+import { ArrowRight, Download, Calendar, MessageCircle, Star, Users, Home, Heart, Shield, Award, DollarSign, TrendingUp, Building, Calculator, MapPin, Leaf, Globe, Zap, Clock, ChevronLeft, ChevronRight } from 'lucide-react'
 import { LeadCaptureForm } from '@/components/LeadCaptureForm'
 import { PartnershipLogos } from '@/components/sections/PartnershipLogos'
 import { CTABanner } from '@/components/CTABanner'
@@ -25,6 +25,15 @@ export default function ResortOwnersLandingPage() {
     seconds: 0
   })
   const [showThankYou, setShowThankYou] = useState(false)
+  const [benefitsCarouselImages, setBenefitsCarouselImages] = useState<Array<{src: string, alt: string}>>([])
+  const [selectedBenefitsImage, setSelectedBenefitsImage] = useState(0)
+  const [benefitsTouchStart, setBenefitsTouchStart] = useState<number | null>(null)
+  const [benefitsTouchEnd, setBenefitsTouchEnd] = useState<number | null>(null)
+  const [isFading, setIsFading] = useState(false)
+  const [carouselImages, setCarouselImages] = useState<Array<{src: string, alt: string}>>([])
+  const [selectedImage, setSelectedImage] = useState(0)
+  const [touchStart, setTouchStart] = useState<number | null>(null)
+  const [touchEnd, setTouchEnd] = useState<number | null>(null)
   const { ourHomesRef } = useOurHomes()
 
   useEffect(() => {
@@ -52,8 +61,87 @@ export default function ResortOwnersLandingPage() {
     calculateTimeLeft()
     const timer = setInterval(calculateTimeLeft, 1000)
     
-    return () => clearInterval(timer)
-  }, [])
+    // Load images for benefits carousel from specific paths
+    const loadImages = async () => {
+      try {
+        const response = await fetch('/api/images')
+        const data = await response.json()
+        
+        // Filter images from specific paths for resort owners
+        const filteredImages = data.images.filter((image: any) => 
+          (image.src.includes('Landing Page - Real Estate Rental') || 
+           image.src.includes('Home Page Hero Carousel') || 
+           image.src.includes('Custom Builds')) &&
+          !image.src.includes('case-study-1') && 
+          !image.src.includes('case-study-2') && 
+          !image.src.includes('case-study-3') && 
+          !image.src.includes('case-study-4') && 
+          !image.src.includes('case-study-5')
+        )
+        
+        // Randomly select 12 images for the benefits carousel
+        const benefitsShuffled = [...filteredImages].sort(() => 0.5 - Math.random())
+        setBenefitsCarouselImages(benefitsShuffled.slice(0, 12))
+        
+        // Randomly select 12 different images for the main carousel
+        const carouselShuffled = [...filteredImages].sort(() => 0.5 - Math.random())
+        setCarouselImages(carouselShuffled.slice(0, 12))
+      } catch (error) {
+        console.error('Error loading images:', error)
+        // Fallback images from specified paths - 12 for benefits carousel
+        setBenefitsCarouselImages([
+          { src: '/assets/images/new-content/Landing Page - Real Estate Rental/CB-LakesideRetreat-Hero__Lakeside-Retreat–Hero__CustomBuild__v01.webp', alt: 'Lakeside Resort Retreat' },
+          { src: '/assets/images/new-content/Home Page Hero Carousel/H1__Forest Sunrise__Pine 1__v01.webp', alt: 'Forest Sunrise Pine Home' },
+          { src: '/assets/images/new-content/Custom Builds/CB-LakesideRetreat-Front__Lakeside-Retreat__CustomBuild__v01.webp', alt: 'Resort Exterior View' },
+          { src: '/assets/images/new-content/Landing Page - Real Estate Rental/LP-TYL-4__Interior–rental-ready__Pine-2__v01.webp', alt: 'Resort Interior' },
+          { src: '/assets/images/new-content/Home Page Hero Carousel/H3.webp', alt: 'Modern Home Design' },
+          { src: '/assets/images/new-content/Custom Builds/CB-ResortCluster-Hero__Resort Cluster – Hero__Resort Cluster__v01.webp', alt: 'Resort Cluster' },
+          { src: '/assets/images/new-content/Custom Builds/cb coastal.webp', alt: 'Coastal Custom Build' },
+          { src: '/assets/images/new-content/Custom Builds/cb lakeside.webp', alt: 'Lakeside Custom Build' },
+          { src: '/assets/images/new-content/PIne 1 - Pine/IF Pine 1 - nordic white - living room.webp', alt: 'Pine 1 Living Room' },
+          { src: '/assets/images/new-content/PIne 1 - Pine/IF Pine1-bathroom-NW.webp', alt: 'Pine 1 Bathroom' },
+          { src: '/assets/images/new-content/Pine 2- Spruce/IF pine1-kitchen-E&S.webp', alt: 'Spruce Kitchen' },
+          { src: '/assets/images/new-content/Pine 3- Willow/IF Pine3-kitchen-NW.webp', alt: 'Willow Kitchen Nordic' }
+        ])
+        
+        // Fallback images for main carousel - 12 different images
+        setCarouselImages([
+          { src: '/assets/images/new-content/Landing Page - Real Estate Rental/CB-LakesideRetreat-Hero__Lakeside-Retreat–Hero__CustomBuild__v01.webp', alt: 'Lakeside Resort Retreat' },
+          { src: '/assets/images/new-content/Home Page Hero Carousel/H1__Forest Sunrise__Pine 1__v01.webp', alt: 'Forest Sunrise Pine Home' },
+          { src: '/assets/images/new-content/Custom Builds/CB-LakesideRetreat-Front__Lakeside-Retreat__CustomBuild__v01.webp', alt: 'Resort Exterior View' },
+          { src: '/assets/images/new-content/Landing Page - Real Estate Rental/LP-TYL-4__Interior–rental-ready__Pine-2__v01.webp', alt: 'Resort Interior' },
+          { src: '/assets/images/new-content/Home Page Hero Carousel/H3.webp', alt: 'Modern Home Design' },
+          { src: '/assets/images/new-content/Custom Builds/CB-ResortCluster-Hero__Resort Cluster – Hero__Resort Cluster__v01.webp', alt: 'Resort Cluster' },
+          { src: '/assets/images/new-content/Custom Builds/cb coastal.webp', alt: 'Coastal Custom Build' },
+          { src: '/assets/images/new-content/Custom Builds/cb lakeside.webp', alt: 'Lakeside Custom Build' },
+          { src: '/assets/images/new-content/PIne 1 - Pine/IF pine1-bedroom-NW.webp', alt: 'Pine 1 Bedroom' },
+          { src: '/assets/images/new-content/PIne 1 - Pine/IF pine1-kitchen-NW.webp', alt: 'Pine 1 Kitchen' },
+          { src: '/assets/images/new-content/Pine 2- Spruce/IF pine1-living-E&S.webp', alt: 'Spruce Living Room' },
+          { src: '/assets/images/new-content/Pine 3- Willow/IF Pine3-room-E&S.webp', alt: 'Willow Living Room' }
+        ])
+      }
+    }
+    
+    loadImages()
+    
+    // Auto-scroll benefits carousel every 3 seconds
+    const benefitsAutoScroll = setInterval(() => {
+      if (benefitsCarouselImages.length > 1) {
+        setIsFading(true)
+        setTimeout(() => {
+          setSelectedBenefitsImage(prev => 
+            prev < benefitsCarouselImages.length - 1 ? prev + 1 : 0
+          )
+          setIsFading(false)
+        }, 300) // Half of fade duration
+      }
+    }, 3000)
+    
+    return () => {
+      clearInterval(timer)
+      clearInterval(benefitsAutoScroll)
+    }
+  }, [benefitsCarouselImages.length])
 
   const handleFormSubmit = async (formData: any) => {
     try {
@@ -110,6 +198,75 @@ export default function ResortOwnersLandingPage() {
     }
   }
 
+  // Touch handlers for benefits carousel
+  const onBenefitsTouchStart = (e: React.TouchEvent) => {
+    setBenefitsTouchEnd(null)
+    setBenefitsTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const onBenefitsTouchMove = (e: React.TouchEvent) => {
+    setBenefitsTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const onBenefitsTouchEnd = () => {
+    if (!benefitsTouchStart || !benefitsTouchEnd) return
+    const distance = benefitsTouchStart - benefitsTouchEnd
+    const isLeftSwipe = distance > 50
+    const isRightSwipe = distance < -50
+
+    if (isLeftSwipe) {
+      // Swipe left - next image
+      setSelectedBenefitsImage(selectedBenefitsImage < benefitsCarouselImages.length - 1 ? selectedBenefitsImage + 1 : 0)
+    }
+    if (isRightSwipe) {
+      // Swipe right - previous image
+      setSelectedBenefitsImage(selectedBenefitsImage > 0 ? selectedBenefitsImage - 1 : benefitsCarouselImages.length - 1)
+    }
+  }
+
+  const nextBenefitsImage = () => {
+    setSelectedBenefitsImage(selectedBenefitsImage < benefitsCarouselImages.length - 1 ? selectedBenefitsImage + 1 : 0)
+  }
+
+  const prevBenefitsImage = () => {
+    setSelectedBenefitsImage(selectedBenefitsImage > 0 ? selectedBenefitsImage - 1 : benefitsCarouselImages.length - 1)
+  }
+
+  // Touch handlers for main carousel
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null)
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > 50
+    const isRightSwipe = distance < -50
+
+    if (isLeftSwipe) {
+      // Swipe left - next image
+      setSelectedImage(selectedImage < carouselImages.length - 1 ? selectedImage + 1 : 0)
+    }
+    if (isRightSwipe) {
+      // Swipe right - previous image
+      setSelectedImage(selectedImage > 0 ? selectedImage - 1 : carouselImages.length - 1)
+    }
+  }
+
+  const nextImage = () => {
+    setSelectedImage(selectedImage < carouselImages.length - 1 ? selectedImage + 1 : 0)
+  }
+
+  const prevImage = () => {
+    setSelectedImage(selectedImage > 0 ? selectedImage - 1 : carouselImages.length - 1)
+  }
+
   return (
     <div className="min-h-screen bg-discovery-white">
       {/* Hero Section */}
@@ -159,7 +316,7 @@ export default function ResortOwnersLandingPage() {
       </section>
 
       {/* Resort Revenue Statistics */}
-      <section className="py-8 bg-discovery-charcoal">
+      <section className="py-[15px] bg-discovery-charcoal">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex justify-center items-center gap-3 md:gap-6 text-center">
             <div className="text-discovery-white">
@@ -183,34 +340,9 @@ export default function ResortOwnersLandingPage() {
       </section>
 
 
-      {/* Additional CTA Section */}
-      <section className="py-16 bg-discovery-white">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <div className="bg-gradient-to-br from-discovery-gold/10 to-discovery-sage/10 rounded-2xl p-12">
-            <h3 className="text-3xl md:text-4xl font-serif font-bold text-discovery-charcoal mb-6">
-              Ready to Start Your Project?
-            </h3>
-            <p className="text-[15px] text-discovery-charcoal-light mb-8 max-w-2xl mx-auto">
-              Get an instant quote for your land development project. 
-              Our team is ready to help you unlock your property's potential.
-            </p>
-            <a 
-              href="/quote-builder"
-              className="inline-block bg-[#D4AF37] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#B8941F] transition-colors flex items-center justify-center gap-2 mx-auto"
-            >
-              Get Instant Quote
-              <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
-                <svg className="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            </a>
-          </div>
-        </div>
-      </section>
 
       {/* Land Development Benefits */}
-      <section className="py-20 bg-discovery-white">
+      <section className="py-[15px] bg-discovery-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-6">
@@ -266,7 +398,7 @@ export default function ResortOwnersLandingPage() {
       </section>
 
       {/* Fall Sale Section */}
-      <section className="py-6">
+      <section className="py-[15px]">
         <div className="max-w-6xl mx-auto px-4 text-center">
           <div className="bg-discovery-white rounded-3xl p-12 shadow-2xl border-2 border-discovery-gold shadow-[0_0_20px_rgba(212,175,55,0.3)]">
             {/* Sale Header */}
@@ -327,13 +459,37 @@ export default function ResortOwnersLandingPage() {
         </div>
       </section>
 
+      {/* Additional CTA Section */}
+      <section className="pt-6 pb-16 bg-nature-gradient relative overflow-hidden">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-serif font-bold text-discovery-white mb-6">
+            Ready to Start Your Project?
+          </h2>
+          <p className="text-[15px] text-discovery-white mb-8">
+            Get an instant quote for your land development project. 
+            Our team is ready to help you unlock your property's potential.
+          </p>
+          <a 
+            href="/quote-builder"
+            className="inline-block bg-[#D4AF37] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#B8941F] transition-colors flex items-center justify-center gap-2 mx-auto"
+          >
+            Get Instant Quote
+            <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
+              <svg className="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </a>
+        </div>
+      </section>
+
       {/* Our Homes Section */}
       <div className="pb-6">
         <OurHomesSection ref={ourHomesRef} />
       </div>
 
       {/* How It Works Section */}
-      <section id="how-it-works" className="py-16 sm:py-20 bg-gradient-to-b from-discovery-charcoal to-gray-900">
+      <section id="how-it-works" className="py-[15px] bg-gradient-to-b from-discovery-charcoal to-gray-900">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-discovery-white mb-4 sm:mb-6 leading-tight">
@@ -436,103 +592,257 @@ export default function ResortOwnersLandingPage() {
 
 
 
-      {/* Partnerships */}
-      <PartnershipLogos />
-
       {/* Start Your Resort Expansion Journey */}
-      <section className="py-20 bg-gradient-to-br from-discovery-sage/20 to-discovery-gold/20">
+      <section className="py-[15px] bg-gradient-to-br from-discovery-sage/20 to-discovery-gold/20">
         <div className="max-w-6xl mx-auto px-4">
-           <div className="grid lg:grid-cols-2 gap-12 items-stretch">
-             <div className="flex flex-col justify-between">
-               <h2 className="text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-6">
-                 Start Your Resort Expansion Journey
-             </h2>
-               <p className="text-[15px] text-discovery-charcoal-light mb-8">
-                 Ready to maximize your resort's revenue potential? Download our comprehensive guide and schedule a consultation with our resort expansion experts.
-               </p>
-               <div className="space-y-4">
-                 <div className="flex items-center gap-3">
-                   <div className="w-6 h-6 bg-discovery-gold rounded-full flex items-center justify-center">
-                     <div className="w-2 h-2 bg-discovery-charcoal rounded-full"></div>
-                   </div>
-                   <span className="text-discovery-charcoal">Free consultation with our resort expansion specialists</span>
-                 </div>
-                 <div className="flex items-center gap-3">
-                   <div className="w-6 h-6 bg-discovery-gold rounded-full flex items-center justify-center">
-                     <div className="w-2 h-2 bg-discovery-charcoal rounded-full"></div>
-                   </div>
-                   <span className="text-discovery-charcoal">Comprehensive guide to resort revenue solutions</span>
-                 </div>
-                 <div className="flex items-center gap-3">
-                   <div className="w-6 h-6 bg-discovery-gold rounded-full flex items-center justify-center">
-                     <div className="w-2 h-2 bg-discovery-charcoal rounded-full"></div>
-                   </div>
-                   <span className="text-discovery-charcoal">ROI calculations and financing options for your expansion</span>
-                 </div>
-               </div>
-               <div className="pt-6">
-                 <a 
-                   href="/quote-builder"
-                   className="inline-block bg-[#D4AF37] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#B8941F] transition-colors flex items-center justify-center gap-2"
-                 >
-                   Get Instant Quote
-                   <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
-                     <svg className="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
-                     </svg>
-                   </div>
-                 </a>
-               </div>
-           </div>
-           
-             {/* Right Column - Product Image and Features */}
-             <div className="h-full">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
+            <div className="flex flex-col justify-between">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-6">
+                Start Your Resort Expansion Journey
+              </h2>
+              <p className="text-sm sm:text-[15px] text-discovery-charcoal-light mb-8">
+                Ready to maximize your resort's revenue potential? Download our comprehensive guide and schedule a consultation with our resort expansion experts.
+              </p>
+              
+              {/* CTA Button */}
+              <div className="mb-8">
+                <a 
+                  href="/quote-builder"
+                  className="bg-[#D4AF37] text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-[#B8941F] flex items-center gap-2 justify-center text-sm sm:text-base"
+                >
+                  Get Instant Quote
+                  <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/20 flex items-center justify-center">
+                    <svg className="w-2 h-2 sm:w-3 sm:h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </a>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 bg-discovery-gold rounded-full flex items-center justify-center">
+                    <div className="w-2 h-2 bg-discovery-charcoal rounded-full"></div>
+                  </div>
+                  <span className="text-sm sm:text-base text-discovery-charcoal">Free consultation with our resort expansion specialists</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 bg-discovery-gold rounded-full flex items-center justify-center">
+                    <div className="w-2 h-2 bg-discovery-charcoal rounded-full"></div>
+                  </div>
+                  <span className="text-sm sm:text-base text-discovery-charcoal">Comprehensive guide to resort revenue solutions</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 bg-discovery-gold rounded-full flex items-center justify-center">
+                    <div className="w-2 h-2 bg-discovery-charcoal rounded-full"></div>
+                  </div>
+                  <span className="text-sm sm:text-base text-discovery-charcoal">ROI calculations and financing options for your expansion</span>
+                </div>
+              </div>
+            </div>
 
-               {/* Key Benefits */}
-               <div className="bg-discovery-white rounded-2xl p-8 shadow-xl flex flex-col h-full">
-                 <h3 className="text-2xl font-serif font-bold text-discovery-charcoal mb-6 text-center">
-                   Key Benefits
-                 </h3>
-                 <div className="space-y-4 flex-1">
+            {/* Right Column - Key Benefits */}
+            <div className="h-full">
+              <div className="bg-discovery-white rounded-2xl p-4 sm:p-6 lg:p-8 shadow-xl h-full flex flex-col">
+                <h3 className="text-xl sm:text-2xl font-serif font-bold text-discovery-charcoal mb-6 text-center">
+                  Key Benefits
+                </h3>
+                <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-discovery-gold rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-discovery-gold rounded-full flex items-center justify-center flex-shrink-0">
                       <TrendingUp className="w-4 h-4 text-discovery-charcoal" />
                     </div>
-                    <span className="text-discovery-charcoal font-medium">300% Capacity Increase</span>
+                    <span className="text-discovery-charcoal font-medium text-xs sm:text-sm">300% Capacity Increase</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-discovery-sage rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-discovery-sage rounded-full flex items-center justify-center flex-shrink-0">
                       <Clock className="w-4 h-4 text-discovery-charcoal" />
                     </div>
-                    <span className="text-discovery-charcoal font-medium">90 Days to Revenue</span>
+                    <span className="text-discovery-charcoal font-medium text-xs sm:text-sm">90 Days to Revenue</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-discovery-gold rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-discovery-gold rounded-full flex items-center justify-center flex-shrink-0">
                       <DollarSign className="w-4 h-4 text-discovery-charcoal" />
                     </div>
-                    <span className="text-discovery-charcoal font-medium">150% Higher Nightly Rates</span>
+                    <span className="text-discovery-charcoal font-medium text-xs sm:text-sm">150% Higher Nightly Rates</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-discovery-sage rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-discovery-sage rounded-full flex items-center justify-center flex-shrink-0">
                       <Leaf className="w-4 h-4 text-discovery-charcoal" />
                     </div>
-                    <span className="text-discovery-charcoal font-medium">85% Occupancy Rate</span>
+                    <span className="text-discovery-charcoal font-medium text-xs sm:text-sm">85% Occupancy Rate</span>
                   </div>
                 </div>
+                
+                {/* Benefits Carousel */}
+                {benefitsCarouselImages.length > 0 && (
+                  <div className="relative flex-1">
+                    <div 
+                      className="relative h-48 sm:h-56 md:h-64 lg:h-80 rounded-xl overflow-hidden shadow-lg group"
+                      onTouchStart={onBenefitsTouchStart}
+                      onTouchMove={onBenefitsTouchMove}
+                      onTouchEnd={onBenefitsTouchEnd}
+                    >
+                      <Image
+                        src={benefitsCarouselImages[selectedBenefitsImage]?.src}
+                        alt={benefitsCarouselImages[selectedBenefitsImage]?.alt}
+                        fill
+                        className={`object-cover transition-all duration-600 ${isFading ? 'opacity-0' : 'opacity-100'}`}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          objectPosition: 'center',
+                          display: 'block'
+                        }}
+                      />
+                      
+                      {/* Navigation Arrows */}
+                      {benefitsCarouselImages.length > 1 && (
+                        <>
+                          <button
+                            onClick={prevBenefitsImage}
+                            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+                          >
+                            <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
+                          </button>
+                          <button
+                            onClick={nextBenefitsImage}
+                            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+                          >
+                            <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
+                          </button>
+                        </>
+                      )}
+
+                      {/* Image Counter */}
+                      {benefitsCarouselImages.length > 1 && (
+                        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-2 py-1 rounded-full text-xs">
+                          {selectedBenefitsImage + 1} / {benefitsCarouselImages.length}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Download Guide Section */}
-      <section className="py-20 bg-gradient-to-br from-discovery-sage/20 to-discovery-gold/20">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="bg-discovery-white rounded-2xl p-12 shadow-xl border-2 border-discovery-charcoal">
-            <div className="text-center">
-              <h2 className="text-3xl md:text-4xl font-serif font-bold text-discovery-charcoal mb-6">
-                Download Our Guide For Modular Homes For Resort Revenue:
+      {/* Image Carousel Section */}
+      <section className="py-[15px] bg-gradient-to-b from-discovery-white to-gray-50">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-discovery-charcoal mb-4 sm:mb-6 leading-tight">
+              Ready to Start Your Resort Expansion Project?
             </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-discovery-gold to-discovery-sage mx-auto rounded-full mb-6"></div>
+            <p className="text-sm sm:text-[15px] text-discovery-charcoal-light max-w-3xl mx-auto leading-relaxed">
+              Let us help you maximize your resort's revenue potential! Click the button below to discuss your expansion project!
+            </p>
+            
+            {/* CTA Button */}
+            <div className="text-center mt-6 sm:mt-8">
+              <a 
+                href="/quote-builder"
+                className="bg-[#D4AF37] text-white px-6 sm:px-8 py-4 sm:py-5 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-[#B8941F] flex items-center gap-2 justify-center text-base sm:text-lg mx-auto"
+              >
+                Get Instant Quote
+                <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/20 flex items-center justify-center">
+                  <svg className="w-2 h-2 sm:w-3 sm:h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          {/* Carousel Container */}
+          <div className="max-w-4xl mx-auto mb-8 sm:mb-12">
+            {carouselImages.length > 0 && (
+              <div className="relative">
+                {/* Main Image with Carousel Controls */}
+                <div 
+                  className="relative h-64 sm:h-80 md:h-96 lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl group"
+                  onTouchStart={onTouchStart}
+                  onTouchMove={onTouchMove}
+                  onTouchEnd={onTouchEnd}
+                >
+                  <Image
+                    src={carouselImages[selectedImage]?.src}
+                    alt={carouselImages[selectedImage]?.alt}
+                    fill
+                    className="object-cover transition-transform duration-300"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      objectPosition: 'center',
+                      display: 'block'
+                    }}
+                  />
+                  
+                  {/* Navigation Arrows */}
+                  {carouselImages.length > 1 && (
+                    <>
+                      <button
+                        onClick={prevImage}
+                        className="absolute left-4 sm:left-6 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 sm:p-4 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+                      >
+                        <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+                      </button>
+                      <button
+                        onClick={nextImage}
+                        className="absolute right-4 sm:right-6 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 sm:p-4 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+                      >
+                        <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+                      </button>
+                    </>
+                  )}
+
+                  {/* Image Counter */}
+                  {carouselImages.length > 1 && (
+                    <div className="absolute bottom-4 sm:bottom-6 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-4 py-2 rounded-full text-sm sm:text-base">
+                      {selectedImage + 1} / {carouselImages.length}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* CTA Button */}
+          <div className="text-center">
+            <a 
+              href="/quote-builder"
+              className="bg-[#D4AF37] text-white px-6 sm:px-8 py-4 sm:py-5 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-[#B8941F] flex items-center gap-2 justify-center text-base sm:text-lg mx-auto"
+            >
+              Get Instant Quote
+              <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/20 flex items-center justify-center">
+                <svg className="w-2 h-2 sm:w-3 sm:h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Partnerships */}
+      <PartnershipLogos />
+
+      {/* Download Guide Section */}
+      <section className="py-[15px] bg-gradient-to-br from-discovery-sage/20 to-discovery-gold/20">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="bg-discovery-white rounded-2xl px-[15px] py-[15px] shadow-xl border-2 border-discovery-charcoal">
+            <div className="text-center">
+              <h2 className="text-[25px] font-serif font-bold text-discovery-charcoal mb-2">
+                Download Our Modular Homes Guide
+              </h2>
+              <h3 className="text-lg font-medium text-discovery-charcoal-light mb-6">
+                Resort & Airbnb Owners
+              </h3>
               
               <h3 className="text-xl font-semibold text-discovery-charcoal mb-8">
                 What it includes:
@@ -545,7 +855,7 @@ export default function ResortOwnersLandingPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
                   </div>
-                  <span className="text-discovery-charcoal font-medium text-lg">Comprehensive resort revenue solutions overview</span>
+                  <span className="text-discovery-charcoal font-medium text-[15px]">Resort revenue solutions overview</span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center">
@@ -553,7 +863,7 @@ export default function ResortOwnersLandingPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                     </svg>
                   </div>
-                  <span className="text-discovery-charcoal font-medium text-lg">Property assessment and revenue planning</span>
+                  <span className="text-discovery-charcoal font-medium text-[15px]">Property assessment and planning</span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center">
@@ -561,7 +871,7 @@ export default function ResortOwnersLandingPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
                     </svg>
                   </div>
-                  <span className="text-discovery-charcoal font-medium text-lg">ROI calculations and financing options</span>
+                  <span className="text-discovery-charcoal font-medium text-[15px]">ROI calculations and financing</span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-discovery-gold rounded-full flex items-center justify-center">
@@ -569,9 +879,9 @@ export default function ResortOwnersLandingPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                     </svg>
                   </div>
-                  <span className="text-discovery-charcoal font-medium text-lg">Resort expansion planning and timeline assistance</span>
+                  <span className="text-discovery-charcoal font-medium text-[15px]">Expansion planning assistance</span>
                 </div>
-            </div>
+              </div>
 
               <button 
                 onClick={() => setShowDownloadForm(true)}
@@ -583,6 +893,7 @@ export default function ResortOwnersLandingPage() {
           </div>
         </div>
       </section>
+
 
 
       {/* Download Guide Popup Form */}
