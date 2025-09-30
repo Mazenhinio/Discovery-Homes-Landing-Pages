@@ -18,12 +18,12 @@ export function MetaPixel() {
     // Only initialize once globally with multiple guard rails
     if (
       typeof window !== 'undefined' && 
-      !window.fbq && 
-      !window._fbPixelInitialized && 
+      !(window as any).fbq && 
+      !(window as any)._fbPixelInitialized && 
       !hasInitialized.current
     ) {
       // Set multiple flags to prevent duplicate initialization
-      window._fbPixelInitialized = true
+      ;(window as any)._fbPixelInitialized = true
       hasInitialized.current = true
       
       // Load Facebook Pixel with enhanced error handling
@@ -54,7 +54,7 @@ export function MetaPixel() {
         )
 
         // Initialize Facebook Pixel with error handling
-        window.fbq('init', '24293734826978109', {
+        ;(window as any).fbq('init', '24293734826978109', {
           autoConfig: true,
           debug: process.env.NODE_ENV === 'development'
         })
@@ -62,9 +62,9 @@ export function MetaPixel() {
         console.log('Meta Pixel initialized successfully')
       } catch (error) {
         console.error('Meta Pixel initialization failed:', error)
-        // Reset flags on error
-        window._fbPixelInitialized = false
-        hasInitialized.current = false
+            // Reset flags on error
+            ;(window as any)._fbPixelInitialized = false
+            hasInitialized.current = false
       }
     }
   }, []) // Empty dependency array = run once on mount
@@ -73,7 +73,7 @@ export function MetaPixel() {
   useEffect(() => {
     if (
       typeof window !== 'undefined' && 
-      window.fbq && 
+      (window as any).fbq && 
       pathname && 
       pathname !== lastTrackedPath.current
     ) {
@@ -82,14 +82,14 @@ export function MetaPixel() {
       eventIdRef.current = eventId
       lastTrackedPath.current = pathname
       
-      // Use trackSingle to ensure event goes to specific pixel
-      // and include event_id for deduplication
-      window.fbq('trackSingle', '24293734826978109', 'PageView', {
-        page_location: window.location.href,
-        page_title: document.title
-      }, {
-        eventID: eventId
-      })
+          // Use trackSingle to ensure event goes to specific pixel
+          // and include event_id for deduplication
+          ;(window as any).fbq('trackSingle', '24293734826978109', 'PageView', {
+            page_location: window.location.href,
+            page_title: document.title
+          }, {
+            eventID: eventId
+          })
       
       console.log('Meta Pixel PageView tracked for:', pathname, 'Event ID:', eventId)
     }
@@ -111,7 +111,7 @@ export function MetaPixel() {
 // Type declaration for window.fbq
 declare global {
   interface Window {
-    fbq: any
+    fbq: (...args: any[]) => void
     _fbq: any
     _fbPixelInitialized?: boolean
     [key: string]: any
