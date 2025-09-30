@@ -47,7 +47,10 @@ export function MetaPixel() {
           window,
           document,
           'script',
-          'https://connect.facebook.net/en_US/fbevents.js'
+          'https://connect.facebook.net/en_US/fbevents.js',
+          undefined,
+          undefined,
+          undefined
         )
 
         // Initialize Facebook Pixel with error handling
