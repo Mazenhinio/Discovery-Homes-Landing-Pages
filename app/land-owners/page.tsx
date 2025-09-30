@@ -839,7 +839,7 @@ export default function LandOwnersLandingPage() {
           <div className="bg-discovery-white rounded-2xl px-[15px] py-[15px] shadow-xl border-2 border-discovery-charcoal">
             <div className="text-center">
               <h2 className="text-[25px] font-serif font-bold text-discovery-charcoal mb-2">
-                Download Our Modular Homes Guide
+                Download Our Modular Homes Guide For:
               </h2>
               <h3 className="text-lg font-medium text-discovery-charcoal-light mb-6">
                 Land Owners
