@@ -108,16 +108,31 @@ export const trackDeviceInfo = () => {
   }
 }
 
-// Meta Pixel tracking functions
-export const trackMetaPixelEvent = (eventName: string, parameters?: Record<string, any>) => {
+// Generate unique event ID for deduplication
+const generateEventId = () => {
+  return `event_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+}
+
+// Meta Pixel tracking functions with enhanced deduplication
+export const trackMetaPixelEvent = (eventName: string, parameters?: Record<string, any>, eventId?: string) => {
   if (typeof window !== 'undefined' && window.fbq) {
-    window.fbq('track', eventName, parameters)
+    const uniqueEventId = eventId || generateEventId()
+    
+    // Use trackSingle to ensure event goes to specific pixel
+    // and include event_id for deduplication
+    window.fbq('trackSingle', '24293734826978109', eventName, parameters, {
+      eventID: uniqueEventId
+    })
+    
+    // Console log for development
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Meta Pixel Event:', eventName, parameters, 'Event ID:', uniqueEventId)
+    }
+    
+    return uniqueEventId
   }
   
-  // Console log for development
-  if (process.env.NODE_ENV === 'development') {
-    console.log('Meta Pixel Event:', eventName, parameters)
-  }
+  return null
 }
 
 // Custom event tracking for business metrics

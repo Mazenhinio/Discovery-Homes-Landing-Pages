@@ -10,6 +10,7 @@ import { ToastProvider } from '@/components/providers/ToastProvider'
 import { AnalyticsProvider } from '@/components/providers/AnalyticsProvider'
 import { OurHomesProvider } from '@/components/providers/OurHomesProvider'
 import { Analytics } from '@vercel/analytics/react'
+import { MetaPixel } from '@/components/MetaPixel'
 
 export const metadata: Metadata = {
   title: 'Discovery Homes | Affordable Modular Homes | Ready When You Are',
@@ -91,7 +92,7 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#68A71D" />
         
         {/* Preload Open Graph image for faster link previews */}
-        <link rel="preload" as="image" href="/images/og-image.webp" />
+        <link rel="preload" as="image" href="/og-image.webp" />
         
         {/* Additional meta tags for better link previews */}
         <meta property="og:image:width" content="1200" />
@@ -99,7 +100,7 @@ export default function RootLayout({
         <meta property="og:image:type" content="image/png" />
         <meta property="og:image:alt" content="Discovery Homes - Affordable Modular Housing" />
         <meta name="twitter:image:alt" content="Discovery Homes - Affordable Modular Housing" />
-        <meta property="og:image" content="/images/OG PIC.png" />
+        <meta property="og:image" content="/og-image.webp" />
         <meta name="twitter:site" content="@discoveryhomes" />
         <meta name="twitter:creator" content="@discoveryhomes" />
         <link rel="canonical" href="https://www.discoveryhomes.ca" />
@@ -110,35 +111,9 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="Discovery Homes" />
         
-        {/* Meta Pixel Code */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              !function(f,b,e,v,n,t,s)
-              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-              n.queue=[];t=b.createElement(e);t.async=!0;
-              t.src=v;s=b.getElementsByTagName(e)[0];
-              s.parentNode.insertBefore(t,s)}(window, document,'script',
-              'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '24293734826978109');
-              fbq('track', 'PageView');
-            `,
-          }}
-        />
-        <noscript>
-          <img 
-            height="1" 
-            width="1" 
-            style={{display: 'none'}}
-            src="https://www.facebook.com/tr?id=24293734826978109&ev=PageView&noscript=1"
-            alt=""
-          />
-        </noscript>
-        {/* End Meta Pixel Code */}
       </head>
       <body className="min-h-screen flex flex-col">
+        <MetaPixel />
         <AnimationProvider>
           <SmoothScrollProvider>
             <ToastProvider>

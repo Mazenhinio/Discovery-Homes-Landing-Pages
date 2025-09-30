@@ -30,9 +30,10 @@ export function RealEstateRentalAnalytics() {
         })
       }
 
-      // Facebook Pixel
+      // Facebook Pixel - PageView is already tracked globally in layout.tsx
+      // Using custom event instead to avoid duplicate PageView
       if (window.fbq) {
-        window.fbq('track', 'PageView', {
+        window.fbq('track', 'ViewContent', {
           content_name: 'Real Estate Rental Landing Page',
           content_category: 'Rental Investment'
         })

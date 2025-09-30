@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ChevronLeft, ChevronRight, Check, Home, MapPin, Users, Building, Palette, Zap, DollarSign, Calendar, Heart, CreditCard } from 'lucide-react'
-import { trackBusinessEvent } from '@/lib/analytics'
+import { trackBusinessEvent, trackEvent } from '@/lib/analytics'
 
 interface FormData {
   // Step 1: Contact Info
@@ -534,15 +534,38 @@ export default function QuoteBuilderPage() {
       document.body.removeChild(link)
       window.URL.revokeObjectURL(url)
       
-      // Mark as successfully submitted
-      setIsSubmitted(true)
-      setIsSubmitting(false)
+      // Track custom 'form submitted' event
+      trackEvent('form_submitted', {
+        source: 'quote_builder',
+        model: formData.model,
+        estimated_price: finalPrice
+      })
       
-      // Track Meta Pixel "Submit Application" event
+      // Track Meta Pixel "Submit Application" event BEFORE opening new tab
       trackBusinessEvent.submitApplication({
         ...formData,
         estimatedPrice: finalPrice
       })
+      
+      // Small delay to ensure Meta Pixel event is sent
+      await new Promise(resolve => setTimeout(resolve, 100))
+      
+      // Mark as successfully submitted and redirect to thank you page
+      setIsSubmitted(true)
+      
+      // Open thank you page in new tab - force new window for Brave browser
+      const newWindow = window.open('/thank-you', '_blank', 'width=1200,height=800,scrollbars=yes,resizable=yes,noopener,noreferrer')
+      if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+        // Fallback if popup is blocked - try alternative method
+        const link = document.createElement('a')
+        link.href = '/thank-you'
+        link.target = '_blank'
+        link.rel = 'noopener noreferrer'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+      }
+      setIsSubmitting(false)
       
     } catch (error) {
       console.error('Submission error:', error)
@@ -700,7 +723,7 @@ export default function QuoteBuilderPage() {
         {/* Success Screen */}
         {isSubmitted && (
           <div className="text-center">
-            <div className="bg-white rounded-lg p-8 shadow-lg mb-8">
+            <div className="bg-white rounded-lg px-1.5 py-8 shadow-lg mb-8">
               <div className="w-20 h-20 bg-[#68a71d] rounded-full flex items-center justify-center mx-auto mb-6">
                 <Check size={40} className="text-white" />
               </div>
@@ -803,7 +826,7 @@ export default function QuoteBuilderPage() {
               </div>
               
               {/* Fall Sale Section */}
-              <div className="mt-8 bg-gradient-to-r from-[#D4AF37] to-[#B8941F] rounded-2xl p-8 text-center text-white">
+              <div className="mt-8 bg-gradient-to-r from-[#D4AF37] to-[#B8941F] rounded-2xl px-1.5 py-8 text-center text-white">
                 <div className="flex items-center justify-center mb-4">
                   <div className="bg-white/20 backdrop-blur-sm rounded-full p-3 mr-3">
                     <Zap className="text-white w-8 h-8" />
@@ -849,15 +872,18 @@ export default function QuoteBuilderPage() {
                   Don't miss out on this exclusive fall discount. Book your consultation today to secure your savings!
                 </p>
 
-                {/* Book Your Call Button */}
-                <a
-                  href="https://api.leadconnectorhq.com/widget/booking/wbJJIOUM9g94NdNGDuD8"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block bg-white text-[#D4AF37] px-8 py-4 rounded-lg hover:bg-gray-100 transition-colors font-bold text-lg"
-                >
-                  Book Your Call Now
-                </a>
+                {/* Calendar Embed */}
+                <div className="max-w-2xl mx-auto">
+                  <iframe 
+                    src="https://api.leadconnectorhq.com/widget/booking/wbJJIOUM9g94NdNGDuD8" 
+                    style={{width: '100%', border: 'none', overflow: 'auto'}} 
+                    scrolling="yes" 
+                    id="wbJJIOUM9g94NdNGDuD8_1759251412946"
+                    className="min-h-[500px] rounded-lg"
+                  />
+                  <br />
+                  <script src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript" />
+                </div>
               </div>
             </div>
           </div>

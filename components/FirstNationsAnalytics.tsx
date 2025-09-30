@@ -30,9 +30,10 @@ export function FirstNationsAnalytics() {
         })
       }
 
-      // Facebook Pixel
+      // Facebook Pixel - PageView is already tracked globally in layout.tsx
+      // Using custom event instead to avoid duplicate PageView
       if (window.fbq) {
-        window.fbq('track', 'PageView', {
+        window.fbq('track', 'ViewContent', {
           content_name: 'First Nations Landing Page',
           content_category: 'Community Housing'
         })
