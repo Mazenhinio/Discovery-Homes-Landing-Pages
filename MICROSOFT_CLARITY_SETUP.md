@@ -163,3 +163,4 @@ For issues with the integration, check:
 4. Microsoft Clarity documentation for best practices
 
 The implementation is production-ready and follows Microsoft's recommended practices for Next.js applications.
+

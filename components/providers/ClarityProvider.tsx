@@ -53,7 +53,8 @@ export function ClarityProvider({ children }: ClarityProviderProps) {
       typeof window !== 'undefined' &&
       pathname &&
       lastTrackedPath.current !== pathname &&
-      window.clarity
+      window.clarity &&
+      typeof window.clarity === 'function'
     ) {
       // Prevent duplicate tracking
       lastTrackedPath.current = pathname
@@ -67,3 +68,4 @@ export function ClarityProvider({ children }: ClarityProviderProps) {
 
   return <>{children}</>
 }
+
