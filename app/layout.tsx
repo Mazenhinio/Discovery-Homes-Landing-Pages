@@ -9,6 +9,7 @@ import { AnimationProvider } from '@/components/providers/AnimationProvider'
 import { ToastProvider } from '@/components/providers/ToastProvider'
 import { AnalyticsProvider } from '@/components/providers/AnalyticsProvider'
 import { OurHomesProvider } from '@/components/providers/OurHomesProvider'
+import { ClarityProvider } from '@/components/providers/ClarityProvider'
 import { Analytics } from '@vercel/analytics/react'
 import { MetaPixel } from '@/components/MetaPixel'
 
@@ -114,23 +115,25 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen flex flex-col">
         <MetaPixel />
-        <AnimationProvider>
-          <SmoothScrollProvider>
-            <ToastProvider>
-              <AnalyticsProvider>
-                <OurHomesProvider>
-                  <Navigation />
-                  <main className="flex-1">
-                    {children}
-                  </main>
-                  <Footer />
-                  <MayaChatbot />
-                  <VapiWidget />
-                </OurHomesProvider>
-              </AnalyticsProvider>
-            </ToastProvider>
-          </SmoothScrollProvider>
-        </AnimationProvider>
+        <ClarityProvider>
+          <AnimationProvider>
+            <SmoothScrollProvider>
+              <ToastProvider>
+                <AnalyticsProvider>
+                  <OurHomesProvider>
+                    <Navigation />
+                    <main className="flex-1">
+                      {children}
+                    </main>
+                    <Footer />
+                    <MayaChatbot />
+                    <VapiWidget />
+                  </OurHomesProvider>
+                </AnalyticsProvider>
+              </ToastProvider>
+            </SmoothScrollProvider>
+          </AnimationProvider>
+        </ClarityProvider>
         <Analytics />
       </body>
     </html>

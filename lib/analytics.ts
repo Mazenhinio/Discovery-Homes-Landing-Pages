@@ -31,6 +31,12 @@ export const analyticsConfig = {
     hjsv: process.env.NEXT_PUBLIC_HOTJAR_SNIPPET_VERSION || '6',
     enabled: process.env.NEXT_PUBLIC_HOTJAR_ENABLED === 'true',
   },
+  
+  // Microsoft Clarity
+  microsoftClarity: {
+    projectId: process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID || '',
+    enabled: process.env.NEXT_PUBLIC_CLARITY_ENABLED === 'true',
+  },
 }
 
 // Analytics event tracking functions
@@ -177,6 +183,100 @@ export const trackBusinessEvent = {
   deviceInfoTracked: () => trackDeviceInfo(),
 }
 
+// Microsoft Clarity tracking functions
+export const trackClarityEvent = (eventName: string, data?: Record<string, any>) => {
+  if (typeof window !== 'undefined' && window.clarity) {
+    window.clarity('event', eventName)
+    
+    // Optionally track additional data with custom events
+    if (data) {
+      // Clarity supports custom events but with limited data structure
+      window.clarity('set', `event_${eventName}`, JSON.stringify(data))
+    }
+    
+    // Console log for development
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Microsoft Clarity Event:', eventName, data)
+    }
+  }
+}
+
+// Enhanced tracking function that integrates Clarity with other analytics
+export const trackClarityPageView = (url: string) => {
+  // Clarity automatically tracks page views, but we can set session info
+  if (typeof window !== 'undefined' && window.clarity) {
+    window.clarity('identify', 'anonymous') // Optional: identify session
+    window.clarity('set', 'page_url', url)
+  }
+  
+  // Also track in our main analytics
+  trackPageView(url)
+}
+
+// Enhanced business event tracking with Clarity integration
+export const trackBusinessEventWithClarity = {
+  // Quote builder events
+  quoteStarted: () => {
+    trackEvent('quote_started')
+    trackClarityEvent('quote_started')
+  },
+  
+  quoteCompleted: (value?: number) => {
+    trackEvent('quote_completed', { value })
+    trackClarityEvent('quote_completed', { value })
+  },
+  
+  quoteDownloaded: (type: string) => {
+    trackEvent('quote_downloaded', { type })
+    trackClarityEvent('quote_downloaded', { type })
+  },
+  
+  submitApplication: (formData?: any) => {
+    // Track in Google Analytics and Meta Pixel (existing)
+    trackBusinessEvent.submitApplication(formData)
+    
+    // Also track in Clarity
+    trackClarityEvent('application_submitted', {
+      model: formData?.model,
+      estimated_price: formData?.estimatedPrice,
+      timeline: formData?.timeline
+    })
+  },
+  
+  // Contact events
+  contactFormSubmitted: (source: string) => {
+    trackEvent('contact_form_submitted', { source })
+    trackClarityEvent('contact_form_submitted', { source })
+  },
+  
+  consultationScheduled: (type: string) => {
+    trackEvent('consultation_scheduled', { type })
+    trackClarityEvent('consultation_scheduled', { type })
+  },
+  
+  // Content engagement
+  contentDownloaded: (type: string, name: string) => {
+    trackEvent('content_downloaded', { type, name })
+    trackClarityEvent('content_downloaded', { type, name })
+  },
+  
+  webinarRegistered: (title: string) => {
+    trackEvent('webinar_registered', { title })
+    trackClarityEvent('webinar_registered', { title })
+  },
+  
+  // Property type interest
+  propertyTypeViewed: (type: string) => {
+    trackEvent('property_type_viewed', { type })
+    trackClarityEvent('property_type_viewed', { type })
+  },
+  
+  customBuildViewed: (style: string) => {
+    trackEvent('custom_build_viewed', { style })
+    trackClarityEvent('custom_build_viewed', { style })
+  },
+}
+
 // Type declarations for global analytics objects
 declare global {
   interface Window {
@@ -186,5 +286,6 @@ declare global {
     lintrk: (...args: any[]) => void
     _linkedin_partner_id: string
     _linkedin_data_partner_id: string
+    clarity: (action: string, ...args: any[]) => void
   }
 }
